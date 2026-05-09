@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MergeObjectData
   m_EditorClassIdentifier: Assembly-CSharp::MergeObjectData
   MergeData:
-  - TypeName: "\uC0D8\uD50C 1\uBC88"
+  - TypeName: T.1
     MergeType: 0
     MergeDataList:
     - Name: 1-1
@@ -30,7 +30,7 @@ MonoBehaviour:
       sprite: {fileID: 0}
     - Name: 1-7
       sprite: {fileID: 0}
-  - TypeName: "\uC0D8\uD50C 2\uBC88"
+  - TypeName: T.2
     MergeType: 1
     MergeDataList:
     - Name: 2-1

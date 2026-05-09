@@ -1,0 +1,63 @@
+{
+    "metadata": {
+        "title": "RoaTest",
+        "artist": "Roa",
+        "creator": "SH",
+        "audioFileName": "Roa - Morning Sky.mp3",
+        "previewTime": 0
+    },
+    "globalScrollSpeed": 500.0,
+    "startOffset": 2000.0,
+    "musicOffset": 0.0,
+    "length": 205000.0,
+    "timingPoints": [
+        {
+            "time": 0.0,
+            "bpm": 96.0,
+            "meter": 4,
+            "denominator": 4
+        }
+    ],
+    "lanes": [
+        {
+            "laneIndex": 0,
+            "defaultY": 0.0,
+            "keyBinding": 32
+        }
+    ],
+    "notes": [
+        {
+            "time": 2500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 3750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 4375.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 5625.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        }
+    ],
+    "gimmicks": []
+}

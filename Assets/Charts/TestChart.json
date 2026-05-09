@@ -1,0 +1,103 @@
+{
+    "metadata": {
+        "title": "TestChart",
+        "artist": "Leaf",
+        "creator": "SH",
+        "audioFileName": "Leaf - 命日.mp3",
+        "previewTime": 0
+    },
+    "globalScrollSpeed": 500.0,
+    "startOffset": 2000.0,
+    "musicOffset": 225.0,
+    "length": 148000.0,
+    "timingPoints": [
+        {
+            "time": 0.0,
+            "bpm": 248.0,
+            "meter": 4,
+            "denominator": 4
+        }
+    ],
+    "lanes": [
+        {
+            "laneIndex": 0,
+            "defaultY": 0.0,
+            "keyBinding": 32
+        }
+    ],
+    "notes": [
+        {
+            "time": 6774.193359375,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 5806.451171875,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 3870.967529296875,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 2903.2255859375,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 1935.4837646484375,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 6
+        },
+        {
+            "time": 4838.70947265625,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 2
+        },
+        {
+            "time": 4112.9033203125,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 3
+        },
+        {
+            "time": 4596.77392578125,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 4
+        },
+        {
+            "time": 5322.58056640625,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 1
+        }
+    ],
+    "gimmicks": []
+}
