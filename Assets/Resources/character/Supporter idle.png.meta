@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 96e35a031ae64a14da14462202939aae
+guid: 542e8f1f3d30e434c83df762cece9766
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2394710881800170915
-    second: Chef idel_0
+      213: 5826820013092581734
+    second: Supporter idle_0
   - first:
-      213: -7096227555038033187
-    second: Chef idel_1
+      213: -2603584141686590739
+    second: Supporter idle_1
   - first:
-      213: -1792995221224764191
-    second: Chef idel_2
+      213: -3620650698544233764
+    second: Supporter idle_2
   - first:
-      213: 405855451671345143
-    second: Chef idel_3
+      213: -3241194832730197318
+    second: Supporter idle_3
+  - first:
+      213: -7028882608928934793
+    second: Supporter idle_4
+  - first:
+      213: 6291747225756085015
+    second: Supporter idle_5
+  - first:
+      213: -4051127161570101598
+    second: Supporter idle_6
+  - first:
+      213: 3252001134430254954
+    second: Supporter idle_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,13 +134,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Chef idel_0
+      name: Supporter idle_0
       rect:
         serializedVersion: 2
-        x: 12
+        x: 17
         y: 0
-        width: 43
-        height: 64
+        width: 29
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +149,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d52d986042744ced0800000000000000
-      internalID: -2394710881800170915
+      spriteID: 661358a1ee50dd050800000000000000
+      internalID: 5826820013092581734
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_1
+      name: Supporter idle_1
       rect:
         serializedVersion: 2
-        x: 76
+        x: 81
         y: 0
-        width: 43
-        height: 64
+        width: 29
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dda8e98d2a2258d90800000000000000
-      internalID: -7096227555038033187
+      spriteID: de23eeb74063edbd0800000000000000
+      internalID: -2603584141686590739
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_2
+      name: Supporter idle_2
       rect:
         serializedVersion: 2
-        x: 140
+        x: 145
         y: 0
-        width: 43
-        height: 64
+        width: 29
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +193,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1eccce298500e17e0800000000000000
-      internalID: -1792995221224764191
+      spriteID: cd240896f5dd0cdc0800000000000000
+      internalID: -3620650698544233764
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_3
+      name: Supporter idle_3
       rect:
         serializedVersion: 2
-        x: 204
+        x: 209
         y: 0
-        width: 43
-        height: 64
+        width: 29
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +215,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f7b60b0263e1a500800000000000000
-      internalID: 405855451671345143
+      spriteID: ab2f843e876f403d0800000000000000
+      internalID: -3241194832730197318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Supporter idle_4
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 0
+        width: 29
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 774bedef184647e90800000000000000
+      internalID: -7028882608928934793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Supporter idle_5
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 0
+        width: 29
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71badb744c6c05750800000000000000
+      internalID: 6291747225756085015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Supporter idle_6
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 0
+        width: 29
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a67da27f4187c7c0800000000000000
+      internalID: -4051127161570101598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Supporter idle_7
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 0
+        width: 29
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a67f1ea4dcd612d20800000000000000
+      internalID: 3252001134430254954
       vertices: []
       indices: 
       edges: []
@@ -213,7 +313,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f195e8b0d6748d54dac6cc801dae633a
+    spriteID: 6cdfd7620d006524bb3a272a9b22bced
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +323,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Chef idel_0: -2394710881800170915
-      Chef idel_1: -7096227555038033187
-      Chef idel_2: -1792995221224764191
-      Chef idel_3: 405855451671345143
+      Supporter idle_0: 5826820013092581734
+      Supporter idle_1: -2603584141686590739
+      Supporter idle_2: -3620650698544233764
+      Supporter idle_3: -3241194832730197318
+      Supporter idle_4: -7028882608928934793
+      Supporter idle_5: 6291747225756085015
+      Supporter idle_6: -4051127161570101598
+      Supporter idle_7: 3252001134430254954
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 96e35a031ae64a14da14462202939aae
+guid: e5bad3ef4394cf9488f02ee59b9ba194
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2394710881800170915
-    second: Chef idel_0
+      213: -8482337875491317660
+    second: Lifter idle_0
   - first:
-      213: -7096227555038033187
-    second: Chef idel_1
+      213: 9186985386759611172
+    second: Lifter idle_1
   - first:
-      213: -1792995221224764191
-    second: Chef idel_2
+      213: 8340579989184532434
+    second: Lifter idle_2
   - first:
-      213: 405855451671345143
-    second: Chef idel_3
+      213: 8707073419754128949
+    second: Lifter idle_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Chef idel_0
+      name: Lifter idle_0
       rect:
         serializedVersion: 2
-        x: 12
+        x: 17
         y: 0
-        width: 43
-        height: 64
+        width: 42
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d52d986042744ced0800000000000000
-      internalID: -2394710881800170915
+      spriteID: 4689f72c4aea84a80800000000000000
+      internalID: -8482337875491317660
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_1
+      name: Lifter idle_1
       rect:
         serializedVersion: 2
-        x: 76
+        x: 97
         y: 0
-        width: 43
-        height: 64
+        width: 42
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +159,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dda8e98d2a2258d90800000000000000
-      internalID: -7096227555038033187
+      spriteID: 423e286d88abe7f70800000000000000
+      internalID: 9186985386759611172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_2
+      name: Lifter idle_2
       rect:
         serializedVersion: 2
-        x: 140
+        x: 177
         y: 0
-        width: 43
-        height: 64
+        width: 42
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +181,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1eccce298500e17e0800000000000000
-      internalID: -1792995221224764191
+      spriteID: 2df43145f41bfb370800000000000000
+      internalID: 8340579989184532434
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chef idel_3
+      name: Lifter idle_3
       rect:
         serializedVersion: 2
-        x: 204
+        x: 257
         y: 0
-        width: 43
-        height: 64
+        width: 42
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +203,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f7b60b0263e1a500800000000000000
-      internalID: 405855451671345143
+      spriteID: 536c0b9a42db5d870800000000000000
+      internalID: 8707073419754128949
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f195e8b0d6748d54dac6cc801dae633a
+    spriteID: 40179166feac1c94fa5fd559fbaeb63e
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Chef idel_0: -2394710881800170915
-      Chef idel_1: -7096227555038033187
-      Chef idel_2: -1792995221224764191
-      Chef idel_3: 405855451671345143
+      Lifter idle_0: -8482337875491317660
+      Lifter idle_1: 9186985386759611172
+      Lifter idle_2: 8340579989184532434
+      Lifter idle_3: 8707073419754128949
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
