@@ -15,12 +15,12 @@ namespace RhythmSystem
         public TMP_InputField titleInput;
         public TMP_InputField artistInput;
         public TMP_InputField creatorInput;
-        public TMP_InputField chartLengthInput; // Manual chart end time
+        public TMP_InputField chartLengthInput; // Manual chart Length
 
         [Header("Timing & Offset Panel")]
         public TMP_InputField bpmInput;
         public TMP_InputField meterInput;
-        public TMP_InputField offsetInput; // Visual Start Offset
+        public TMP_InputField offsetInput; // Visual Start Offset(Leadin time)
         public TMP_InputField musicOffsetInput; // Audio Playback Offset
 
         [Header("Note Settings Panel")]
@@ -28,12 +28,15 @@ namespace RhythmSystem
         public TMP_InputField judgeLineXInput;
         public TMP_Dropdown snapDropdown;
         public TMP_Dropdown modeDropdown;
+        public TMP_Dropdown gimmickTypeDropdown;
+        public TMP_InputField gimmickValueInput;
 
         [Header("Playback Panel")]
         public TextMeshProUGUI timeText;
-        public TMP_Dropdown musicListDropdown; // Dropdown for selecting music files
+        public TMP_Dropdown musicListDropdown;
         public Button playPauseButton;
         public Button stopButton;
+        public Button testPlayButton;
         public Slider miniMapSlider;
 
         [Header("File Sidebar")]
@@ -48,11 +51,10 @@ namespace RhythmSystem
 
         [Header("Merge Object Selection")]
         public TMP_Dropdown mergeCategoryDropdown;
-        public RectTransform mergeObjectContainer; // Parent for object icons
-        public GameObject objectIconPrefab; // Button with Image
-        public MergeObjectUIItem currentSelectionDisplay; // Consolidated preview item
+        public RectTransform mergeObjectContainer;
+        public GameObject objectIconPrefab;
+        public MergeObjectUIItem currentSelectionDisplay;
 
-        // Standard snap divisors
         private readonly int[] snapValues = { 1, 2, 4, 8, 16, 32, 3, 6 };
         private readonly string[] snapLabels = { "1/1", "1/2", "1/4", "1/8", "1/16", "1/32", "1/3", "1/6" };
 
@@ -81,6 +83,14 @@ namespace RhythmSystem
                 modeDropdown.SetValueWithoutNotify((int)editorManager.currentMode);
             }
 
+            if (gimmickTypeDropdown != null)
+            {
+                gimmickTypeDropdown.ClearOptions();
+                gimmickTypeDropdown.AddOptions(System.Enum.GetNames(typeof(GimmickType)).ToList());
+                gimmickTypeDropdown.SetValueWithoutNotify((int)editorManager.currentSelectedGimmickType);
+                gimmickTypeDropdown.onValueChanged.AddListener(HandleGimmickTypeChange);
+            }
+
             if (musicListDropdown != null)
             {
                 RefreshMusicList();
@@ -94,7 +104,6 @@ namespace RhythmSystem
                 mergeCategoryDropdown.AddOptions(categoryNames);
                 mergeCategoryDropdown.onValueChanged.AddListener(HandleMergeCategoryChanged);
                 
-                // Initial load
                 HandleMergeCategoryChanged(0);
             }
         }
@@ -106,7 +115,6 @@ namespace RhythmSystem
             musicListDropdown.ClearOptions();
             musicListDropdown.AddOptions(files);
 
-            // Select current if matches
             string current = editorManager.currentChart.metadata.audioFileName;
             int index = files.IndexOf(current);
             if (index >= 0) musicListDropdown.SetValueWithoutNotify(index);
@@ -124,7 +132,6 @@ namespace RhythmSystem
             if (editorManager.mergeObjectData == null) return;
             editorManager.currentSelectedMergeType = categoryIndex;
 
-            // Clear old icons
             foreach (Transform child in mergeObjectContainer) Destroy(child.gameObject);
 
             var category = editorManager.mergeObjectData.MergeData[categoryIndex];
@@ -134,14 +141,12 @@ namespace RhythmSystem
                 var objData = category.MergeDataList[i];
                 GameObject iconObj = Instantiate(objectIconPrefab, mergeObjectContainer);
                 
-                // Use dedicated UI component
                 MergeObjectUIItem uiItem = iconObj.GetComponent<MergeObjectUIItem>();
                 if (uiItem != null)
                 {
                     uiItem.Setup(categoryIndex, index, objData.sprite, objData.Name);
                 }
 
-                // Setup button click
                 Button btn = iconObj.GetComponent<Button>();
                 if (btn != null)
                 {
@@ -149,7 +154,6 @@ namespace RhythmSystem
                 }
             }
 
-            // Default select first if none selected
             if (category.MergeDataList.Length > 0) SelectMergeObject(categoryIndex, 0);
         }
 
@@ -180,11 +184,13 @@ namespace RhythmSystem
             judgeLineXInput?.onEndEdit.AddListener(HandleJudgeLineXChange);
             snapDropdown.onValueChanged.AddListener(HandleSnapChange);
             modeDropdown?.onValueChanged.AddListener(HandleModeChange);
+            gimmickValueInput?.onEndEdit.AddListener(HandleGimmickValueChange);
 
             if (miniMapSlider != null) miniMapSlider.onValueChanged.AddListener(HandleMiniMapChange);
 
             playPauseButton?.onClick.AddListener(HandlePlayPauseClick);
             stopButton?.onClick.AddListener(HandleStopClick);
+            testPlayButton?.onClick.AddListener(() => editorManager.StartTestPlay());
             saveButton?.onClick.AddListener(HandleSaveClick);
             loadButton?.onClick.AddListener(HandleLoadClick);
             refreshButton?.onClick.AddListener(RefreshFileList);
@@ -219,6 +225,9 @@ namespace RhythmSystem
 
             if (modeDropdown != null)
                 modeDropdown.SetValueWithoutNotify((int)editorManager.currentMode);
+            
+            if (gimmickTypeDropdown != null)
+                gimmickTypeDropdown.SetValueWithoutNotify((int)editorManager.currentSelectedGimmickType);
 
             InitializeMiniMap();
         }
@@ -318,7 +327,6 @@ namespace RhythmSystem
             if (float.TryParse(val, out float offset))
             {
                 editorManager.currentChart.musicOffset = offset;
-                // No visual refresh needed, but playback sync will use it
             }
         }
 
@@ -366,6 +374,23 @@ namespace RhythmSystem
         private void HandleModeChange(int index)
         {
             editorManager.ChangeMode((EditorMode)index);
+        }
+
+        private void HandleGimmickTypeChange(int index)
+        {
+            editorManager.currentSelectedGimmickType = (GimmickType)index;
+        }
+
+        private void HandleGimmickValueChange(string val)
+        {
+            if (float.TryParse(val, out float res))
+            {
+                if (editorManager.currentSelectedGimmickType == GimmickType.BPMChange)
+                {
+                    editorManager.currentBPM = res;
+                    bpmInput.text = res.ToString();
+                }
+            }
         }
 
         private void HandleMiniMapChange(float val)

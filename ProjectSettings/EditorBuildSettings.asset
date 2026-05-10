@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage_2.unity
     guid: f526ee5ae3762de458ec65f8bfadfb64
+  - enabled: 1
+    path: Assets/Scenes/Chart Editor Scene.unity
+    guid: d0f7212513e20024791cd89ed7f79ad0
+  - enabled: 1
+    path: Assets/Scenes/Game Debug Scene.unity
+    guid: 98903e797871c2f4ab7a16d5cc356a28
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

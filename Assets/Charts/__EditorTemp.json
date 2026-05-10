@@ -20,12 +20,12 @@
     "lanes": [
         {
             "laneIndex": 0,
-            "defaultY": 60.0,
+            "defaultY": 30.0,
             "keyBinding": 32
         },
         {
             "laneIndex": 1,
-            "defaultY": 0.0,
+            "defaultY": -30.0,
             "keyBinding": 0
         }
     ],
@@ -461,7 +461,150 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0
+        },
+        {
+            "time": 16935.484375,
+            "laneIndex": 3,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 16935.484375,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 17419.353515625,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 17419.353515625,
+            "laneIndex": 2,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 17903.224609375,
+            "laneIndex": 2,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 17903.224609375,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 18387.095703125,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 18387.095703125,
+            "laneIndex": 3,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 21290.322265625,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 21290.322265625,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 21290.322265625,
+            "laneIndex": 2,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 21290.322265625,
+            "laneIndex": 3,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 23225.8046875,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 23225.8046875,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 22741.935546875,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 22258.064453125,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
         }
     ],
-    "gimmicks": []
+    "gimmicks": [
+        {
+            "time": 16451.61328125,
+            "type": 3,
+            "targetLane": 2,
+            "value": 2.0,
+            "value2": 0.0
+        },
+        {
+            "time": 21774.193359375,
+            "type": 4,
+            "targetLane": 2,
+            "value": 2.0,
+            "value2": 0.0
+        }
+    ]
 }

@@ -14,7 +14,11 @@ namespace RhythmSystem
     [Serializable]
     public enum GimmickType
     {
-        LaneMove      // Y-axis movement
+        LaneMoveY,     // Y-axis movement
+        LaneMoveX,     // X-axis (Judgment) movement
+        BPMChange,     // BPM change
+        LaneAdd,       // Add a new lane
+        LaneRemove     // Remove a lane
     }
 
     [Serializable]
@@ -51,10 +55,8 @@ namespace RhythmSystem
         public int laneIndex;
         public NoteType type;
         public float length; // ms (for Hold notes)
-
-        // Merge Game Integration
-        public int mergeType;   // Category index in MergeObjectData
-        public int objectIndex;  // Item index within that category
+        public int mergeType;
+        public int objectIndex;
     }
 
     [Serializable]
@@ -63,14 +65,13 @@ namespace RhythmSystem
         public float time; // ms
         public GimmickType type;
         public int targetLane;
-        public float value; // Y position or Speed multiplier
+        public float value;
     }
 
     [Serializable]
     public class ChartData
     {
         public Metadata metadata = new Metadata();
-        public float globalScrollSpeed = 500f;
         public float startOffset = 2000f; // ms (Visual Lead-in time)
         public float musicOffset = 0f;    // ms (Audio playback offset)
         public float length = 0f;         // ms (Total chart length)

@@ -25,11 +25,27 @@ public class MergeManager : MonoBehaviour
 
     public void CreateMergeObject()
     {
+        CreateMergeObject(currentType, currentIndex);
+    }
+
+    public void CreateMergeObject(int type, int index)
+    {
         GameObject GO = Instantiate(ObjectPrefab, ObjectContainer);
-        GO.GetComponent<MergeObject>().Init(currentType, currentIndex);
-        mergeObjects.Add(GO.GetComponent<MergeObject>());
-        currentObject = GO.GetComponent<MergeObject>();
+        MergeObject mo = GO.GetComponent<MergeObject>();
+        mo.Init(type, index);
+        mergeObjects.Add(mo);
+        currentObject = mo;
         EventManager.OnMergeDataAdd?.Invoke();
+    }
+
+    public void ClearAllObjects()
+    {
+        foreach (var obj in mergeObjects)
+        {
+            if (obj != null) Destroy(obj.gameObject);
+        }
+        mergeObjects.Clear();
+        currentObject = null;
     }
 
     private void AutoMergeObject()

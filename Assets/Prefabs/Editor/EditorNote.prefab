@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2758428704169009914}
   - component: {fileID: 97624784118619497}
   - component: {fileID: 5455735800359975600}
+  - component: {fileID: 3886521679063169058}
   m_Layer: 5
-  m_Name: Note
+  m_Name: EditorNote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,3 +76,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3886521679063169058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2913960537597143824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b6c81cdcd148b49b45f4392f80ec41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.EditorNoteController
+  data:
+    time: 0
+    laneIndex: 0
+    type: 0
+    length: 0
+    mergeType: 0
+    objectIndex: 0

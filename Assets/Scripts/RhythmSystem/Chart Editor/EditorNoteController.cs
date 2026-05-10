@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace RhythmSystem
 {
     [RequireComponent(typeof(Image))]
-    public class NoteController : MonoBehaviour
+    public class EditorNoteController : MonoBehaviour
     {
         public NoteData data;
         
@@ -35,7 +35,6 @@ namespace RhythmSystem
                     if (obj.sprite != null)
                     {
                         noteImage.sprite = obj.sprite;
-                        // Optional: Reset color to white so sprite isn't tinted
                         noteImage.color = isSelected ? Color.cyan : Color.white;
                     }
                 }
@@ -46,7 +45,6 @@ namespace RhythmSystem
         {
             if (noteImage == null) return;
             
-            // Highlight selected notes (e.g., Cyan), otherwise White
             noteImage.color = isSelected ? Color.cyan : Color.white;
         }
     }

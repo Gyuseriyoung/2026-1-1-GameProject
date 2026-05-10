@@ -147,8 +147,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2708055960402321038}
   - component: {fileID: 7437910639619379023}
+  - component: {fileID: 6222523056672988825}
   - component: {fileID: 3106930010507444001}
-  - component: {fileID: 247888698851179683}
   - component: {fileID: 6922837790120905966}
   m_Layer: 5
   m_Name: MergeObjectUI
@@ -185,6 +185,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2963407043253280068}
   m_CullTransparentMesh: 1
+--- !u!114 &6222523056672988825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2963407043253280068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fde543ddc043864ba370195b53fa0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.MergeObjectUIItem
+  objectImage: {fileID: 3106930010507444001}
+  nameText: {fileID: 7632910076314730827}
 --- !u!114 &3106930010507444001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,20 +229,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &247888698851179683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2963407043253280068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d5dbc0cb8ec026499783b332ffbcdf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.MergeObjectUIItem
-  objectImage: {fileID: 3106930010507444001}
-  nameText: {fileID: 7632910076314730827}
 --- !u!114 &6922837790120905966
 MonoBehaviour:
   m_ObjectHideFlags: 0
