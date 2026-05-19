@@ -12,11 +12,16 @@ namespace RhythmSystem
         public GameObject gimmickMarkerPrefab;
 
         private List<EditorNoteController> activeNotes = new List<EditorNoteController>();
-        private List<GameObject> activeGimmicks = new List<GameObject>();
+        private List<EditorGimmickController> activeGimmicks = new List<EditorGimmickController>();
         private HashSet<NoteData> selectedNotes = new HashSet<NoteData>();
+        private GimmickEvent selectedGimmick;
         private List<NoteData> clipboard = new List<NoteData>();
 
         public HashSet<NoteData> SelectedNotes => selectedNotes;
+        public GimmickEvent SelectedGimmick => selectedGimmick;
+
+        private NoteData creatingHoldNote;
+        private EditorNoteController creatingHoldVisual;
 
         public void Init(EditorManager manager)
         {
@@ -58,7 +63,7 @@ namespace RhythmSystem
 
         public void UpdateGimmickVisuals()
         {
-            foreach (var gm in activeGimmicks) Destroy(gm);
+            foreach (var gm in activeGimmicks) Destroy(gm.gameObject);
             activeGimmicks.Clear();
             
             var grouped = editorManager.currentChart.gimmicks
@@ -71,49 +76,64 @@ namespace RhythmSystem
                 foreach (var gimmick in group)
                 {
                     if (gimmickMarkerPrefab == null) break;
-                    GameObject gm = Instantiate(gimmickMarkerPrefab, editorManager.timelineContent);
+                    GameObject gmObj = Instantiate(gimmickMarkerPrefab, editorManager.timelineContent);
+                    EditorGimmickController controller = gmObj.GetComponent<EditorGimmickController>();
+                    if (controller == null) controller = gmObj.AddComponent<EditorGimmickController>();
+
+                    controller.data = gimmick;
                     
                     float xPos = -(gimmick.time / 1000f) * editorManager.currentScrollSpeed;
                     float baseLaneY = editorManager.timelineManager.GetLaneYAt(gimmick.targetLane, gimmick.time);
                     
                     float yOffset = subIndex * 30f; 
-                    gm.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, baseLaneY + yOffset);
+                    gmObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, baseLaneY + yOffset);
                     
-                    var image = gm.GetComponentInChildren<UnityEngine.UI.Image>();
-                    var text = gm.GetComponentInChildren<TMPro.TMP_Text>();
-                    
-                    string info = "";
-                    if (image != null)
-                    {
-                        switch (gimmick.type)
-                        {
-                            case GimmickType.LaneMoveY: 
-                                image.color = Color.yellow; 
-                                info = $"Y:{gimmick.value:F1}";
-                                break;
-                            case GimmickType.LaneMoveX: 
-                                image.color = new Color(1f, 0.5f, 0f); 
-                                info = $"X:{gimmick.value:F1}";
-                                break;
-                            case GimmickType.BPMChange: 
-                                image.color = Color.cyan; 
-                                info = $"BPM:{gimmick.value}";
-                                break;
-                            case GimmickType.LaneAdd: 
-                                image.color = Color.green; 
-                                info = $"+{gimmick.value}";
-                                break;
-                            case GimmickType.LaneRemove: 
-                                image.color = Color.red; 
-                                info = $"-{gimmick.value}";
-                                break;
-                        }
-                    }
-
-                    if (text != null) text.text = info;
-                    activeGimmicks.Add(gm);
+                    controller.SetSelection(selectedGimmick == gimmick);
+                    activeGimmicks.Add(controller);
                     subIndex++;
                 }
+            }
+        }
+
+        public void ToggleGimmickSelectionAtMouse(Vector2 mousePos)
+        {
+            float timeMs = editorManager.timelineManager.GetTimeFromMouse(mousePos) * 1000f;
+            int lane = editorManager.timelineManager.GetLaneFromMouse(mousePos);
+
+            var gimmick = editorManager.currentChart.gimmicks
+                .Where(g => Mathf.Abs(g.time - timeMs) < 100f && g.targetLane == lane)
+                .OrderBy(g => Mathf.Abs(g.time - timeMs))
+                .FirstOrDefault();
+
+            SelectGimmick(gimmick);
+        }
+
+        public void SelectGimmick(GimmickEvent gimmick)
+        {
+            selectedGimmick = gimmick;
+            if (selectedGimmick != null)
+            {
+                editorManager.editorUIController.LoadGimmickData(selectedGimmick);
+            }
+            UpdateGimmickVisuals();
+        }
+
+        public void UpdateSelectedGimmickValue(float val)
+        {
+            if (selectedGimmick != null)
+            {
+                selectedGimmick.value = val;
+                
+                // If BPM change, also update timing points
+                if (selectedGimmick.type == GimmickType.BPMChange)
+                {
+                    var existingTP = editorManager.currentChart.timingPoints.Find(tp => Mathf.Abs(tp.time - selectedGimmick.time) < 0.5f);
+                    if (existingTP != null) existingTP.bpm = val;
+                }
+                
+                // Update visuals for the specific gimmick
+                var controller = activeGimmicks.FirstOrDefault(g => g.data == selectedGimmick);
+                if (controller != null) controller.UpdateVisuals();
             }
         }
 
@@ -154,6 +174,7 @@ namespace RhythmSystem
                 value = val 
             };
             editorManager.currentChart.gimmicks.Add(newGimmick);
+            SelectGimmick(newGimmick);
             editorManager.RefreshAllVisuals();
         }
 
@@ -179,8 +200,77 @@ namespace RhythmSystem
             }
         }
 
+        public void StartHoldNoteCreation(Vector2 mousePos)
+        {
+            float time = editorManager.timelineManager.GetTimeFromMouse(mousePos);
+            float snappedTimeMs = editorManager.GetSnappedTime(time) * 1000f;
+            int laneIndex = editorManager.timelineManager.GetLaneFromMouse(mousePos);
+
+            if (laneIndex < 0) return;
+
+            creatingHoldNote = new NoteData 
+            { 
+                time = snappedTimeMs, 
+                laneIndex = laneIndex, 
+                type = NoteType.Hold,
+                length = 0,
+                mergeType = editorManager.currentSelectedMergeType,
+                objectIndex = editorManager.currentSelectedMergeIndex
+            };
+
+            // Temporary visual
+            GameObject noteObj = Instantiate(notePrefab, editorManager.timelineContent);
+            creatingHoldVisual = noteObj.GetComponent<EditorNoteController>();
+            if (creatingHoldVisual == null) creatingHoldVisual = noteObj.AddComponent<EditorNoteController>();
+            
+            creatingHoldVisual.data = creatingHoldNote;
+            creatingHoldVisual.ApplyMergeSprite(editorManager.mergeObjectData);
+            
+            UpdateHoldNoteCreation(mousePos);
+        }
+
+        public void UpdateHoldNoteCreation(Vector2 mousePos)
+        {
+            if (creatingHoldNote == null) return;
+
+            float time = editorManager.timelineManager.GetTimeFromMouse(mousePos);
+            float snappedTimeMs = editorManager.GetSnappedTime(time) * 1000f;
+            
+            creatingHoldNote.length = Mathf.Max(0, snappedTimeMs - creatingHoldNote.time);
+
+            RectTransform rt = creatingHoldVisual.GetComponent<RectTransform>();
+            float yPos = editorManager.timelineManager.GetLaneYAt(creatingHoldNote.laneIndex, creatingHoldNote.time);
+            rt.anchoredPosition = new Vector2(-(creatingHoldNote.time / 1000f) * editorManager.currentScrollSpeed, yPos);
+            
+            creatingHoldVisual.UpdateVisuals();
+        }
+
+        public void FinalizeHoldNoteCreation()
+        {
+            if (creatingHoldNote == null) return;
+
+            if (creatingHoldNote.length > 0)
+            {
+                editorManager.currentChart.notes.Add(creatingHoldNote);
+                activeNotes.Add(creatingHoldVisual);
+            }
+            else
+            {
+                Destroy(creatingHoldVisual.gameObject);
+            }
+
+            creatingHoldNote = null;
+            creatingHoldVisual = null;
+        }
+
         public void AddNoteAtMouse(Vector2 mousePos)
         {
+            if (editorManager.currentSelectedNoteType == NoteType.Hold)
+            {
+                StartHoldNoteCreation(mousePos);
+                return;
+            }
+
             float time = editorManager.timelineManager.GetTimeFromMouse(mousePos);
             float snappedTimeMs = editorManager.GetSnappedTime(time) * 1000f;
             int laneIndex = editorManager.timelineManager.GetLaneFromMouse(mousePos);

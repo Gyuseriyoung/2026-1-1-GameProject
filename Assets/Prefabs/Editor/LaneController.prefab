@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 415, y: 837.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6148938506680790869}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6642137447604293354
@@ -45,6 +46,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.LaneController
   laneIndex: 0
-  visualJudgmentLine: {fileID: 0}
-  hitEffectPrefab: {fileID: 0}
-  missEffectPrefab: {fileID: 0}
+  visualJudgmentLine: {fileID: 6148938506680790869}
+--- !u!1001 &7347228197604870831
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7197709076753676520}
+    m_Modifications:
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5686890100298273589, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+      propertyPath: m_Name
+      value: PlayJudgeLine
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+--- !u!4 &6148938506680790869 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3504913078918915578, guid: 1897e1433732d0c409b3b2622898243e, type: 3}
+  m_PrefabInstance: {fileID: 7347228197604870831}
+  m_PrefabAsset: {fileID: 0}

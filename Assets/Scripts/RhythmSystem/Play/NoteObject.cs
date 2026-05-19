@@ -3,26 +3,38 @@ using RhythmSystem;
 
 namespace RhythmSystem.Play
 {
+    public enum NoteState
+    {
+        Idle,
+        Holding,
+        Completed,
+        Missed
+    }
+
     public class NoteObject : MonoBehaviour
     {
         private NoteData noteData;
         private LaneController parentLane;
-        private float scrollSpeed;
         private bool isInitialized = false;
+
+        public SpriteRenderer holdBody;
+        public NoteState State { get; private set; } = NoteState.Idle;
 
         public bool IsJudged { get; set; } = false;
         public NoteData Data => noteData;
 
-        public void Initialize(NoteData data, LaneController lane, float speed, float startTimeMs)
+        public void Initialize(NoteData data, LaneController lane, float startTimeMs)
         {
             noteData = data;
             parentLane = lane;
-            scrollSpeed = speed;
             isInitialized = true;
+            State = NoteState.Idle;
+            IsJudged = false;
             
             if (parentLane == null) gameObject.SetActive(false);
             
             UpdatePosition(startTimeMs);
+            UpdateHoldBody(startTimeMs);
         }
 
         public void SetLane(LaneController lane)
@@ -32,13 +44,13 @@ namespace RhythmSystem.Play
             {
                 gameObject.SetActive(true);
             }
-            else
+            else if (IsJudged)
             {
                 gameObject.SetActive(false);
             }
         }
 
-        public void UpdatePosition(float currentTimeMs)
+        public void UpdatePosition(float currentTimeMs, float worldSpeed = -1f)
         {
             if (!isInitialized || IsJudged || parentLane == null) return;
 
@@ -53,19 +65,89 @@ namespace RhythmSystem.Play
             Vector2 judgmentPos = parentLane.GetJudgmentPosition();
 
             float timeRemaining = (noteData.time - currentTimeMs) / 1000f;
-            float xPos = judgmentPos.x - (timeRemaining * scrollSpeed);
+            
+            // Use provided speed or fetch current
+            float effectiveSpeed = worldSpeed > 0 ? worldSpeed : Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+
+            // If we are holding, the "head" of the note stays at the judgment line
+            float xPos;
+            if (State == NoteState.Holding)
+            {
+                xPos = judgmentPos.x;
+            }
+            else
+            {
+                xPos = judgmentPos.x - (timeRemaining * effectiveSpeed);
+            }
 
             transform.position = new Vector3(xPos, judgmentPos.y, 0);
 
-            if (timeRemaining < -0.2f) { /* Auto-miss handled by manager */ }
+            UpdateHoldBody(currentTimeMs, worldSpeed);
+        }
+
+        private void UpdateHoldBody(float currentTimeMs, float worldSpeed = -1f)
+        {
+            if (holdBody == null) return;
+
+            if (noteData.type == NoteType.Hold)
+            {
+                holdBody.gameObject.SetActive(true);
+                
+                float totalLengthSeconds = noteData.length / 1000f;
+                float currentElapsedInHold = (currentTimeMs - noteData.time) / 1000f;
+                
+                float remainingLengthSeconds;
+                if (State == NoteState.Holding)
+                {
+                    remainingLengthSeconds = totalLengthSeconds - currentElapsedInHold;
+                }
+                else
+                {
+                    remainingLengthSeconds = totalLengthSeconds;
+                }
+
+                remainingLengthSeconds = Mathf.Max(0, remainingLengthSeconds);
+                
+                // Use provided speed or fetch current
+                float effectiveSpeed = worldSpeed > 0 ? worldSpeed : Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+                float visualLength = remainingLengthSeconds * effectiveSpeed;
+                
+                // Adjust scale and position of the body
+                holdBody.transform.localScale = new Vector3(visualLength, holdBody.transform.localScale.y, 1);
+                holdBody.transform.localPosition = new Vector3(-visualLength / 2f, 0, 0); 
+            }
+            else
+            {
+                holdBody.gameObject.SetActive(false);
+            }
         }
 
         public float GetNoteTime() => noteData.time;
 
+        public void StartHolding()
+        {
+            if (noteData.type == NoteType.Hold)
+            {
+                State = NoteState.Holding;
+            }
+        }
+
+        public void CompleteHold()
+        {
+            State = NoteState.Completed;
+            OnJudged();
+        }
+
         public void OnJudged()
         {
             IsJudged = true;
-            gameObject.SetActive(false); // Placeholder: add animation/particle later
+            gameObject.SetActive(false); 
+        }
+
+        public void SetMissed()
+        {
+            State = NoteState.Missed;
+            OnJudged();
         }
     }
 }

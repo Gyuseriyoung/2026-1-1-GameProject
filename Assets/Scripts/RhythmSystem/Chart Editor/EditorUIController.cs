@@ -28,6 +28,7 @@ namespace RhythmSystem
         public TMP_InputField judgeLineXInput;
         public TMP_Dropdown snapDropdown;
         public TMP_Dropdown modeDropdown;
+        public TMP_Dropdown noteTypeDropdown;
         public TMP_Dropdown gimmickTypeDropdown;
         public TMP_InputField gimmickValueInput;
 
@@ -81,6 +82,14 @@ namespace RhythmSystem
                 modeDropdown.ClearOptions();
                 modeDropdown.AddOptions(System.Enum.GetNames(typeof(EditorMode)).ToList());
                 modeDropdown.SetValueWithoutNotify((int)editorManager.currentMode);
+            }
+
+            if (noteTypeDropdown != null)
+            {
+                noteTypeDropdown.ClearOptions();
+                noteTypeDropdown.AddOptions(System.Enum.GetNames(typeof(NoteType)).ToList());
+                noteTypeDropdown.SetValueWithoutNotify((int)editorManager.currentSelectedNoteType);
+                noteTypeDropdown.onValueChanged.AddListener(HandleNoteTypeChange);
             }
 
             if (gimmickTypeDropdown != null)
@@ -214,8 +223,8 @@ namespace RhythmSystem
                 meterInput.text = "4/4";
             }
 
-            scrollSpeedField.text = (editorManager.currentScrollSpeed / 100f).ToString();
-            if (judgeLineXInput != null) judgeLineXInput.text = editorManager.JudgeLineX.ToString();
+            scrollSpeedField.text = editorManager.currentScrollSpeed.ToString("F0");
+            if (judgeLineXInput != null) judgeLineXInput.text = editorManager.JudgeLineX.ToString("F0");
             titleInput.text = chart.metadata.title;
             artistInput.text = chart.metadata.artist;
             creatorInput.text = chart.metadata.creator;
@@ -344,21 +353,15 @@ namespace RhythmSystem
         {
             if (float.TryParse(val, out float num))
             {
-                editorManager.currentScrollSpeed = num * 100;
+                editorManager.UpdateScrollSpeed(num);
             }
-            else
-            {
-                editorManager.currentScrollSpeed = 500;
-            }
-            editorManager.RefreshAllVisuals();
         }
 
         private void HandleJudgeLineXChange(string val)
         {
             if (float.TryParse(val, out float x))
             {
-                editorManager.JudgeLineX = x;
-                editorManager.RefreshAllVisuals();
+                editorManager.UpdateJudgeLineX(x);
             }
         }
 
@@ -376,15 +379,41 @@ namespace RhythmSystem
             editorManager.ChangeMode((EditorMode)index);
         }
 
+        private void HandleNoteTypeChange(int index)
+        {
+            editorManager.currentSelectedNoteType = (NoteType)index;
+        }
+
+        public void LoadGimmickData(GimmickEvent gimmick)
+        {
+            if (gimmickTypeDropdown != null)
+                gimmickTypeDropdown.SetValueWithoutNotify((int)gimmick.type);
+            
+            if (gimmickValueInput != null)
+                gimmickValueInput.SetTextWithoutNotify(gimmick.value.ToString());
+            
+            editorManager.currentSelectedGimmickType = gimmick.type;
+        }
+
         private void HandleGimmickTypeChange(int index)
         {
             editorManager.currentSelectedGimmickType = (GimmickType)index;
+            if (editorManager.noteManager.SelectedGimmick != null)
+            {
+                editorManager.noteManager.SelectedGimmick.type = (GimmickType)index;
+                editorManager.noteManager.UpdateGimmickVisuals();
+            }
         }
 
         private void HandleGimmickValueChange(string val)
         {
             if (float.TryParse(val, out float res))
             {
+                if (editorManager.noteManager.SelectedGimmick != null)
+                {
+                    editorManager.noteManager.UpdateSelectedGimmickValue(res);
+                }
+
                 if (editorManager.currentSelectedGimmickType == GimmickType.BPMChange)
                 {
                     editorManager.currentBPM = res;
@@ -430,7 +459,7 @@ namespace RhythmSystem
         {
             if (scrollSpeedField != null)
             {
-                scrollSpeedField.text = (editorManager.currentScrollSpeed / 100f).ToString();
+                scrollSpeedField.text = editorManager.currentScrollSpeed.ToString("F0");
             }
         }
 
@@ -438,7 +467,7 @@ namespace RhythmSystem
         {
             if (judgeLineXInput != null)
             {
-                judgeLineXInput.text = editorManager.JudgeLineX.ToString();
+                judgeLineXInput.text = editorManager.JudgeLineX.ToString("F0");
             }
         }
     }

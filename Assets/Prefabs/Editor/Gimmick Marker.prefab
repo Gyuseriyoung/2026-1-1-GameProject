@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6560310586862757231}
   - component: {fileID: 6061501010194807441}
   - component: {fileID: 4246398312174075371}
+  - component: {fileID: 3646279585710790587}
   m_Layer: 5
   m_Name: Gimmick Marker
   m_TagString: Untagged
@@ -76,6 +77,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3646279585710790587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147940198472435409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83ded2137e957dd4d8980c7e68d30a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.EditorGimmickController
+  data:
+    time: 0
+    type: 0
+    targetLane: 0
+    value: 0
 --- !u!1 &6618721876973461764
 GameObject:
   m_ObjectHideFlags: 0

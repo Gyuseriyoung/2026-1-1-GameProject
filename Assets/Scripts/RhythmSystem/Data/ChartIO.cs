@@ -7,7 +7,7 @@ namespace RhythmSystem
 {
     public static class ChartIO
     {
-        public static string DefaultChartDirectory => Path.Combine(Application.dataPath, "Charts");
+        public const string DefaultChartDirectory = "Assets/Resources/Charts";
 
         public static string SaveChartToJson(ChartData chartData)
         {

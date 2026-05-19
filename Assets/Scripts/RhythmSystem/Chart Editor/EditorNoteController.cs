@@ -7,6 +7,7 @@ namespace RhythmSystem
     public class EditorNoteController : MonoBehaviour
     {
         public NoteData data;
+        public RectTransform holdBody;
         
         private Image noteImage;
         private bool isSelected = false;
@@ -35,17 +36,46 @@ namespace RhythmSystem
                     if (obj.sprite != null)
                     {
                         noteImage.sprite = obj.sprite;
-                        noteImage.color = isSelected ? Color.cyan : Color.white;
+                        UpdateVisuals();
                     }
                 }
             }
         }
 
-        private void UpdateVisuals()
+        public void UpdateVisuals()
         {
-            if (noteImage == null) return;
-            
-            noteImage.color = isSelected ? Color.cyan : Color.white;
+            if (noteImage != null)
+                noteImage.color = isSelected ? Color.cyan : Color.white;
+
+            if (holdBody != null)
+            {
+                if (data.type == NoteType.Hold)
+                {
+                    holdBody.gameObject.SetActive(true);
+                    
+                    // Width = (length in seconds) * pixels per second
+                    float width = (data.length / 1000f) * FindAnyObjectByType<EditorManager>().currentScrollSpeed;
+                    holdBody.sizeDelta = new Vector2(width, holdBody.sizeDelta.y);
+                    
+                    // Position the body to start from the note and extend backwards (since notes move left)
+                    // Or extension depends on how your timeline is oriented.
+                    // Assuming notes move left (time increases to the left), body should extend to the left.
+                    holdBody.anchoredPosition = new Vector2(-width / 2f, 0); 
+                    // Actually, if anchor is left, it's easier.
+                    
+                    Image bodyImage = holdBody.GetComponent<Image>();
+                    if (bodyImage != null)
+                    {
+                        Color c = isSelected ? Color.cyan : Color.yellow;
+                        c.a = 0.5f;
+                        bodyImage.color = c;
+                    }
+                }
+                else
+                {
+                    holdBody.gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

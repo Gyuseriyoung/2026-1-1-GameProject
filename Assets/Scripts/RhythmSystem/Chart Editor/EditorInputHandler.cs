@@ -25,6 +25,7 @@ namespace RhythmSystem
         private InputAction quickSaveAction;
 
         private bool isDraggingTimeline = false;
+        private bool isCreatingHold = false;
         private Vector2 lastMousePosition;
 
         public Vector2 MousePosition => mousePosAction.ReadValue<Vector2>();
@@ -53,16 +54,44 @@ namespace RhythmSystem
             deleteAction = editorMap.FindAction("Delete");
             quickSaveAction = editorMap.FindAction("QuickSave");
 
-            if (playPauseAction != null) playPauseAction.performed += _ => editorManager.PlayPause();
-            if (stopAction != null) stopAction.performed += _ => editorManager.StopPlayback();
-            if (copyAction != null) copyAction.performed += _ => editorManager.noteManager.CopySelection();
-            if (pasteAction != null) pasteAction.performed += _ => editorManager.noteManager.PasteClipboard();
-            if (deleteAction != null) deleteAction.performed += _ => editorManager.noteManager.DeleteSelection();
-            if (quickSaveAction != null) quickSaveAction.performed += _ => editorManager.QuickSave();
+            UnregisterCallbacks();
+
+            if (playPauseAction != null) playPauseAction.performed += OnPlayPause;
+            if (stopAction != null) stopAction.performed += OnStop;
+            if (copyAction != null) copyAction.performed += OnCopy;
+            if (pasteAction != null) pasteAction.performed += OnPaste;
+            if (deleteAction != null) deleteAction.performed += OnDelete;
+            if (quickSaveAction != null) quickSaveAction.performed += OnQuickSave;
         }
 
+        private void UnregisterCallbacks()
+        {
+            if (playPauseAction != null) playPauseAction.performed -= OnPlayPause;
+            if (stopAction != null) stopAction.performed -= OnStop;
+            if (copyAction != null) copyAction.performed -= OnCopy;
+            if (pasteAction != null) pasteAction.performed -= OnPaste;
+            if (deleteAction != null) deleteAction.performed -= OnDelete;
+            if (quickSaveAction != null) quickSaveAction.performed -= OnQuickSave;
+        }
+
+        private void OnPlayPause(InputAction.CallbackContext _) => editorManager.PlayPause();
+        private void OnStop(InputAction.CallbackContext _) => editorManager.StopPlayback();
+        private void OnCopy(InputAction.CallbackContext _) => editorManager.noteManager.CopySelection();
+        private void OnPaste(InputAction.CallbackContext _) => editorManager.noteManager.PasteClipboard();
+        private void OnDelete(InputAction.CallbackContext _) => editorManager.noteManager.DeleteSelection();
+        private void OnQuickSave(InputAction.CallbackContext _) => editorManager.QuickSave();
+
         public void Enable() => inputActions?.Enable();
-        public void Disable() => inputActions?.Disable();
+        public void Disable() 
+        {
+            inputActions?.Disable();
+            UnregisterCallbacks();
+        }
+
+        private void OnDestroy()
+        {
+            UnregisterCallbacks();
+        }
 
         public void HandleInputs()
         {
@@ -92,24 +121,76 @@ namespace RhythmSystem
 
         private void HandlePlaceMode()
         {
-            if (addNoteAction.WasPressedThisFrame()) editorManager.noteManager.AddNoteAtMouse(MousePosition);
-            else if (removeNoteAction.WasPressedThisFrame()) editorManager.noteManager.RemoveNoteAtMouse(MousePosition);
+            if (addNoteAction.WasPressedThisFrame()) 
+            {
+                editorManager.noteManager.AddNoteAtMouse(MousePosition);
+                if (editorManager.currentSelectedNoteType == NoteType.Hold)
+                {
+                    isCreatingHold = true;
+                }
+            }
+            else if (isCreatingHold)
+            {
+                if (addNoteAction.IsPressed())
+                {
+                    editorManager.noteManager.UpdateHoldNoteCreation(MousePosition);
+                }
+                else
+                {
+                    editorManager.noteManager.FinalizeHoldNoteCreation();
+                    isCreatingHold = false;
+                }
+            }
+            else if (removeNoteAction.WasPressedThisFrame()) 
+            {
+                editorManager.noteManager.RemoveNoteAtMouse(MousePosition);
+            }
         }
 
         private void HandleSelectMode()
         {
             if (addNoteAction.WasPressedThisFrame() || removeNoteAction.WasPressedThisFrame())
             {
-                editorManager.noteManager.ToggleSelectionAtMouse(MousePosition);
+                // Try selecting gimmick first, then note
+                float timeMs = editorManager.timelineManager.GetTimeFromMouse(MousePosition) * 1000f;
+                int lane = editorManager.timelineManager.GetLaneFromMouse(MousePosition);
+                var gimmick = editorManager.currentChart.gimmicks
+                    .FirstOrDefault(g => Mathf.Abs(g.time - timeMs) < 100f && g.targetLane == lane);
+
+                if (gimmick != null)
+                {
+                    editorManager.noteManager.SelectGimmick(gimmick);
+                }
+                else
+                {
+                    editorManager.noteManager.ToggleSelectionAtMouse(MousePosition);
+                }
             }
         }
 
         private void HandleGimmickMode()
         {
             if (addNoteAction.WasPressedThisFrame()) 
-                editorManager.noteManager.AddGimmickAtMouse(MousePosition, editorManager.currentSelectedGimmickType);
+            {
+                float timeMs = editorManager.timelineManager.GetTimeFromMouse(MousePosition) * 1000f;
+                int lane = editorManager.timelineManager.GetLaneFromMouse(MousePosition);
+                
+                var existingGimmick = editorManager.currentChart.gimmicks
+                    .FirstOrDefault(g => Mathf.Abs(g.time - timeMs) < 100f && g.targetLane == lane);
+
+                if (existingGimmick != null)
+                {
+                    editorManager.noteManager.SelectGimmick(existingGimmick);
+                }
+                else
+                {
+                    editorManager.noteManager.AddGimmickAtMouse(MousePosition, editorManager.currentSelectedGimmickType);
+                }
+            }
             else if (removeNoteAction.WasPressedThisFrame()) 
+            {
                 editorManager.noteManager.RemoveGimmickAtMouse(MousePosition);
+            }
         }
 
         private void HandleNavigation()

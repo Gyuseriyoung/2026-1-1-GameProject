@@ -156,7 +156,7 @@ namespace RhythmSystem
                 var activeIndices = GetActiveLaneIndicesAt(startTimeMs + 0.1f);
                 if (activeIndices.Count == 0) continue;
 
-                float spacing = RhythmSettingsManager.Settings.laneSpacing * 100f;
+                float spacing = Core.GameSettingsManager.Instance.Settings.editor.laneSpacing;
                 float totalHeight = (activeIndices.Count - 1) * spacing;
                 float startY = totalHeight / 2f;
 
@@ -259,7 +259,7 @@ namespace RhythmSystem
             var activeIndices = GetActiveLaneIndicesAt(timeMs);
             if (!activeIndices.Contains(laneIndex)) return 0;
 
-            float spacing = RhythmSettingsManager.Settings.laneSpacing * 100f;
+            float spacing = Core.GameSettingsManager.Instance.Settings.editor.laneSpacing;
             float totalHeight = (activeIndices.Count - 1) * spacing;
             float startY = totalHeight / 2f;
 

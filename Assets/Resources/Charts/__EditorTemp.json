@@ -1,0 +1,27 @@
+{
+    "metadata": {
+        "title": "",
+        "artist": "",
+        "creator": "",
+        "audioFileName": ""
+    },
+    "startOffset": 2000.0,
+    "musicOffset": 0.0,
+    "length": 120000.0,
+    "timingPoints": [
+        {
+            "time": 0.0,
+            "bpm": 120.0,
+            "meter": 4,
+            "denominator": 4
+        }
+    ],
+    "lanes": [
+        {
+            "laneIndex": 0,
+            "defaultY": 0.0
+        }
+    ],
+    "notes": [],
+    "gimmicks": []
+}

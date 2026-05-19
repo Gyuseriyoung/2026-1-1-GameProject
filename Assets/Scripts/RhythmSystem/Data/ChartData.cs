@@ -28,7 +28,6 @@ namespace RhythmSystem
         public string artist;
         public string creator;
         public string audioFileName;
-        public int previewTime; // ms
     }
 
     [Serializable]
@@ -45,7 +44,6 @@ namespace RhythmSystem
     {
         public int laneIndex;
         public float defaultY;
-        public KeyCode keyBinding;
     }
 
     [Serializable]
@@ -74,7 +72,7 @@ namespace RhythmSystem
         public Metadata metadata = new Metadata();
         public float startOffset = 2000f; // ms (Visual Lead-in time)
         public float musicOffset = 0f;    // ms (Audio playback offset)
-        public float length = 0f;         // ms (Total chart length)
+        public float length = 120000f;         // ms (Total chart length)
         public List<TimingPoint> timingPoints = new List<TimingPoint>();
         public List<LaneConfig> lanes = new List<LaneConfig>();
         public List<NoteData> notes = new List<NoteData>();

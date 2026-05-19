@@ -24,6 +24,7 @@ namespace RhythmSystem
 
         [Header("Editor Mode")]
         public EditorMode currentMode = EditorMode.Place;
+        public NoteType currentSelectedNoteType = NoteType.Tap;
         public GimmickType currentSelectedGimmickType = GimmickType.LaneMoveY;
 
         [Header("Data")]
@@ -44,8 +45,7 @@ namespace RhythmSystem
         public int currentSelectedMergeType = 0;
         public int currentSelectedMergeIndex = 0;
 
-        [Header("Path Settings")]
-        public string musicDirectory = "Assets/Musics";
+        public const string musicDirectory = "Assets/Resources/Musics/";
 
         public float EditorTime => editorTime;
         private float editorTime = 0f;
@@ -76,14 +76,25 @@ namespace RhythmSystem
 
         private void Start()
         {
+            LoadProjectState();
+        }
+
+        public void LoadProjectState(string chartName = null)
+        {
+            var settings = Core.GameSettingsManager.Instance.Settings;
+            var editorSettings = settings.editor;
+
             if (EditorTestSession.IsReturningFromTest && EditorTestSession.CurrentChart != null)
             {
                 currentChart = EditorTestSession.CurrentChart;
                 currentBPM = EditorTestSession.LastBPM;
                 snapDivisor = EditorTestSession.LastSnapDivisor;
                 currentMode = EditorTestSession.LastMode;
-                currentScrollSpeed = EditorTestSession.ScrollSpeed;
+                
+                // Session stores world units, convert to editor pixels
+                currentScrollSpeed = EditorTestSession.ScrollSpeed * 100f;
                 editorTime = EditorTestSession.StartSeekTime;
+                JudgeLineX = EditorTestSession.JudgmentX * 100f;
                 
                 if (!string.IsNullOrEmpty(currentChart.metadata.audioFileName)) 
                     LoadMusic(currentChart.metadata.audioFileName);
@@ -92,17 +103,33 @@ namespace RhythmSystem
             }
             else
             {
-                currentScrollSpeed = RhythmSettingsManager.Settings.scrollSpeed;
+                if (!string.IsNullOrEmpty(chartName))
+                {
+                    var loadedChart = ChartIO.LoadFromFile(chartName);
+                    if (loadedChart != null) currentChart = loadedChart;
+                }
+
+                // Load natively in pixels from editor settings
+                currentScrollSpeed = editorSettings.scrollSpeed;
+                JudgeLineX = editorSettings.judgmentX;
+                snapDivisor = editorSettings.snapDivisor;
 
                 if (currentChart.timingPoints.Count == 0)
                     currentChart.timingPoints.Add(new TimingPoint { time = 0, bpm = currentBPM, meter = 4 });
                 
                 if (currentChart.lanes.Count == 0)
-                    currentChart.lanes.Add(new LaneConfig { laneIndex = 0, defaultY = 0, keyBinding = KeyCode.Space });
+                    currentChart.lanes.Add(new LaneConfig { laneIndex = 0, defaultY = 0 });
+
+                if (currentChart.timingPoints.Count > 0) 
+                    currentBPM = currentChart.timingPoints[0].bpm;
+
+                if (!string.IsNullOrEmpty(currentChart.metadata.audioFileName)) 
+                    LoadMusic(currentChart.metadata.audioFileName);
             }
 
             RefreshAllVisuals();
             editorUIController.RefreshUI();
+            if (!string.IsNullOrEmpty(chartName)) editorUIController.RefreshMusicList();
         }
 
         private void Update()
@@ -125,7 +152,7 @@ namespace RhythmSystem
             editorTime += Time.deltaTime;
             float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
 
-            if (audioSource.clip != null)
+            if (audioSource != null && audioSource.clip != null)
             {
                 if (targetAudioTime >= 0 && targetAudioTime < audioSource.clip.length)
                 {
@@ -155,7 +182,7 @@ namespace RhythmSystem
             if (isPlaying)
             {
                 float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
-                if (targetAudioTime >= 0 && audioSource.clip != null && targetAudioTime < audioSource.clip.length)
+                if (audioSource != null && targetAudioTime >= 0 && audioSource.clip != null && targetAudioTime < audioSource.clip.length)
                 {
                     audioSource.time = targetAudioTime;
                     audioSource.Play();
@@ -163,7 +190,7 @@ namespace RhythmSystem
             }
             else
             {
-                audioSource.Pause();
+                if (audioSource != null) audioSource.Pause();
             }
             timelineManager.SyncTimeline();
         }
@@ -171,7 +198,7 @@ namespace RhythmSystem
         public void StopPlayback()
         {
             isPlaying = false;
-            audioSource.Stop();
+            if (audioSource != null) audioSource.Stop();
             editorTime = -currentChart.startOffset / 1000f;
             timelineManager.SyncTimeline();
         }
@@ -183,7 +210,7 @@ namespace RhythmSystem
             editorTime = Mathf.Clamp(time, minTime, maxTime);
             float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
             
-            if (audioSource.clip != null)
+            if (audioSource != null && audioSource.clip != null)
             {
                 if (targetAudioTime >= 0 && targetAudioTime < audioSource.clip.length)
                 {
@@ -230,7 +257,7 @@ namespace RhythmSystem
 
         private void AutoDistributeLanes()
         {
-            float spacing = 60f;
+            float spacing = Core.GameSettingsManager.Instance.Settings.editor.laneSpacing; 
             int count = currentChart.lanes.Count;
             if (count == 0) return;
 
@@ -262,10 +289,6 @@ namespace RhythmSystem
 
         public void SaveChart(string fileName)
         {
-            // Update user settings
-            RhythmSettingsManager.Settings.scrollSpeed = currentScrollSpeed;
-            RhythmSettingsManager.SaveSettings();
-
             ChartIO.SaveToFile(string.IsNullOrEmpty(fileName) ? "NewChart" : fileName, currentChart);
 #if UNITY_EDITOR
             UnityEditor.AssetDatabase.Refresh();
@@ -284,8 +307,7 @@ namespace RhythmSystem
         {
             currentChart.metadata.audioFileName = fileName;
 #if UNITY_EDITOR
-            string path = Path.Combine(musicDirectory, fileName).Replace("\\", "/");
-            AudioClip clip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            AudioClip clip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Resources/Musics/" + fileName);
             if (clip != null)
             {
                 audioSource.clip = clip;
@@ -297,27 +319,21 @@ namespace RhythmSystem
         public List<string> GetChartFileList()
         {
             if (!Directory.Exists(ChartIO.DefaultChartDirectory)) return new List<string>();
-            return Directory.GetFiles(ChartIO.DefaultChartDirectory, "*.json")
-                .Concat(Directory.GetFiles(ChartIO.DefaultChartDirectory, "*.osu"))
-                .Select(Path.GetFileNameWithoutExtension).Distinct().ToList();
+            return Directory.GetFiles(ChartIO.DefaultChartDirectory)
+                    .Where(f => !f.EndsWith(".meta"))
+                    .Select(f => Path.GetFileName(f).Replace(".json", ""))
+                    .ToList();
         }
 
         public void LoadChart(string fileName)
         {
-            var chart = ChartIO.LoadFromFile(fileName);
-            if (chart != null)
-            {
-                currentChart = chart;
-                if (currentChart.timingPoints.Count > 0) currentBPM = currentChart.timingPoints[0].bpm;
-                if (!string.IsNullOrEmpty(currentChart.metadata.audioFileName)) LoadMusic(currentChart.metadata.audioFileName);
-                RefreshAllVisuals();
-            }
+            LoadProjectState(fileName);
         }
 
         public void AddLane() 
         { 
             int nextIndex = currentChart.lanes.Count > 0 ? currentChart.lanes.Max(l => l.laneIndex) + 1 : 0;
-            currentChart.lanes.Add(new LaneConfig { laneIndex = nextIndex, defaultY = 0, keyBinding = KeyCode.None }); 
+            currentChart.lanes.Add(new LaneConfig { laneIndex = nextIndex, defaultY = 0 }); 
             RefreshAllVisuals(); 
         }
 
@@ -330,34 +346,49 @@ namespace RhythmSystem
             } 
         }
 
-        public void UpdateScrollSpeed(float newSpeed)
+        public void UpdateScrollSpeed(float uiValue)
         {
-            currentScrollSpeed = newSpeed;
+            var editorSettings = Core.GameSettingsManager.Instance.Settings.editor;
+            editorSettings.scrollSpeed = uiValue;
+            currentScrollSpeed = uiValue;
+            Core.GameSettingsManager.Instance.SaveSettings();
             RefreshAllVisuals();
             editorUIController.RefreshScrollField();
         }
 
-        public void UpdateJudgeLineX(float newX)
+        public void UpdateJudgeLineX(float uiValue)
         {
-            JudgeLineX = newX;
+            var editorSettings = Core.GameSettingsManager.Instance.Settings.editor;
+            editorSettings.judgmentX = uiValue;
+            JudgeLineX = uiValue;
+            Core.GameSettingsManager.Instance.SaveSettings();
             RefreshAllVisuals();
             editorUIController.RefreshJudgeLineXField();
         }
 
         public void StartTestPlay()
         {
+            var editorSettings = Core.GameSettingsManager.Instance.Settings.editor;
+
             EditorTestSession.IsTestMode = true;
             EditorTestSession.IsReturningFromTest = false;
             EditorTestSession.CurrentChart = currentChart;
             EditorTestSession.MergeObjectData = mergeObjectData;
             EditorTestSession.MusicFileName = currentChart.metadata.audioFileName;
             EditorTestSession.StartSeekTime = editorTime;
-            EditorTestSession.ScrollSpeed = currentScrollSpeed;
+            
+            // Pass world unit equivalents to test session
+            EditorTestSession.ScrollSpeed = editorSettings.scrollSpeed / 100f;
+            EditorTestSession.JudgmentX = editorSettings.judgmentX / 100f;
+
             EditorTestSession.LastBPM = currentBPM;
             EditorTestSession.LastSnapDivisor = snapDivisor;
             EditorTestSession.LastMode = currentMode;
-            EditorTestSession.JudgmentX = JudgeLineX / 100f; 
             EditorTestSession.ReturnSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+            // Save snap divisor for persistence
+            editorSettings.snapDivisor = snapDivisor;
+            Core.GameSettingsManager.Instance.SaveSettings();
 
             ChartIO.SaveToFile("__EditorTemp", currentChart);
 

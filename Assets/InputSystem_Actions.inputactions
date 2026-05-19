@@ -1298,42 +1298,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Lane0",
-                    "type": "Button",
-                    "id": "2a89a7e5-6e70-424c-b089-7cf655c5ee9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Lane1",
-                    "type": "Button",
-                    "id": "3a89a7e5-6e70-424c-b089-7cf655c5ee9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Lane2",
-                    "type": "Button",
-                    "id": "4a89a7e5-6e70-424c-b089-7cf655c5ee9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Lane3",
-                    "type": "Button",
-                    "id": "5a89a7e5-6e70-424c-b089-7cf655c5ee9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1345,50 +1309,6 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Back",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b8797cf1-1390-40da-8fe0-f8210bb31210",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Lane0",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c8797cf1-1390-40da-8fe0-f8210bb31210",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Lane1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d8797cf1-1390-40da-8fe0-f8210bb31210",
-                    "path": "<Keyboard>/j",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Lane2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e8797cf1-1390-40da-8fe0-f8210bb31210",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Lane3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
