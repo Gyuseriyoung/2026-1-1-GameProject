@@ -22,6 +22,126 @@
             "defaultY": 0.0
         }
     ],
-    "notes": [],
-    "gimmicks": []
+    "notes": [
+        {
+            "time": 2000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 3500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 5000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 6500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 9000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 11500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 14000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 17000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 18500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 20000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 22000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 24000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 25500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        },
+        {
+            "time": 27500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0
+        }
+    ],
+    "gimmicks": [
+        {
+            "time": 3500.0,
+            "type": 0,
+            "targetLane": -1,
+            "value": 0.0
+        }
+    ]
 }
