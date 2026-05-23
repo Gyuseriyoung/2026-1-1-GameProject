@@ -8,6 +8,7 @@ namespace RhythmSystem.Play
     {
         [Header("Assets")]
         public GameObject notePrefab;
+        public MergeObjectData mergeObjectData;
         
         private List<NoteObject> spawnedNotes = new List<NoteObject>();
         private LaneManager laneManager;
@@ -32,7 +33,7 @@ namespace RhythmSystem.Play
                 
                 if (noteObj != null)
                 {
-                    noteObj.Initialize(noteData, lane, state.currentTimeMs);
+                    noteObj.Initialize(noteData, lane, state.currentTimeMs, mergeObjectData);
                     spawnedNotes.Add(noteObj);
                 }
             }

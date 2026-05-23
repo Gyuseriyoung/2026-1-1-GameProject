@@ -11,6 +11,7 @@ namespace RhythmSystem
         
         private Image noteImage;
         private bool isSelected = false;
+        private Color holdBarColor = Color.yellow; // Default color
 
         private void Awake()
         {
@@ -30,6 +31,8 @@ namespace RhythmSystem
             if (data.mergeType >= 0 && data.mergeType < mergeObjectData.MergeData.Length)
             {
                 var category = mergeObjectData.MergeData[data.mergeType];
+                holdBarColor = category.HoldBodyColor;
+
                 if (data.objectIndex >= 0 && data.objectIndex < category.MergeDataList.Length)
                 {
                     var obj = category.MergeDataList[data.objectIndex];
@@ -66,8 +69,9 @@ namespace RhythmSystem
                     Image bodyImage = holdBody.GetComponent<Image>();
                     if (bodyImage != null)
                     {
-                        Color c = isSelected ? Color.cyan : Color.yellow;
-                        c.a = 0.5f;
+                        bodyImage.type = Image.Type.Tiled; // Prevent stretching, use tiling
+                        Color c = isSelected ? Color.cyan : holdBarColor;
+                        c.a = 0.6f;
                         bodyImage.color = c;
                     }
                 }

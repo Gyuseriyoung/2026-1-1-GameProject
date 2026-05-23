@@ -24,7 +24,7 @@
     ],
     "notes": [
         {
-            "time": 2000.0,
+            "time": 3500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -32,7 +32,7 @@
             "objectIndex": 0
         },
         {
-            "time": 3500.0,
+            "time": 4000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -48,27 +48,75 @@
             "objectIndex": 0
         },
         {
-            "time": 6500.0,
+            "time": 4500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
-            "objectIndex": 0
+            "objectIndex": 1
         },
         {
-            "time": 9000.0,
+            "time": 3000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
-            "objectIndex": 0
+            "objectIndex": 1
+        },
+        {
+            "time": 5500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 1
+        },
+        {
+            "time": 6000.0,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 2000.0,
+            "mergeType": 0,
+            "objectIndex": 3
+        },
+        {
+            "time": 10000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 5
+        },
+        {
+            "time": 8500.0,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 1000.0,
+            "mergeType": 0,
+            "objectIndex": 5
         },
         {
             "time": 11500.0,
             "laneIndex": 0,
+            "type": 1,
+            "length": 1500.0,
+            "mergeType": 1,
+            "objectIndex": 5
+        },
+        {
+            "time": 11000.0,
+            "laneIndex": 0,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
+            "objectIndex": 0
+        },
+        {
+            "time": 13500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
             "objectIndex": 0
         },
         {
@@ -76,72 +124,25 @@
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
+            "mergeType": 1,
+            "objectIndex": 4
         },
         {
-            "time": 17000.0,
+            "time": 14500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
+            "mergeType": 1,
+            "objectIndex": 4
         },
         {
-            "time": 18500.0,
+            "time": 15000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
-        },
-        {
-            "time": 20000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
-        },
-        {
-            "time": 22000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
-        },
-        {
-            "time": 24000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
-        },
-        {
-            "time": 25500.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
-        },
-        {
-            "time": 27500.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0
+            "mergeType": 1,
+            "objectIndex": 4
         }
     ],
-    "gimmicks": [
-        {
-            "time": 3500.0,
-            "type": 0,
-            "targetLane": -1,
-            "value": 0.0
-        }
-    ]
+    "gimmicks": []
 }

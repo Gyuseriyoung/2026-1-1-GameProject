@@ -16,6 +16,7 @@ namespace RhythmSystem.Play
         private NoteData noteData;
         private LaneController parentLane;
         private bool isInitialized = false;
+        private Color holdBarColor = Color.white;
 
         public SpriteRenderer holdBody;
         public NoteState State { get; private set; } = NoteState.Idle;
@@ -23,7 +24,7 @@ namespace RhythmSystem.Play
         public bool IsJudged { get; set; } = false;
         public NoteData Data => noteData;
 
-        public void Initialize(NoteData data, LaneController lane, float startTimeMs)
+        public void Initialize(NoteData data, LaneController lane, float startTimeMs, MergeObjectData mergeData = null)
         {
             noteData = data;
             parentLane = lane;
@@ -32,6 +33,25 @@ namespace RhythmSystem.Play
             IsJudged = false;
             
             if (parentLane == null) gameObject.SetActive(false);
+
+            SpriteRenderer headRenderer = GetComponent<SpriteRenderer>();
+            if (headRenderer != null && mergeData != null)
+            {
+                if (data.mergeType >= 0 && data.mergeType < mergeData.MergeData.Length)
+                {
+                    var category = mergeData.MergeData[data.mergeType];
+                    holdBarColor = category.HoldBodyColor;
+
+                    if (data.objectIndex >= 0 && data.objectIndex < category.MergeDataList.Length)
+                    {
+                        var obj = category.MergeDataList[data.objectIndex];
+                        if (obj.sprite != null)
+                        {
+                            headRenderer.sprite = obj.sprite;
+                        }
+                    }
+                }
+            }
             
             UpdatePosition(startTimeMs);
             UpdateHoldBody(startTimeMs);
@@ -112,8 +132,11 @@ namespace RhythmSystem.Play
                 float effectiveSpeed = worldSpeed > 0 ? worldSpeed : Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
                 float visualLength = remainingLengthSeconds * effectiveSpeed;
                 
-                // Adjust scale and position of the body
-                holdBody.transform.localScale = new Vector3(visualLength, holdBody.transform.localScale.y, 1);
+                // Adjust size and position of the body using Tiled mode
+                holdBody.drawMode = SpriteDrawMode.Tiled;
+                holdBody.size = new Vector2(visualLength, holdBody.size.y);
+                holdBody.color = holdBarColor; // Apply the category color
+                holdBody.transform.localScale = Vector3.one; 
                 holdBody.transform.localPosition = new Vector3(-visualLength / 2f, 0, 0); 
             }
             else

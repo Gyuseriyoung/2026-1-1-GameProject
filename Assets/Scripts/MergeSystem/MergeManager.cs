@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using CookingGame;
 
 public class MergeManager : MonoBehaviour
 {
@@ -36,6 +38,24 @@ public class MergeManager : MonoBehaviour
         mergeObjects.Add(mo);
         currentObject = mo;
         EventManager.OnMergeDataAdd?.Invoke();
+    }
+
+    public bool IsOrderExactMatch(List<OrderItem> orders)
+    {
+        if (orders == null || orders.Count == 0) return mergeObjects.Count == 0;
+
+        // 1. Check if all required items exist in exact counts
+        foreach (var order in orders)
+        {
+            int count = mergeObjects.Count(mo => mo.type == order.targetMergeType && mo.index == order.targetMergeIndex);
+            if (count != order.count) return false;
+        }
+
+        // 2. Check if there are any extra items not in the order
+        int totalRequiredCount = orders.Sum(o => o.count);
+        if (mergeObjects.Count != totalRequiredCount) return false;
+
+        return true;
     }
 
     public void ClearAllObjects()

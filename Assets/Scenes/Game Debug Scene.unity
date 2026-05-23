@@ -2435,6 +2435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayNoteSpawner
   notePrefab: {fileID: 4620382245945510721, guid: 967f0ceac425aae41889bc3feb81f176, type: 3}
+  mergeObjectData: {fileID: 11400000, guid: 5454ef71cb78780459055856585ed61a, type: 2}
 --- !u!114 &707284098
 MonoBehaviour:
   m_ObjectHideFlags: 0

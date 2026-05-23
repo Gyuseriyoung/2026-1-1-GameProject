@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("Stage_1");
+        SceneManager.LoadScene(nextStage);
     }
 
     public void QuitGame()

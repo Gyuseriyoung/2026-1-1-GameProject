@@ -5,6 +5,7 @@ public class MergeData
 {
     public string TypeName;
     public int MergeType;
+    public Color HoldBodyColor = Color.yellow; // Default color for hold notes of this type
     public ObjectData[] MergeDataList;
 }
 

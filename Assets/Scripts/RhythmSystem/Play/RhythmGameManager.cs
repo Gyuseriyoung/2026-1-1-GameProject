@@ -31,10 +31,16 @@ namespace RhythmSystem.Play
         {
             InitializeComponents();
 
+            // Priority: 1. Editor Test, 2. Cooking Session, 3. Default
             if (EditorTestSession.IsTestMode && EditorTestSession.CurrentChart != null)
             {
                 currentChart = EditorTestSession.CurrentChart;
                 InitializeGame(EditorTestSession.StartSeekTime * 1000f);
+            }
+            else if (CookingGame.CookingSession.CurrentCustomer != null && CookingGame.CookingSession.CurrentCustomer.chartJson != null)
+            {
+                chartToLoad = CookingGame.CookingSession.CurrentCustomer.chartJson.name;
+                LoadAndStartGame();
             }
             else
             {
@@ -47,7 +53,7 @@ namespace RhythmSystem.Play
             if (clock == null) clock = gameObject.AddComponent<RhythmClock>();
             if (inputProcessor == null) inputProcessor = gameObject.AddComponent<RhythmInputProcessor>();
             if (judger == null) judger = gameObject.AddComponent<RhythmJudger>();
-            if (laneManager == null) laneManager = GetComponentInChildren<LaneManager>(); // Or add if missing
+            if (laneManager == null) laneManager = GetComponentInChildren<LaneManager>(); 
             if (visualManager == null) visualManager = gameObject.AddComponent<RhythmVisualEffectManager>();
 
             inputProcessor.Initialize(playerInput);
@@ -60,6 +66,21 @@ namespace RhythmSystem.Play
         private void OnDestroy()
         {
             RhythmEvents.ClearAll();
+        }
+
+        private void OnChartEnd()
+        {
+            gameState.isPlaying = false;
+            
+            bool success = false;
+            if (CookingGame.CookingSession.CurrentCustomer != null && mergeManager != null)
+            {
+                // Check if current items EXACTLY match the orders at the end
+                success = mergeManager.IsOrderExactMatch(CookingGame.CookingSession.CurrentCustomer.orders);
+                Debug.Log($"Chart Completed! Success: {success}");
+            }
+            
+            ReturnToDialogue(success);
         }
 
         public void LoadAndStartGame()
@@ -83,7 +104,7 @@ namespace RhythmSystem.Play
             gameState.scrollSpeedMultiplier = 1f;
 
             // Reset pause state via public method to ensure UI sync
-            gameState.isPaused = true; // Set to true first so PauseGame(false) actually does something if guard is present
+            gameState.isPaused = true; 
             PauseGame(false);
 
             if (audioSource == null) audioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
@@ -94,11 +115,7 @@ namespace RhythmSystem.Play
             playNoteSpawner.Initialize(laneManager, gameState);
             playNoteSpawner.SpawnNotes(currentChart);
 
-            // Here you can inject modifiers based on guest data
-            List<IRhythmModifier> modifiers = new List<IRhythmModifier>();
-            // Example: modifiers.Add(new SpeedIncrementModifier()); 
-            
-            judger.Initialize(gameState, playNoteSpawner, modifiers);
+            judger.Initialize(gameState, playNoteSpawner, new List<IRhythmModifier>());
 
             // Initial input mapping
             inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
@@ -111,7 +128,6 @@ namespace RhythmSystem.Play
             string musicName = currentChart.metadata.audioFileName;
             if (!string.IsNullOrEmpty(musicName))
             {
-                // Resources.Load does not need file extension
                 string pathWithoutExtension = musicName;
                 int lastDotIndex = musicName.LastIndexOf('.');
                 if (lastDotIndex > 0)
@@ -123,11 +139,6 @@ namespace RhythmSystem.Play
                 if (clip != null)
                 {
                     audioSource.clip = clip;
-                    Debug.Log($"Successfully loaded music: {pathWithoutExtension}");
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load music: Musics/{pathWithoutExtension} (Original: {musicName})");
                 }
             }
             clock.Initialize(gameState, audioSource, currentChart.musicOffset);
@@ -141,6 +152,13 @@ namespace RhythmSystem.Play
 
             clock.SyncUpdate(Time.deltaTime);
             laneManager.UpdateLanes();
+
+            // Check for Chart End
+            if (currentChart != null && gameState.currentTimeMs >= currentChart.length)
+            {
+                OnChartEnd();
+                return;
+            }
 
             // Refresh input mapping if lane count changed via gimmicks
             var activeLanes = laneManager.GetActiveLanes();
@@ -188,6 +206,7 @@ namespace RhythmSystem.Play
         public void QuitGame()
         {
             if (EditorTestSession.IsTestMode) ReturnToEditor();
+            else if (CookingGame.CookingSession.CurrentCustomer != null) ReturnToDialogue(false);
             else ReturnToTitle();
         }
 
@@ -198,6 +217,13 @@ namespace RhythmSystem.Play
             EditorTestSession.IsTestMode = false;
             EditorTestSession.IsReturningFromTest = true;
             UnityEngine.SceneManagement.SceneManager.LoadScene(EditorTestSession.ReturnSceneName);
+        }
+
+        public void ReturnToDialogue(bool success)
+        {
+            CookingGame.CookingSession.LastGameSuccess = success;
+            CookingGame.CookingSession.IsReturningFromResult = true;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Customer Debug Scene");
         }
 
         public void RefreshInputMapping()
