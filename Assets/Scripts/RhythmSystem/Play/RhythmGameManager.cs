@@ -210,20 +210,20 @@ namespace RhythmSystem.Play
             else ReturnToTitle();
         }
 
-        private void ReturnToTitle() => UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
+        private void ReturnToTitle() => SceneTransitionManager.Instance.LoadScene("TitleScene");
 
         private void ReturnToEditor()
         {
             EditorTestSession.IsTestMode = false;
             EditorTestSession.IsReturningFromTest = true;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(EditorTestSession.ReturnSceneName);
+            SceneTransitionManager.Instance.LoadScene(EditorTestSession.ReturnSceneName);
         }
 
         public void ReturnToDialogue(bool success)
         {
             CookingGame.CookingSession.LastGameSuccess = success;
             CookingGame.CookingSession.IsReturningFromResult = true;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Customer Debug Scene");
+            SceneTransitionManager.Instance.LoadScene("Customer Debug Scene");
         }
 
         public void RefreshInputMapping()

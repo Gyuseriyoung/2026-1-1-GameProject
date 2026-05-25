@@ -1,6 +1,5 @@
 using Unity.VectorGraphics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,12 +8,12 @@ public class UIManager : MonoBehaviour
 
     public void MoveToNextStage()
     {
-        SceneManager.LoadScene(nextStage);
+        SceneTransitionManager.Instance.LoadScene(nextStage);
     }
 
     public void GameStart()
     {
-        SceneManager.LoadScene(nextStage);
+        SceneTransitionManager.Instance.LoadScene(nextStage);
     }
 
     public void QuitGame()

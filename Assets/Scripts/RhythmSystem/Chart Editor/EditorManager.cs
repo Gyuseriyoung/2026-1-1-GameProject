@@ -392,7 +392,7 @@ namespace RhythmSystem
 
             ChartIO.SaveToFile("__EditorTemp", currentChart);
 
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Game Debug Scene");
+            SceneTransitionManager.Instance.LoadScene("Game Debug Scene");
         }
     }
 }

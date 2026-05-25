@@ -69,10 +69,10 @@ public class SceneTransitionManager : MonoBehaviour
     // ────────────────────────────────────────────────
 
     public void LoadScene(string sceneName)
-        => TryTransition(() => SceneManager.LoadScene(sceneName));
+        => TryTransition(() => SceneManager.LoadSceneAsync(sceneName));
 
     public void LoadScene(int index)
-        => TryTransition(() => SceneManager.LoadScene(index));
+        => TryTransition(() => SceneManager.LoadSceneAsync(index));
 
     public void LoadNextScene()
     {
@@ -92,13 +92,13 @@ public class SceneTransitionManager : MonoBehaviour
     //  내부 전환 로직
     // ────────────────────────────────────────────────
 
-    private void TryTransition(Action load)
+    private void TryTransition(Func<AsyncOperation> load)
     {
         if (_busy) return;
         StartCoroutine(RunTransition(load));
     }
 
-    private IEnumerator RunTransition(Action load)
+    private IEnumerator RunTransition(Func<AsyncOperation> load)
     {
         _busy = true;
 
@@ -108,7 +108,18 @@ public class SceneTransitionManager : MonoBehaviour
         yield return StartCoroutine(Sweep(entering: true, duration: half));
 
         // ② 씬 로드
-        load.Invoke();
+        AsyncOperation operation = load.Invoke();
+        if (operation != null)
+        {
+            while (!operation.isDone)
+                yield return null;
+        }
+        else
+        {
+            yield return null;
+        }
+
+        MoveSweep(1f, visible: true);
         yield return null;
 
         // ③ 스윕 아웃 — 물결이 반대쪽으로 빠져나감
@@ -119,7 +130,15 @@ public class SceneTransitionManager : MonoBehaviour
 
     private IEnumerator Sweep(bool entering, float duration)
     {
+        if (duration <= 0f)
+        {
+            MoveSweep(entering ? 1f : 0f, visible: entering);
+            yield break;
+        }
+
         float elapsed = 0f;
+        MoveSweep(entering ? 0f : 1f, visible: true);
+        yield return null;
 
         while (elapsed < duration)
         {
@@ -136,7 +155,10 @@ public class SceneTransitionManager : MonoBehaviour
         }
 
         // 완전히 덮음 or 완전히 빠짐 — 화면 밖으로 정리
-        if (!entering) MoveSweep(0f, visible: false);
+        if (entering)
+            MoveSweep(1f, visible: true);
+        else
+            MoveSweep(0f, visible: false);
     }
 
     /// <summary>

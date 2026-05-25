@@ -642,7 +642,7 @@ MonoBehaviour:
   customerNameText: {fileID: 360199168}
   dialogueText: {fileID: 2109918515}
   nextButton: {fileID: 249114565}
-  arrivalDelay: 1.5
+  arrivalDelay: 2
 --- !u!4 &962090388
 Transform:
   m_ObjectHideFlags: 0

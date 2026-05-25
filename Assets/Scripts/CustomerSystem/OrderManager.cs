@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 namespace CookingGame
 {
@@ -66,7 +65,7 @@ namespace CookingGame
             {
                 Debug.Log("Stage Complete!");
                 CookingSession.Clear();
-                SceneManager.LoadScene("TitleScene");
+                SceneTransitionManager.Instance.LoadScene("TitleScene");
             }
         }
 
@@ -108,7 +107,7 @@ namespace CookingGame
 
         private void StartGameplay()
         {
-            SceneManager.LoadScene(gameplaySceneName);
+            SceneTransitionManager.Instance.LoadScene(gameplaySceneName);
         }
 
         private void ShowResultDialogue(bool success)
