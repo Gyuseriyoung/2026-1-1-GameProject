@@ -1,31 +1,37 @@
 fileFormatVersion: 2
-guid: 32c828377c2636447b51ccfbd2135c54
+guid: 1bd37ff226ab7a746aa86cb679e59913
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5826820013092581734
-    second: Supporter idle_0
+      213: 192975512844289894
+    second: food critic_0
   - first:
-      213: -2603584141686590739
-    second: Supporter idle_1
+      213: 4293952709287142373
+    second: food critic_1
   - first:
-      213: -3620650698544233764
-    second: Supporter idle_2
+      213: 7484549263530963335
+    second: food critic_2
   - first:
-      213: -3241194832730197318
-    second: Supporter idle_3
+      213: -203868028693627178
+    second: food critic_3
   - first:
-      213: -7028882608928934793
-    second: Supporter idle_4
+      213: 4390890208149252189
+    second: food critic_4
   - first:
-      213: 6291747225756085015
-    second: Supporter idle_5
+      213: -5362018060769974147
+    second: food critic_5
   - first:
-      213: -4051127161570101598
-    second: Supporter idle_6
+      213: -5873289528278300575
+    second: food critic_6
   - first:
-      213: 3252001134430254954
-    second: Supporter idle_7
+      213: -4346007958429451067
+    second: food critic_7
+  - first:
+      213: -9098172647748667068
+    second: food critic_8
+  - first:
+      213: -4312188487018203110
+    second: food critic_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,7 +99,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -134,13 +140,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Supporter idle_0
+      name: food critic_0
       rect:
         serializedVersion: 2
-        x: 17
+        x: 9
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 661358a1ee50dd050800000000000000
-      internalID: 5826820013092581734
+      spriteID: 667ce6dd4369da200800000000000000
+      internalID: 192975512844289894
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_1
+      name: food critic_1
       rect:
         serializedVersion: 2
-        x: 81
+        x: 309
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +177,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: de23eeb74063edbd0800000000000000
-      internalID: -2603584141686590739
+      spriteID: 5e3e26f1d3f279b30800000000000000
+      internalID: 4293952709287142373
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_2
+      name: food critic_2
       rect:
         serializedVersion: 2
-        x: 145
+        x: 609
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,20 +199,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd240896f5dd0cdc0800000000000000
-      internalID: -3620650698544233764
+      spriteID: 781bcac76e57ed760800000000000000
+      internalID: 7484549263530963335
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_3
+      name: food critic_3
       rect:
         serializedVersion: 2
-        x: 209
+        x: 909
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab2f843e876f403d0800000000000000
-      internalID: -3241194832730197318
+      spriteID: 6de38a8ab17bb2df0800000000000000
+      internalID: -203868028693627178
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_4
+      name: food critic_4
       rect:
         serializedVersion: 2
-        x: 273
+        x: 1209
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,20 +243,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 774bedef184647e90800000000000000
-      internalID: -7028882608928934793
+      spriteID: d582a7061639fec30800000000000000
+      internalID: 4390890208149252189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_5
+      name: food critic_5
       rect:
         serializedVersion: 2
-        x: 337
+        x: 1509
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -259,20 +265,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 71badb744c6c05750800000000000000
-      internalID: 6291747225756085015
+      spriteID: d78a390abf84695b0800000000000000
+      internalID: -5362018060769974147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_6
+      name: food critic_6
       rect:
         serializedVersion: 2
-        x: 401
+        x: 1809
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -281,20 +287,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a67da27f4187c7c0800000000000000
-      internalID: -4051127161570101598
+      spriteID: 16843f3ca42ed7ea0800000000000000
+      internalID: -5873289528278300575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Supporter idle_7
+      name: food critic_7
       rect:
         serializedVersion: 2
-        x: 465
+        x: 2109
         y: 0
-        width: 29
-        height: 60
+        width: 292
+        height: 361
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -303,8 +309,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a67f1ea4dcd612d20800000000000000
-      internalID: 3252001134430254954
+      spriteID: 5ccbac6b9c0efa3c0800000000000000
+      internalID: -4346007958429451067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: food critic_8
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 0
+        width: 292
+        height: 361
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 449f3c95e2cccb180800000000000000
+      internalID: -9098172647748667068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: food critic_9
+      rect:
+        serializedVersion: 2
+        x: 2709
+        y: 0
+        width: 291
+        height: 361
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1830c20b670824c0800000000000000
+      internalID: -4312188487018203110
       vertices: []
       indices: 
       edges: []
@@ -313,7 +363,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3ad8f9d757ec14c4481d89efd301a686
+    spriteID: 31e9e53a65b8d7544a79097711ec5cb7
     internalID: 0
     vertices: []
     indices: 
@@ -323,14 +373,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Supporter idle_0: 5826820013092581734
-      Supporter idle_1: -2603584141686590739
-      Supporter idle_2: -3620650698544233764
-      Supporter idle_3: -3241194832730197318
-      Supporter idle_4: -7028882608928934793
-      Supporter idle_5: 6291747225756085015
-      Supporter idle_6: -4051127161570101598
-      Supporter idle_7: 3252001134430254954
+      food critic_0: 192975512844289894
+      food critic_1: 4293952709287142373
+      food critic_2: 7484549263530963335
+      food critic_3: -203868028693627178
+      food critic_4: 4390890208149252189
+      food critic_5: -5362018060769974147
+      food critic_6: -5873289528278300575
+      food critic_7: -4346007958429451067
+      food critic_8: -9098172647748667068
+      food critic_9: -4312188487018203110
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
