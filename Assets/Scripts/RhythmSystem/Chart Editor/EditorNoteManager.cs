@@ -146,7 +146,18 @@ namespace RhythmSystem
             float val = 0;
             if (editorManager.editorUIController.gimmickValueInput != null)
             {
-                float.TryParse(editorManager.editorUIController.gimmickValueInput.text, out val);
+                if (float.TryParse(editorManager.editorUIController.gimmickValueInput.text, out val))
+                {
+                    // Success
+                }
+                else if (type == GimmickType.ScrollSpeed)
+                {
+                    val = 1.0f; // Default for scroll speed
+                }
+                else if (type == GimmickType.Stop)
+                {
+                    val = 500f; // Default for stop duration
+                }
             }
 
             if (type == GimmickType.LaneAdd || type == GimmickType.LaneRemove)
@@ -215,7 +226,8 @@ namespace RhythmSystem
                 type = NoteType.Hold,
                 length = 0,
                 mergeType = editorManager.currentSelectedMergeType,
-                objectIndex = editorManager.currentSelectedMergeIndex
+                objectIndex = editorManager.currentSelectedMergeIndex,
+                soundIndex = editorManager.currentSelectedSoundIndex
             };
 
             // Temporary visual
@@ -285,7 +297,8 @@ namespace RhythmSystem
                 laneIndex = laneIndex, 
                 type = NoteType.Tap,
                 mergeType = editorManager.currentSelectedMergeType,
-                objectIndex = editorManager.currentSelectedMergeIndex
+                objectIndex = editorManager.currentSelectedMergeIndex,
+                soundIndex = editorManager.currentSelectedSoundIndex
             };
             editorManager.currentChart.notes.Add(newNote);
             SpawnNoteVisual(newNote);

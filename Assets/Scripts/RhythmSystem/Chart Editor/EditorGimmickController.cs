@@ -44,6 +44,8 @@ namespace RhythmSystem
                         case GimmickType.BPMChange: image.color = Color.cyan; break;
                         case GimmickType.LaneAdd: image.color = Color.green; break;
                         case GimmickType.LaneRemove: image.color = Color.red; break;
+                        case GimmickType.ScrollSpeed: image.color = Color.magenta; break;
+                        case GimmickType.Stop: image.color = Color.blue; break;
                     }
                 }
             }
@@ -58,6 +60,8 @@ namespace RhythmSystem
                     case GimmickType.BPMChange: info = $"BPM:{data.value}"; break;
                     case GimmickType.LaneAdd: info = $"+{data.value}"; break;
                     case GimmickType.LaneRemove: info = $"-{data.value}"; break;
+                    case GimmickType.ScrollSpeed: info = $"Spd:{data.value:F1}"; break;
+                    case GimmickType.Stop: info = $"Stop:{data.value}"; break;
                 }
                 text.text = info;
             }

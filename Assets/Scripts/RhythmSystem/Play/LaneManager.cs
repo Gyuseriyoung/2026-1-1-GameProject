@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 namespace RhythmSystem.Play
 {
@@ -11,16 +12,54 @@ namespace RhythmSystem.Play
         private Dictionary<int, LaneController> allLanes = new Dictionary<int, LaneController>();
         private Dictionary<int, float> defaultLaneY = new Dictionary<int, float>();
         private List<GimmickEvent> laneGimmicks = new List<GimmickEvent>();
+        private List<AudioClip> soundBankClips = new List<AudioClip>();
         private HashSet<int> initiallyActiveLanes = new HashSet<int>();
         private RhythmState state;
+        private AudioSource soundEffectSource;
 
         public void Initialize(ChartData chartData, RhythmState state)
         {
             this.state = state;
             ClearLanes();
 
-            laneGimmicks = new List<GimmickEvent>(chartData.gimmicks);
-            laneGimmicks.Sort((a, b) => a.time.CompareTo(b.time));
+            laneGimmicks = chartData.gimmicks
+                .Where(g => g.type == GimmickType.LaneAdd || g.type == GimmickType.LaneRemove || 
+                            g.type == GimmickType.LaneMoveX || g.type == GimmickType.LaneMoveY)
+                .OrderBy(g => g.time)
+                .ToList();
+
+            // Load sound bank
+            soundBankClips.Clear();
+            foreach (var soundName in chartData.soundBank)
+            {
+                // Resources.Load should not include extension
+                string soundPath = soundName;
+                int lastDot = soundName.LastIndexOf('.');
+                if (lastDot > 0) soundPath = soundName.Substring(0, lastDot);
+
+                AudioClip clip = Resources.Load<AudioClip>("Sound/" + soundPath);
+                if (clip != null)
+                {
+                    soundBankClips.Add(clip);
+                }
+                else
+                {
+                    Debug.LogError($"[LaneManager] Failed to load sound: Sound/{soundPath} (Original: {soundName})");
+                    // Add null to keep index sync
+                    soundBankClips.Add(null);
+                }
+            }
+
+            if (soundEffectSource == null)
+            {
+                // Create a dedicated AudioSource for hit sounds to avoid conflict with main music
+                soundEffectSource = gameObject.AddComponent<AudioSource>();
+                soundEffectSource.hideFlags = HideFlags.HideInInspector;
+                
+                soundEffectSource.playOnAwake = false;
+                soundEffectSource.spatialBlend = 0f; // 2D Sound
+                soundEffectSource.loop = false;
+            }
 
             HashSet<int> potentialLanes = new HashSet<int>();
             foreach (var l in chartData.lanes)
@@ -147,6 +186,18 @@ namespace RhythmSystem.Play
             }
         }
 
+        public void PlayNoteSound(NoteData note)
+        {
+            if (note.soundIndex >= 0 && note.soundIndex < soundBankClips.Count)
+            {
+                AudioClip clip = soundBankClips[note.soundIndex];
+                if (clip != null && soundEffectSource != null)
+                {
+                    soundEffectSource.PlayOneShot(clip);
+                }
+            }
+        }
+
         public void ClearLanes()
         {
             foreach (var lane in allLanes.Values) if (lane != null) Destroy(lane.gameObject);
@@ -154,6 +205,7 @@ namespace RhythmSystem.Play
             defaultLaneY.Clear();
             initiallyActiveLanes.Clear();
             laneGimmicks.Clear();
+            soundBankClips.Clear();
         }
 
         public Dictionary<int, LaneController> GetActiveLanes()

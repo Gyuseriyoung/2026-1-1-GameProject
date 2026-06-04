@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using System.Linq;
 using RhythmSystem;
 
 namespace RhythmSystem.Play
@@ -26,6 +27,16 @@ namespace RhythmSystem.Play
 
         private ChartData currentChart;
         private RhythmState gameState = new RhythmState();
+        private List<GimmickEvent> scrollSpeedGimmicks = new List<GimmickEvent>();
+
+        private struct StopMapping
+        {
+            public float logicalStartTime;
+            public float audioStartTime;
+            public float duration;
+        }
+        private List<StopMapping> stopMappings = new List<StopMapping>();
+        private float globalTimerMs = 0;
 
         void Start()
         {
@@ -102,6 +113,30 @@ namespace RhythmSystem.Play
             gameState.isPlaying = true;
             gameState.combo = 0;
             gameState.scrollSpeedMultiplier = 1f;
+            
+            // Pre-calculate Stop Gimmicks
+            stopMappings.Clear();
+            var sortedStops = currentChart.gimmicks
+                .Where(g => g.type == GimmickType.Stop)
+                .OrderBy(g => g.time)
+                .ToList();
+
+            float cumulativeStop = 0;
+            foreach (var s in sortedStops)
+            {
+                stopMappings.Add(new StopMapping
+                {
+                    logicalStartTime = s.time,
+                    audioStartTime = s.time + cumulativeStop,
+                    duration = s.value
+                });
+                cumulativeStop += s.value;
+            }
+
+            // In our system, startTimeMs is already the logical start time.
+            // We need to calculate the initial globalTimerMs.
+            // Since lead-in time (negative) usually doesn't have stops:
+            globalTimerMs = startTimeMs;
 
             // Reset pause state via public method to ensure UI sync
             gameState.isPaused = true; 
@@ -110,6 +145,11 @@ namespace RhythmSystem.Play
             if (audioSource == null) audioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
 
             SetupAudio();
+
+            scrollSpeedGimmicks = currentChart.gimmicks
+                .Where(g => g.type == GimmickType.ScrollSpeed)
+                .OrderBy(g => g.time)
+                .ToList();
 
             laneManager.Initialize(currentChart, gameState);
             playNoteSpawner.Initialize(laneManager, gameState);
@@ -121,6 +161,23 @@ namespace RhythmSystem.Play
             inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
 
             RhythmEvents.OnGameStart?.Invoke();
+        }
+
+        private float GetLogicalTime(float audioTimeMs)
+        {
+            float cumulativeStop = 0;
+            foreach (var m in stopMappings)
+            {
+                if (audioTimeMs <= m.audioStartTime) break;
+
+                // Inside stop duration
+                if (audioTimeMs < m.audioStartTime + m.duration)
+                {
+                    return m.logicalStartTime;
+                }
+                cumulativeStop += m.duration;
+            }
+            return audioTimeMs - cumulativeStop;
         }
 
         private void SetupAudio()
@@ -150,8 +207,26 @@ namespace RhythmSystem.Play
         {
             if (!gameState.isPlaying || gameState.isPaused) return;
 
-            clock.SyncUpdate(Time.deltaTime);
+            // Update Global Timer
+            globalTimerMs += Time.deltaTime * 1000f;
+
+            // If audio is playing and synced, we can potentially sync globalTimerMs to audioSource.time
+            // But for now, let's keep globalTimerMs as the source of truth for "Real Time"
+            // and derive gameState.currentTimeMs (Logical Time) from it.
+            
+            gameState.currentTimeMs = GetLogicalTime(globalTimerMs);
+
+            clock.SyncUpdate(globalTimerMs);
             laneManager.UpdateLanes();
+
+            // Handle Scroll Speed Gimmicks
+            float newMultiplier = 1f;
+            foreach (var g in scrollSpeedGimmicks)
+            {
+                if (g.time > gameState.currentTimeMs) break;
+                newMultiplier = g.value;
+            }
+            gameState.scrollSpeedMultiplier = newMultiplier;
 
             // Check for Chart End
             if (currentChart != null && gameState.currentTimeMs >= currentChart.length)

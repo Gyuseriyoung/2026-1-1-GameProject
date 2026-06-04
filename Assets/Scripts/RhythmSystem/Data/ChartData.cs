@@ -18,7 +18,9 @@ namespace RhythmSystem
         LaneMoveX,     // X-axis (Judgment) movement
         BPMChange,     // BPM change
         LaneAdd,       // Add a new lane
-        LaneRemove     // Remove a lane
+        LaneRemove,    // Remove a lane
+        ScrollSpeed,   // Change scroll speed
+        Stop           // Stop chart progression for a duration
     }
 
     [Serializable]
@@ -55,6 +57,7 @@ namespace RhythmSystem
         public float length; // ms (for Hold notes)
         public int mergeType;
         public int objectIndex;
+        public int soundIndex = -1; // Index in soundBank, -1 for no sound
     }
 
     [Serializable]
@@ -73,6 +76,7 @@ namespace RhythmSystem
         public float startOffset = 2000f; // ms (Visual Lead-in time)
         public float musicOffset = 0f;    // ms (Audio playback offset)
         public float length = 120000f;         // ms (Total chart length)
+        public List<string> soundBank = new List<string>(); // List of hit sound filenames
         public List<TimingPoint> timingPoints = new List<TimingPoint>();
         public List<LaneConfig> lanes = new List<LaneConfig>();
         public List<NoteData> notes = new List<NoteData>();

@@ -56,6 +56,12 @@ namespace RhythmSystem
         public GameObject objectIconPrefab;
         public MergeObjectUIItem currentSelectionDisplay;
 
+        [Header("Sound Bank Settings")]
+        public TMP_Dropdown soundBankDropdown;
+        public TMP_Dropdown soundFileListDropdown; // Files in Resources/Sound
+        public Button addSoundToBankButton;
+        public Button removeSoundFromBankButton;
+
         private readonly int[] snapValues = { 1, 2, 4, 8, 16, 32, 3, 6 };
         private readonly string[] snapLabels = { "1/1", "1/2", "1/4", "1/8", "1/16", "1/32", "1/3", "1/6" };
 
@@ -98,6 +104,17 @@ namespace RhythmSystem
                 gimmickTypeDropdown.AddOptions(System.Enum.GetNames(typeof(GimmickType)).ToList());
                 gimmickTypeDropdown.SetValueWithoutNotify((int)editorManager.currentSelectedGimmickType);
                 gimmickTypeDropdown.onValueChanged.AddListener(HandleGimmickTypeChange);
+            }
+
+            if (soundBankDropdown != null)
+            {
+                RefreshSoundBankUI();
+                soundBankDropdown.onValueChanged.AddListener(HandleSoundBankChange);
+            }
+
+            if (soundFileListDropdown != null)
+            {
+                RefreshSoundFileList();
             }
 
             if (musicListDropdown != null)
@@ -206,6 +223,60 @@ namespace RhythmSystem
 
             addLaneButton?.onClick.AddListener(() => editorManager.AddLane());
             removeLaneButton?.onClick.AddListener(() => editorManager.RemoveLane());
+
+            addSoundToBankButton?.onClick.AddListener(AddSoundToBank);
+            removeSoundFromBankButton?.onClick.AddListener(RemoveSoundFromBank);
+        }
+
+        public void RefreshSoundBankUI()
+        {
+            if (soundBankDropdown == null) return;
+            soundBankDropdown.ClearOptions();
+            var options = new List<string> { "None (-1)" };
+            options.AddRange(editorManager.currentChart.soundBank);
+            soundBankDropdown.AddOptions(options);
+            
+            soundBankDropdown.SetValueWithoutNotify(editorManager.currentSelectedSoundIndex + 1);
+        }
+
+        public void RefreshSoundFileList()
+        {
+            if (soundFileListDropdown == null) return;
+            string path = "Assets/Resources/Sound/";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+
+            var files = System.IO.Directory.GetFiles(path)
+                .Where(f => !f.EndsWith(".meta"))
+                .Select(System.IO.Path.GetFileName).ToList();
+            
+            soundFileListDropdown.ClearOptions();
+            soundFileListDropdown.AddOptions(files);
+        }
+
+        private void HandleSoundBankChange(int index)
+        {
+            editorManager.currentSelectedSoundIndex = index - 1;
+        }
+
+        private void AddSoundToBank()
+        {
+            if (soundFileListDropdown.options.Count == 0) return;
+            string soundName = soundFileListDropdown.options[soundFileListDropdown.value].text;
+            if (!editorManager.currentChart.soundBank.Contains(soundName))
+            {
+                editorManager.currentChart.soundBank.Add(soundName);
+                RefreshSoundBankUI();
+            }
+        }
+
+        private void RemoveSoundFromBank()
+        {
+            if (editorManager.currentSelectedSoundIndex >= 0)
+            {
+                editorManager.currentChart.soundBank.RemoveAt(editorManager.currentSelectedSoundIndex);
+                editorManager.currentSelectedSoundIndex = -1;
+                RefreshSoundBankUI();
+            }
         }
 
         public void RefreshUI()
@@ -401,7 +472,32 @@ namespace RhythmSystem
             if (editorManager.noteManager.SelectedGimmick != null)
             {
                 editorManager.noteManager.SelectedGimmick.type = (GimmickType)index;
+                
+                // Set default values for ScrollSpeed if it was newly changed to it
+                if (editorManager.currentSelectedGimmickType == GimmickType.ScrollSpeed && editorManager.noteManager.SelectedGimmick.value == 0)
+                {
+                    editorManager.noteManager.SelectedGimmick.value = 1.0f;
+                    gimmickValueInput.SetTextWithoutNotify("1.0");
+                }
+                else if (editorManager.currentSelectedGimmickType == GimmickType.Stop && editorManager.noteManager.SelectedGimmick.value == 0)
+                {
+                    editorManager.noteManager.SelectedGimmick.value = 500f;
+                    gimmickValueInput.SetTextWithoutNotify("500");
+                }
+
                 editorManager.noteManager.UpdateGimmickVisuals();
+            }
+            else
+            {
+                // If no gimmick selected, but we change the "placement" type
+                if (editorManager.currentSelectedGimmickType == GimmickType.ScrollSpeed)
+                {
+                    gimmickValueInput.text = "1.0";
+                }
+                else if (editorManager.currentSelectedGimmickType == GimmickType.Stop)
+                {
+                    gimmickValueInput.text = "500";
+                }
             }
         }
 

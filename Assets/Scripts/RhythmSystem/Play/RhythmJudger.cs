@@ -58,10 +58,22 @@ namespace RhythmSystem.Play
             float minDiff = float.MaxValue;
             bool isEarly = false;
 
+            // 1. Find the best note for judgment AND play its sound (Next Note Preview)
+            NoteObject nextNoteToPlay = null;
+            float earliestTime = float.MaxValue;
+
             foreach (var note in spawnedNotes)
             {
                 if (note.IsJudged || note.Data.laneIndex != laneIndex) continue;
 
+                // For Sound Preview: Find the absolute earliest unjudged note
+                if (note.Data.time < earliestTime)
+                {
+                    earliestTime = note.Data.time;
+                    nextNoteToPlay = note;
+                }
+
+                // For Judgment: Find the closest note within earlyMissWindow
                 float rawDiff = note.GetNoteTime() - state.currentTimeMs;
                 float absDiff = Mathf.Abs(rawDiff);
 
@@ -71,6 +83,13 @@ namespace RhythmSystem.Play
                     bestNote = note;
                     isEarly = rawDiff > 0;
                 }
+            }
+
+            // Play sound immediately if any upcoming note exists in this lane
+            if (nextNoteToPlay != null)
+            {
+                var laneManager = GetComponent<LaneManager>();
+                if (laneManager != null) laneManager.PlayNoteSound(nextNoteToPlay.Data);
             }
 
             if (bestNote != null)
@@ -111,6 +130,7 @@ namespace RhythmSystem.Play
                 note.StartHolding();
                 activeHoldNotes.Add(note);
                 TriggerHitEvent(note, rating);
+                spawner.GetActiveLanes()[note.Data.laneIndex].OnHit(rating.ToString());
             }
             else
             {
@@ -122,6 +142,10 @@ namespace RhythmSystem.Play
                 {
                     TriggerHitEvent(note, rating);
                     note.OnJudged();
+                    
+                    var activeLanes = spawner.GetActiveLanes();
+                    if (activeLanes.ContainsKey(note.Data.laneIndex))
+                        activeLanes[note.Data.laneIndex].OnHit(rating.ToString());
                 }
             }
         }

@@ -15,15 +15,13 @@ namespace RhythmSystem.Play
             this.musicOffset = musicOffset;
         }
 
-        public void SyncUpdate(float deltaTime)
+        public void SyncUpdate(float globalTimerMs)
         {
             if (!state.isPlaying || state.isPaused) return;
 
-            state.currentTimeMs += deltaTime * 1000f;
-
             if (audioSource != null && audioSource.clip != null)
             {
-                float targetAudioTime = (state.currentTimeMs + musicOffset) / 1000f;
+                float targetAudioTime = (globalTimerMs + musicOffset) / 1000f;
 
                 if (targetAudioTime >= 0 && targetAudioTime < audioSource.clip.length)
                 {

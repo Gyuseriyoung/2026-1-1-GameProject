@@ -39,6 +39,7 @@ namespace RhythmSystem
         public float currentScrollSpeed = 500f; // Pixels per second
         public int snapDivisor = 4;
         public float JudgeLineX = 400f; 
+        public int currentSelectedSoundIndex = -1; // -1 means no sound assigned by default
 
         [Header("Merge Integration")]
         public MergeObjectData mergeObjectData;
@@ -48,7 +49,16 @@ namespace RhythmSystem
         public const string musicDirectory = "Assets/Resources/Musics/";
 
         public float EditorTime => editorTime;
-        private float editorTime = 0f;
+        private float editorTime = 0f; // Logical Grid Time
+        private float globalEditorTimerMs = 0f; // Physical Audio Time (ms)
+
+        private struct StopMapping
+        {
+            public float logicalStartTime;
+            public float audioStartTime;
+            public float duration;
+        }
+        private List<StopMapping> stopMappings = new List<StopMapping>();
 
         [Header("UI & Visualization")]
         public RectTransform timelineContent; 
@@ -127,9 +137,56 @@ namespace RhythmSystem
                     LoadMusic(currentChart.metadata.audioFileName);
             }
 
+            RecalculateStopMappings();
+            globalEditorTimerMs = GetAudioTime(editorTime * 1000f);
+
             RefreshAllVisuals();
             editorUIController.RefreshUI();
             if (!string.IsNullOrEmpty(chartName)) editorUIController.RefreshMusicList();
+        }
+
+        public void RecalculateStopMappings()
+        {
+            stopMappings.Clear();
+            var sortedStops = currentChart.gimmicks
+                .Where(g => g.type == GimmickType.Stop)
+                .OrderBy(g => g.time)
+                .ToList();
+
+            float cumulativeStop = 0;
+            foreach (var s in sortedStops)
+            {
+                stopMappings.Add(new StopMapping
+                {
+                    logicalStartTime = s.time,
+                    audioStartTime = s.time + cumulativeStop,
+                    duration = s.value
+                });
+                cumulativeStop += s.value;
+            }
+        }
+
+        public float GetLogicalTime(float audioTimeMs)
+        {
+            float cumulativeStop = 0;
+            foreach (var m in stopMappings)
+            {
+                if (audioTimeMs <= m.audioStartTime) break;
+                if (audioTimeMs < m.audioStartTime + m.duration) return m.logicalStartTime;
+                cumulativeStop += m.duration;
+            }
+            return audioTimeMs - cumulativeStop;
+        }
+
+        public float GetAudioTime(float logicalTimeMs)
+        {
+            float cumulativeStop = 0;
+            foreach (var m in stopMappings)
+            {
+                if (logicalTimeMs < m.logicalStartTime) break;
+                cumulativeStop += m.duration;
+            }
+            return logicalTimeMs + cumulativeStop;
         }
 
         private void Update()
@@ -149,8 +206,10 @@ namespace RhythmSystem
         {
             if (!isPlaying) return;
 
-            editorTime += Time.deltaTime;
-            float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
+            globalEditorTimerMs += Time.deltaTime * 1000f;
+            editorTime = GetLogicalTime(globalEditorTimerMs) / 1000f;
+
+            float targetAudioTime = (globalEditorTimerMs + currentChart.musicOffset) / 1000f;
 
             if (audioSource != null && audioSource.clip != null)
             {
@@ -181,7 +240,8 @@ namespace RhythmSystem
             isPlaying = !isPlaying;
             if (isPlaying)
             {
-                float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
+                globalEditorTimerMs = GetAudioTime(editorTime * 1000f);
+                float targetAudioTime = (globalEditorTimerMs + currentChart.musicOffset) / 1000f;
                 if (audioSource != null && targetAudioTime >= 0 && audioSource.clip != null && targetAudioTime < audioSource.clip.length)
                 {
                     audioSource.time = targetAudioTime;
@@ -200,6 +260,7 @@ namespace RhythmSystem
             isPlaying = false;
             if (audioSource != null) audioSource.Stop();
             editorTime = -currentChart.startOffset / 1000f;
+            globalEditorTimerMs = GetAudioTime(editorTime * 1000f);
             timelineManager.SyncTimeline();
         }
 
@@ -208,7 +269,8 @@ namespace RhythmSystem
             GetNavigationBounds(out float minTime, out float maxTime);
             
             editorTime = Mathf.Clamp(time, minTime, maxTime);
-            float targetAudioTime = editorTime + (currentChart.musicOffset / 1000f);
+            globalEditorTimerMs = GetAudioTime(editorTime * 1000f);
+            float targetAudioTime = (globalEditorTimerMs + currentChart.musicOffset) / 1000f;
             
             if (audioSource != null && audioSource.clip != null)
             {
@@ -248,6 +310,7 @@ namespace RhythmSystem
             if (currentChart.length <= 0 && audioSource.clip != null)
                 currentChart.length = audioSource.clip.length * 1000f;
 
+            RecalculateStopMappings();
             AutoDistributeLanes();
             timelineManager.UpdateGrid();
             noteManager.UpdateNoteVisuals();

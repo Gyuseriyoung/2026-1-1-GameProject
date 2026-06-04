@@ -25,6 +25,6 @@ MonoBehaviour:
   - targetMergeType: 0
     targetMergeIndex: 3
     count: 1
-  chartJson: {fileID: 4900000, guid: fced45f9754620c458945020579730c6, type: 3}
+  chartJson: {fileID: 4900000, guid: 9c55a033726ff6a44a2dfce471bfc6b5, type: 3}
   successDialogue: Success!
   failureDialogue: Fail...
