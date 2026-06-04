@@ -1,9 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// 효과음(SFX) 매니저
-/// 빈 오브젝트에 붙이면 해당 씬에서만 동작합니다.
-/// 씬이 바뀌면 자동으로 제거됩니다.
+/// 씬별 효과음(SFX) 관리자
+/// 등록된 이름으로 효과음을 편리하게 재생할 수 있게 도와줍니다.
+/// 실제 재생은 AudioManager의 풀링 시스템을 사용합니다.
 /// </summary>
 public class SFXManager : MonoBehaviour
 {
@@ -14,14 +14,8 @@ public class SFXManager : MonoBehaviour
     public SFXClip[] sfxClips;
 
     [Range(0f, 1f)]
-    [Tooltip("효과음 전체 볼륨")]
+    [Tooltip("이 매니저를 통해 재생되는 효과음의 추가 볼륨 배율")]
     public float masterVolume = 1f;
-
-    [Tooltip("동시에 재생 가능한 최대 채널 수")]
-    public int maxChannels = 8;
-
-    private AudioSource[] _channels;
-    private int _channelIndex = 0;
 
     [System.Serializable]
     public class SFXClip
@@ -37,22 +31,11 @@ public class SFXManager : MonoBehaviour
 
     private void Awake()
     {
-        // 씬마다 새로 생성 — 이전 인스턴스는 씬 전환 시 자동 제거됨
         Instance = this;
-
-        _channels = new AudioSource[maxChannels];
-        for (int i = 0; i < maxChannels; i++)
-        {
-            var go = new GameObject($"SFXChannel_{i}");
-            go.transform.SetParent(transform);
-            _channels[i] = go.AddComponent<AudioSource>();
-            _channels[i].playOnAwake = false;
-        }
     }
 
     private void OnDestroy()
     {
-        // 씬 전환 시 인스턴스 참조 정리
         if (Instance == this) Instance = null;
     }
 
@@ -60,7 +43,7 @@ public class SFXManager : MonoBehaviour
     //  공개 API
     // ─────────────────────────────────────────────
 
-    /// <summary>이름으로 효과음 재생</summary>
+    /// <summary>등록된 이름으로 효과음 재생</summary>
     public void Play(string clipName)
     {
         var sfx = FindClip(clipName);
@@ -76,18 +59,12 @@ public class SFXManager : MonoBehaviour
         PlayClip(sfx, volumeMultiplier);
     }
 
-    /// <summary>AudioClip 직접 재생 (등록 없이 바로 쓸 때)</summary>
+    /// <summary>AudioClip 직접 재생 (AudioManager를 거쳐 풀링 사용)</summary>
     public void PlayDirect(AudioClip clip, float volume = 1f, float pitch = 1f)
     {
-        if (clip == null) return;
-        var src = GetChannel();
-        src.clip = clip;
-        src.volume = volume * masterVolume;
-        src.pitch = pitch;
-        src.Play();
+        if (clip == null || AudioManager.Instance == null) return;
+        AudioManager.Instance.PlaySFX(clip, volume * masterVolume, pitch);
     }
-
-    public void SetMasterVolume(float v) => masterVolume = Mathf.Clamp01(v);
 
     // ─────────────────────────────────────────────
     //  내부
@@ -95,23 +72,14 @@ public class SFXManager : MonoBehaviour
 
     private void PlayClip(SFXClip sfx, float volumeMultiplier)
     {
-        var src = GetChannel();
-        src.clip = sfx.clip;
-        src.volume = sfx.volume * masterVolume * volumeMultiplier;
-        src.pitch = sfx.randomPitch
+        if (AudioManager.Instance == null) return;
+
+        float finalVolume = sfx.volume * masterVolume * volumeMultiplier;
+        float finalPitch = sfx.randomPitch
             ? sfx.pitch * Random.Range(0.9f, 1.1f)
             : sfx.pitch;
-        src.Play();
-    }
 
-    private AudioSource GetChannel()
-    {
-        foreach (var ch in _channels)
-            if (!ch.isPlaying) return ch;
-
-        var fallback = _channels[_channelIndex % maxChannels];
-        _channelIndex++;
-        return fallback;
+        AudioManager.Instance.PlaySFX(sfx.clip, finalVolume, finalPitch);
     }
 
     private SFXClip FindClip(string name)

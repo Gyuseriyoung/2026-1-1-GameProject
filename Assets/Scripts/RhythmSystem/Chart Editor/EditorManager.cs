@@ -51,14 +51,7 @@ namespace RhythmSystem
         public float EditorTime => editorTime;
         private float editorTime = 0f; // Logical Grid Time
         private float globalEditorTimerMs = 0f; // Physical Audio Time (ms)
-
-        private struct StopMapping
-        {
-            public float logicalStartTime;
-            public float audioStartTime;
-            public float duration;
-        }
-        private List<StopMapping> stopMappings = new List<StopMapping>();
+        private readonly StopTimeline stopTimeline = new StopTimeline();
 
         [Header("UI & Visualization")]
         public RectTransform timelineContent; 
@@ -147,46 +140,17 @@ namespace RhythmSystem
 
         public void RecalculateStopMappings()
         {
-            stopMappings.Clear();
-            var sortedStops = currentChart.gimmicks
-                .Where(g => g.type == GimmickType.Stop)
-                .OrderBy(g => g.time)
-                .ToList();
-
-            float cumulativeStop = 0;
-            foreach (var s in sortedStops)
-            {
-                stopMappings.Add(new StopMapping
-                {
-                    logicalStartTime = s.time,
-                    audioStartTime = s.time + cumulativeStop,
-                    duration = s.value
-                });
-                cumulativeStop += s.value;
-            }
+            stopTimeline.Rebuild(currentChart.gimmicks);
         }
 
         public float GetLogicalTime(float audioTimeMs)
         {
-            float cumulativeStop = 0;
-            foreach (var m in stopMappings)
-            {
-                if (audioTimeMs <= m.audioStartTime) break;
-                if (audioTimeMs < m.audioStartTime + m.duration) return m.logicalStartTime;
-                cumulativeStop += m.duration;
-            }
-            return audioTimeMs - cumulativeStop;
+            return stopTimeline.GetLogicalTime(audioTimeMs);
         }
 
         public float GetAudioTime(float logicalTimeMs)
         {
-            float cumulativeStop = 0;
-            foreach (var m in stopMappings)
-            {
-                if (logicalTimeMs < m.logicalStartTime) break;
-                cumulativeStop += m.duration;
-            }
-            return logicalTimeMs + cumulativeStop;
+            return stopTimeline.GetAudioTime(logicalTimeMs);
         }
 
         private void Update()

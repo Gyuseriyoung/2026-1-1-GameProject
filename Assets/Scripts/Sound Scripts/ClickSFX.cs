@@ -5,9 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
+/// <summary>
+/// 화면 클릭 시 효과음을 재생합니다. 
+/// 통합 오디오 매니저를 통해 재생됩니다.
+/// </summary>
 public class ClickSFX : MonoBehaviour
 {
-    [Header("클릭 효과음 — 여기에 드래그하세요")]
+    [Header("클릭 효과음")]
     public AudioClip clip;
 
     [Range(0f, 1f)]
@@ -16,20 +20,9 @@ public class ClickSFX : MonoBehaviour
     [Range(0.5f, 2f)]
     public float pitch = 1f;
 
-    private AudioSource _source;
-
-    private void Awake()
-    {
-        _source = gameObject.AddComponent<AudioSource>();
-        _source.playOnAwake = false;
-
-        if (clip == null)
-            Debug.LogError("[ClickSFX] clip이 비어 있습니다!");
-    }
-
     private void Update()
     {
-        if (!Mouse.current.leftButton.wasPressedThisFrame) return;
+        if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame) return;
         if (EventSystem.current == null) return;
 
         var results = new List<RaycastResult>();
@@ -63,14 +56,14 @@ public class ClickSFX : MonoBehaviour
     {
         if (clip == null) return;
 
+        // 우선적으로 씬의 SFXManager를 사용하고, 없으면 전역 AudioManager를 직접 사용
         if (SFXManager.Instance != null)
-            SFXManager.Instance.PlayDirect(clip, volume, pitch);
-        else
         {
-            _source.clip = clip;
-            _source.volume = volume;
-            _source.pitch = pitch;
-            _source.Play();
+            SFXManager.Instance.PlayDirect(clip, volume, pitch);
+        }
+        else if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(clip, volume, pitch);
         }
     }
 }

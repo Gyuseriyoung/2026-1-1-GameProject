@@ -2,20 +2,23 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.Audio;
 
 namespace RhythmSystem.Play
 {
+    /// <summary>
+    /// 리듬 게임의 레인(Lane)들을 관리하며, 노트 타격음 재생 등을 담당합니다.
+    /// </summary>
     public class LaneManager : MonoBehaviour
     {
         public GameObject laneControllerPrefab;
-        
+
         private Dictionary<int, LaneController> allLanes = new Dictionary<int, LaneController>();
         private Dictionary<int, float> defaultLaneY = new Dictionary<int, float>();
         private List<GimmickEvent> laneGimmicks = new List<GimmickEvent>();
         private List<AudioClip> soundBankClips = new List<AudioClip>();
         private HashSet<int> initiallyActiveLanes = new HashSet<int>();
         private RhythmState state;
-        private AudioSource soundEffectSource;
 
         public void Initialize(ChartData chartData, RhythmState state)
         {
@@ -28,11 +31,10 @@ namespace RhythmSystem.Play
                 .OrderBy(g => g.time)
                 .ToList();
 
-            // Load sound bank
+            // 사운드 뱅크 로드
             soundBankClips.Clear();
             foreach (var soundName in chartData.soundBank)
             {
-                // Resources.Load should not include extension
                 string soundPath = soundName;
                 int lastDot = soundName.LastIndexOf('.');
                 if (lastDot > 0) soundPath = soundName.Substring(0, lastDot);
@@ -44,21 +46,9 @@ namespace RhythmSystem.Play
                 }
                 else
                 {
-                    Debug.LogError($"[LaneManager] Failed to load sound: Sound/{soundPath} (Original: {soundName})");
-                    // Add null to keep index sync
+                    Debug.LogError($"[LaneManager] Failed to load sound: Sound/{soundPath}");
                     soundBankClips.Add(null);
                 }
-            }
-
-            if (soundEffectSource == null)
-            {
-                // Create a dedicated AudioSource for hit sounds to avoid conflict with main music
-                soundEffectSource = gameObject.AddComponent<AudioSource>();
-                soundEffectSource.hideFlags = HideFlags.HideInInspector;
-                
-                soundEffectSource.playOnAwake = false;
-                soundEffectSource.spatialBlend = 0f; // 2D Sound
-                soundEffectSource.loop = false;
             }
 
             HashSet<int> potentialLanes = new HashSet<int>();
@@ -83,7 +73,6 @@ namespace RhythmSystem.Play
                 SetupLaneController(laneIndex);
             }
 
-            // Ensure lanes are correctly activated/deactivated before GetCurrentKeyMapping is called
             UpdateLanes();
         }
 
@@ -95,7 +84,6 @@ namespace RhythmSystem.Play
             foreach (var kvp in allLanes)
             {
                 int laneIndex = kvp.Key;
-                // activeSelf check is fine here since UpdateLanes was called in Initialize
                 if (kvp.Value.gameObject.activeSelf)
                 {
                     if (laneIndex >= 0 && laneIndex < settings.laneKeys.Count)
@@ -137,17 +125,15 @@ namespace RhythmSystem.Play
             }
             activeCount = Mathf.Clamp(activeCount, 1, 12);
 
-            // Use JudgmentX from TestSession if in test mode, otherwise from settings
             float baseJudgmentX = EditorTestSession.IsTestMode ? 
                 EditorTestSession.JudgmentX : 
                 settings.judgmentX;
 
-            float spacing = settings.laneSpacing; // Already in world units (0.7f)
+            float spacing = settings.laneSpacing;
 
             foreach (var kvp in allLanes)
             {
                 int idx = kvp.Key;
-                // A lane is active if it was in the chart OR its index is within the dynamic activeCount
                 bool isActive = initiallyActiveLanes.Contains(idx) || idx < activeCount;
                 kvp.Value.gameObject.SetActive(isActive);
 
@@ -161,7 +147,6 @@ namespace RhythmSystem.Play
                         if (g.time > currentTimeMs) break;
                         if (g.targetLane != idx) continue;
 
-                        // Gimmick values are now assumed to be in World units
                         if (g.type == GimmickType.LaneMoveX) targetX = g.value;
                         else if (g.type == GimmickType.LaneMoveY) yOffset = g.value;
                     }
@@ -169,13 +154,10 @@ namespace RhythmSystem.Play
                     float initialY;
                     if (defaultLaneY.TryGetValue(idx, out var dy))
                     {
-                        // Chart defaultY is still in UI pixels, so we scale it
                         initialY = dy / 100f;
                     }
                     else
                     {
-                        // Fallback layout for added lanes: 
-                        // If index 0 exists, offset from it. Otherwise offset from 0.
                         float firstLaneY = defaultLaneY.TryGetValue(0, out var fdy) ? fdy / 100f : 0f;
                         initialY = firstLaneY - (idx * spacing);
                     }
@@ -186,14 +168,19 @@ namespace RhythmSystem.Play
             }
         }
 
+        /// <summary>
+        /// 노트 타격음을 재생합니다. 
+        /// 통합 AudioManager를 사용하여 풀링된 소스를 통해 재생됩니다.
+        /// </summary>
         public void PlayNoteSound(NoteData note)
         {
             if (note.soundIndex >= 0 && note.soundIndex < soundBankClips.Count)
             {
                 AudioClip clip = soundBankClips[note.soundIndex];
-                if (clip != null && soundEffectSource != null)
+                if (clip != null && AudioManager.Instance != null)
                 {
-                    soundEffectSource.PlayOneShot(clip);
+                    // 통합 오디오 매니저를 통해 효과음 재생
+                    AudioManager.Instance.PlaySFX(clip);
                 }
             }
         }

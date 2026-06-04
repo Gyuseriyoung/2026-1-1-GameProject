@@ -990,6 +990,58 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &246482725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246482727}
+  - component: {fileID: 246482726}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &246482726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246482725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05bbb271e14c6f141960fe8b4f178cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  audioMixer: {fileID: 24100000, guid: 15b90bf88507b064c9116166dc385fee, type: 2}
+  masterGroup: {fileID: 24300002, guid: 15b90bf88507b064c9116166dc385fee, type: 2}
+  bgmGroup: {fileID: 1615526013873493858, guid: 15b90bf88507b064c9116166dc385fee, type: 2}
+  sfxGroup: {fileID: -751820098565437336, guid: 15b90bf88507b064c9116166dc385fee, type: 2}
+  masterParam: Master
+  bgmParam: BGM
+  sfxParam: SFX
+  initialSfxPoolSize: 10
+--- !u!4 &246482727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246482725}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 854.3765, y: 663.3465, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &249896061
 GameObject:
   m_ObjectHideFlags: 0
@@ -6325,7 +6377,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SFXManager
   sfxClips: []
   masterVolume: 1
-  maxChannels: 8
 --- !u!114 &1446807022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6340,7 +6391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BGMPlayer
   bgmClip: {fileID: 8300000, guid: 5231bea2eae2eda45a6ee83261f7acb8, type: 3}
   volume: 0.05
-  loop: 1
+  playOnStart: 1
 --- !u!82 &1446807023
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8857,3 +8908,4 @@ SceneRoots:
   - {fileID: 1667811699}
   - {fileID: 1314648473}
   - {fileID: 1446807024}
+  - {fileID: 246482727}

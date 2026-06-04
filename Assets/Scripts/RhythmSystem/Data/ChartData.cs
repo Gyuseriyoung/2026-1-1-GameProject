@@ -82,4 +82,66 @@ namespace RhythmSystem
         public List<NoteData> notes = new List<NoteData>();
         public List<GimmickEvent> gimmicks = new List<GimmickEvent>();
     }
+
+    public class StopTimeline
+    {
+        private struct StopMapping
+        {
+            public float logicalStartTime;
+            public float audioStartTime;
+            public float duration;
+        }
+
+        private readonly List<StopMapping> stopMappings = new List<StopMapping>();
+
+        public void Rebuild(List<GimmickEvent> gimmicks)
+        {
+            stopMappings.Clear();
+            if (gimmicks == null) return;
+
+            List<GimmickEvent> sortedStops = gimmicks.FindAll(g => g.type == GimmickType.Stop);
+            sortedStops.Sort((a, b) => a.time.CompareTo(b.time));
+
+            float cumulativeStop = 0f;
+            foreach (var stop in sortedStops)
+            {
+                stopMappings.Add(new StopMapping
+                {
+                    logicalStartTime = stop.time,
+                    audioStartTime = stop.time + cumulativeStop,
+                    duration = stop.value
+                });
+                cumulativeStop += stop.value;
+            }
+        }
+
+        public float GetLogicalTime(float audioTimeMs)
+        {
+            float cumulativeStop = 0f;
+            foreach (var mapping in stopMappings)
+            {
+                if (audioTimeMs <= mapping.audioStartTime) break;
+                if (audioTimeMs < mapping.audioStartTime + mapping.duration)
+                {
+                    return mapping.logicalStartTime;
+                }
+
+                cumulativeStop += mapping.duration;
+            }
+
+            return audioTimeMs - cumulativeStop;
+        }
+
+        public float GetAudioTime(float logicalTimeMs)
+        {
+            float cumulativeStop = 0f;
+            foreach (var mapping in stopMappings)
+            {
+                if (logicalTimeMs < mapping.logicalStartTime) break;
+                cumulativeStop += mapping.duration;
+            }
+
+            return logicalTimeMs + cumulativeStop;
+        }
+    }
 }

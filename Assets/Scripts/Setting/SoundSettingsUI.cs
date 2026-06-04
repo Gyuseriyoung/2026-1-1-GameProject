@@ -1,74 +1,59 @@
+using Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.Audio;
 
 public class SoundSettingsUI : MonoBehaviour
 {
-    private const string KEY_MASTER = "Vol_Master";
-    private const string KEY_BGM = "Vol_BGM";
-    private const string KEY_SFX = "Vol_SFX";
-    private const string KEY_MUTE_MASTER = "Mute_Master";
-    private const string KEY_MUTE_BGM = "Mute_BGM";
-    private const string KEY_MUTE_SFX = "Mute_SFX";
-
-    [Header("── 전체(Master)")]
+    [Header("Master")]
     public Slider masterSlider;
     public TMP_InputField masterInputField;
     public TMP_Text masterValueText;
     public Toggle masterMuteToggle;
 
-    [Header("── 배경음(BGM)")]
+    [Header("BGM")]
     public Slider bgmSlider;
     public TMP_InputField bgmInputField;
     public TMP_Text bgmValueText;
     public Toggle bgmMuteToggle;
 
-    [Header("── 효과음(SFX)")]
+    [Header("SFX")]
     public Slider sfxSlider;
     public TMP_InputField sfxInputField;
     public TMP_Text sfxValueText;
     public Toggle sfxMuteToggle;
 
-    [Header("── 공통")]
+    [Header("Common")]
     public Button closeButton;
     public GameObject settingsPanel;
 
     private float _masterVol = 1f;
     private float _bgmVol = 0.5f;
     private float _sfxVol = 1f;
-    private bool _muteMaster, _muteBGM, _muteSFX;
+    private bool _muteMaster;
+    private bool _muteBGM;
+    private bool _muteSFX;
     private bool _isInit;
-
-    // ------------------------------------------------
 
     private void Awake()
     {
-        // PlayerPrefs 읽기 + AudioListener만 — BGMPlayer/SFXManager는 Start에서
-        _masterVol = PlayerPrefs.GetFloat(KEY_MASTER, 1f);
-        _bgmVol = PlayerPrefs.GetFloat(KEY_BGM, 0.5f);
-        _sfxVol = PlayerPrefs.GetFloat(KEY_SFX, 1f);
-        _muteMaster = PlayerPrefs.GetInt(KEY_MUTE_MASTER, 0) == 1;
-        _muteBGM = PlayerPrefs.GetInt(KEY_MUTE_BGM, 0) == 1;
-        _muteSFX = PlayerPrefs.GetInt(KEY_MUTE_SFX, 0) == 1;
-
-        AudioListener.volume = _muteMaster ? 0f : _masterVol;
+        LoadSettings();
     }
 
     private void Start()
     {
-        ApplyBGMVolume();
-        ApplySFXVolume();
+        // Settings are applied by AudioManager on Start, 
+        // but we can force it here just in case.
+        ApplyAllSettings();
         RegisterListeners();
         ApplyToUI();
     }
 
     private void OnDestroy()
     {
-        // RemoveAllListeners를 쓰지 않으므로 이 한 번만 호출해도 완전히 해제됨
         UnregisterListeners();
     }
-
-    // ── 리스너 등록 / 해제 ──────────────────────────
 
     private void RegisterListeners()
     {
@@ -104,15 +89,13 @@ public class SoundSettingsUI : MonoBehaviour
         if (closeButton != null) closeButton.onClick.RemoveListener(CloseSettings);
     }
 
-    // ── 슬라이더 콜백 ───────────────────────────────
-
     private void OnMasterSlider(float value)
     {
         if (_isInit) return;
         _masterVol = value;
         ApplyMasterVolume();
         SyncText(masterInputField, masterValueText, value);
-        PlayerPrefs.SetFloat(KEY_MASTER, value);
+        SaveSettings();
     }
 
     private void OnBGMSlider(float value)
@@ -121,7 +104,7 @@ public class SoundSettingsUI : MonoBehaviour
         _bgmVol = value;
         ApplyBGMVolume();
         SyncText(bgmInputField, bgmValueText, value);
-        PlayerPrefs.SetFloat(KEY_BGM, value);
+        SaveSettings();
     }
 
     private void OnSFXSlider(float value)
@@ -130,42 +113,32 @@ public class SoundSettingsUI : MonoBehaviour
         _sfxVol = value;
         ApplySFXVolume();
         SyncText(sfxInputField, sfxValueText, value);
-        PlayerPrefs.SetFloat(KEY_SFX, value);
+        SaveSettings();
     }
-
-    // ── InputField 콜백 ─────────────────────────────
 
     private void OnMasterInput(string text)
     {
-        if (!int.TryParse(text, out int val)) { SyncText(masterInputField, masterValueText, _masterVol); return; }
-        _masterVol = Mathf.Clamp01(val / 100f);
+        if (!TryParsePercent(text, _masterVol, out _masterVol, masterInputField, masterValueText)) return;
         ApplyMasterVolume();
         SetSliderSilent(masterSlider, _masterVol);
-        SyncText(masterInputField, masterValueText, _masterVol);
-        PlayerPrefs.SetFloat(KEY_MASTER, _masterVol);
+        SaveSettings();
     }
 
     private void OnBGMInput(string text)
     {
-        if (!int.TryParse(text, out int val)) { SyncText(bgmInputField, bgmValueText, _bgmVol); return; }
-        _bgmVol = Mathf.Clamp01(val / 100f);
+        if (!TryParsePercent(text, _bgmVol, out _bgmVol, bgmInputField, bgmValueText)) return;
         ApplyBGMVolume();
         SetSliderSilent(bgmSlider, _bgmVol);
-        SyncText(bgmInputField, bgmValueText, _bgmVol);
-        PlayerPrefs.SetFloat(KEY_BGM, _bgmVol);
+        SaveSettings();
     }
 
     private void OnSFXInput(string text)
     {
-        if (!int.TryParse(text, out int val)) { SyncText(sfxInputField, sfxValueText, _sfxVol); return; }
-        _sfxVol = Mathf.Clamp01(val / 100f);
+        if (!TryParsePercent(text, _sfxVol, out _sfxVol, sfxInputField, sfxValueText)) return;
         ApplySFXVolume();
         SetSliderSilent(sfxSlider, _sfxVol);
-        SyncText(sfxInputField, sfxValueText, _sfxVol);
-        PlayerPrefs.SetFloat(KEY_SFX, _sfxVol);
+        SaveSettings();
     }
-
-    // ── 음소거 토글 콜백 ────────────────────────────
 
     private void OnMasterMute(bool muted)
     {
@@ -173,7 +146,7 @@ public class SoundSettingsUI : MonoBehaviour
         _muteMaster = muted;
         ApplyMasterVolume();
         SetInteractable(masterSlider, masterInputField, !muted);
-        PlayerPrefs.SetInt(KEY_MUTE_MASTER, muted ? 1 : 0);
+        SaveSettings();
     }
 
     private void OnBGMMute(bool muted)
@@ -182,7 +155,7 @@ public class SoundSettingsUI : MonoBehaviour
         _muteBGM = muted;
         ApplyBGMVolume();
         SetInteractable(bgmSlider, bgmInputField, !muted);
-        PlayerPrefs.SetInt(KEY_MUTE_BGM, muted ? 1 : 0);
+        SaveSettings();
     }
 
     private void OnSFXMute(bool muted)
@@ -191,29 +164,39 @@ public class SoundSettingsUI : MonoBehaviour
         _muteSFX = muted;
         ApplySFXVolume();
         SetInteractable(sfxSlider, sfxInputField, !muted);
-        PlayerPrefs.SetInt(KEY_MUTE_SFX, muted ? 1 : 0);
+        SaveSettings();
     }
 
-    // ── 볼륨 적용 ───────────────────────────────────
+    private void ApplyAllSettings()
+    {
+        ApplyMasterVolume();
+        ApplyBGMVolume();
+        ApplySFXVolume();
+    }
 
     private void ApplyMasterVolume()
     {
-        AudioListener.volume = _muteMaster ? 0f : _masterVol;
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetVolume(AudioManager.Instance.masterParam, _muteMaster ? 0f : _masterVol);
+        }
     }
 
     private void ApplyBGMVolume()
     {
-        var bgm = FindFirstObjectByType<BGMPlayer>();
-        if (bgm != null) bgm.SetVolume(_muteBGM ? 0f : _bgmVol);
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetVolume(AudioManager.Instance.bgmParam, _muteBGM ? 0f : _bgmVol);
+        }
     }
 
     private void ApplySFXVolume()
     {
-        if (SFXManager.Instance != null)
-            SFXManager.Instance.SetMasterVolume(_muteSFX ? 0f : _sfxVol);
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetVolume(AudioManager.Instance.sfxParam, _muteSFX ? 0f : _sfxVol);
+        }
     }
-
-    // ── 설정창 열기 / 닫기 ──────────────────────────
 
     public void OpenSettings()
     {
@@ -222,11 +205,8 @@ public class SoundSettingsUI : MonoBehaviour
 
     public void CloseSettings()
     {
-        PlayerPrefs.Save();
         if (settingsPanel != null) settingsPanel.SetActive(false);
     }
-
-    // ── UI 초기화 ───────────────────────────────────
 
     private void ApplyToUI()
     {
@@ -251,9 +231,43 @@ public class SoundSettingsUI : MonoBehaviour
         _isInit = false;
     }
 
-    // ── 유틸 ────────────────────────────────────────
+    private void LoadSettings()
+    {
+        var sound = GameSettingsManager.Instance.Settings.sound;
+        _masterVol = sound.masterVolume;
+        _bgmVol = sound.bgmVolume;
+        _sfxVol = sound.sfxVolume;
+        _muteMaster = sound.muteMaster;
+        _muteBGM = sound.muteBgm;
+        _muteSFX = sound.muteSfx;
+    }
 
-    // ★ 핵심 수정: RemoveAllListeners() 제거 → _isInit 플래그만 사용
+    private void SaveSettings()
+    {
+        var sound = GameSettingsManager.Instance.Settings.sound;
+        sound.masterVolume = _masterVol;
+        sound.bgmVolume = _bgmVol;
+        sound.sfxVolume = _sfxVol;
+        sound.muteMaster = _muteMaster;
+        sound.muteBgm = _muteBGM;
+        sound.muteSfx = _muteSFX;
+        GameSettingsManager.Instance.SaveSettings();
+    }
+
+    private bool TryParsePercent(string text, float fallback, out float value, TMP_InputField input, TMP_Text label)
+    {
+        if (!int.TryParse(text, out int percent))
+        {
+            value = fallback;
+            SyncText(input, label, fallback);
+            return false;
+        }
+
+        value = Mathf.Clamp01(percent / 100f);
+        SyncText(input, label, value);
+        return true;
+    }
+
     private void SetSliderSilent(Slider slider, float value)
     {
         if (slider == null) return;

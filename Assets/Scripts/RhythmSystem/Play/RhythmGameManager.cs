@@ -28,14 +28,7 @@ namespace RhythmSystem.Play
         private ChartData currentChart;
         private RhythmState gameState = new RhythmState();
         private List<GimmickEvent> scrollSpeedGimmicks = new List<GimmickEvent>();
-
-        private struct StopMapping
-        {
-            public float logicalStartTime;
-            public float audioStartTime;
-            public float duration;
-        }
-        private List<StopMapping> stopMappings = new List<StopMapping>();
+        private readonly StopTimeline stopTimeline = new StopTimeline();
         private float globalTimerMs = 0;
 
         void Start()
@@ -114,24 +107,7 @@ namespace RhythmSystem.Play
             gameState.combo = 0;
             gameState.scrollSpeedMultiplier = 1f;
             
-            // Pre-calculate Stop Gimmicks
-            stopMappings.Clear();
-            var sortedStops = currentChart.gimmicks
-                .Where(g => g.type == GimmickType.Stop)
-                .OrderBy(g => g.time)
-                .ToList();
-
-            float cumulativeStop = 0;
-            foreach (var s in sortedStops)
-            {
-                stopMappings.Add(new StopMapping
-                {
-                    logicalStartTime = s.time,
-                    audioStartTime = s.time + cumulativeStop,
-                    duration = s.value
-                });
-                cumulativeStop += s.value;
-            }
+            stopTimeline.Rebuild(currentChart.gimmicks);
 
             // In our system, startTimeMs is already the logical start time.
             // We need to calculate the initial globalTimerMs.
@@ -143,6 +119,12 @@ namespace RhythmSystem.Play
             PauseGame(false);
 
             if (audioSource == null) audioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+
+            // AudioManager의 BGM 그룹에 연결하여 전역 설정을 따르도록 함
+            if (AudioManager.Instance != null && AudioManager.Instance.bgmGroup != null)
+            {
+                audioSource.outputAudioMixerGroup = AudioManager.Instance.bgmGroup;
+            }
 
             SetupAudio();
 
@@ -165,19 +147,7 @@ namespace RhythmSystem.Play
 
         private float GetLogicalTime(float audioTimeMs)
         {
-            float cumulativeStop = 0;
-            foreach (var m in stopMappings)
-            {
-                if (audioTimeMs <= m.audioStartTime) break;
-
-                // Inside stop duration
-                if (audioTimeMs < m.audioStartTime + m.duration)
-                {
-                    return m.logicalStartTime;
-                }
-                cumulativeStop += m.duration;
-            }
-            return audioTimeMs - cumulativeStop;
+            return stopTimeline.GetLogicalTime(audioTimeMs);
         }
 
         private void SetupAudio()

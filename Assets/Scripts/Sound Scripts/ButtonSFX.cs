@@ -3,12 +3,12 @@ using UnityEngine.UI;
 
 /// <summary>
 /// UI Button 클릭 효과음 컴포넌트
-/// Button 오브젝트에 붙이고 Inspector에서 AudioClip만 드래그하면 끝
+/// 통합 오디오 매니저를 통해 재생됩니다.
 /// </summary>
 [RequireComponent(typeof(Button))]
 public class ButtonSFX : MonoBehaviour
 {
-    [Header("클릭 효과음 — 여기에 드래그하세요")]
+    [Header("클릭 효과음")]
     public AudioClip clip;
 
     [Range(0f, 1f)]
@@ -18,17 +18,13 @@ public class ButtonSFX : MonoBehaviour
     public float pitch = 1f;
 
     private Button _button;
-    private AudioSource _source;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
 
-        _source = gameObject.AddComponent<AudioSource>();
-        _source.playOnAwake = false;
-
         if (clip == null)
-            Debug.LogError($"[ButtonSFX] '{gameObject.name}' — clip이 비어 있습니다! Inspector에서 AudioClip을 드래그해 주세요.");
+            Debug.LogError($"[ButtonSFX] '{gameObject.name}' — clip이 비어 있습니다!");
     }
 
     private void Start()
@@ -44,22 +40,15 @@ public class ButtonSFX : MonoBehaviour
 
     public void PlaySFX()
     {
-        if (clip == null)
-        {
-            Debug.LogError($"[ButtonSFX] '{gameObject.name}' — clip이 없어서 재생할 수 없습니다.");
-            return;
-        }
+        if (clip == null) return;
 
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlayDirect(clip, volume, pitch);
         }
-        else
+        else if (AudioManager.Instance != null)
         {
-            _source.clip = clip;
-            _source.volume = volume;
-            _source.pitch = pitch;
-            _source.Play();
+            AudioManager.Instance.PlaySFX(clip, volume, pitch);
         }
     }
 }

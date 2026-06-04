@@ -45,10 +45,31 @@ namespace Core
     using RhythmSystem;
 
     [System.Serializable]
+    public class SoundSettings
+    {
+        public float masterVolume = 1f;
+        public float bgmVolume = 0.5f;
+        public float sfxVolume = 1f;
+        public bool muteMaster = false;
+        public bool muteBgm = false;
+        public bool muteSfx = false;
+    }
+
+    [System.Serializable]
     public class GameSettings
     {
         public RhythmSettings rhythm = new RhythmSettings();
         public EditorSettings editor = new EditorSettings();
+        public SoundSettings sound = new SoundSettings();
+
+        public void EnsureDefaults()
+        {
+            if (rhythm == null) rhythm = new RhythmSettings();
+            if (editor == null) editor = new EditorSettings();
+            if (sound == null) sound = new SoundSettings();
+
+            rhythm.EnsureDefaults();
+        }
     }
 
     public class GameSettingsManager : MonoBehaviour
@@ -118,15 +139,13 @@ namespace Core
                 SaveSettings();
             }
 
-            if (_settings != null && _settings.rhythm != null)
-            {
-                _settings.rhythm.EnsureDefaults();
-            }
+            _settings.EnsureDefaults();
         }
 
         public void SaveSettings()
         {
             if (_settings == null) _settings = new GameSettings();
+            _settings.EnsureDefaults();
             string json = JsonUtility.ToJson(_settings, true);
             File.WriteAllText(SettingsPath, json);
         }

@@ -1,12 +1,20 @@
 using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace CookingGame
 {
     public class OrderManager : MonoBehaviour
     {
+        private enum DialogueState
+        {
+            WaitingArrival,
+            Opening,
+            Result
+        }
+
         [Header("Scene Names")]
         public string gameplaySceneName = "Game Debug Scene";
         public string dialogueSceneName = "Customer Debug Scene";
@@ -17,157 +25,138 @@ namespace CookingGame
         [Header("UI References")]
         public GameObject dialoguePanel;
         public Image customerPortrait;
-        public Animator customerAnimator; // Added for animator override support
+        public Animator customerAnimator;
         public TextMeshProUGUI customerNameText;
         public TextMeshProUGUI dialogueText;
-        
+
         [Header("Timing")]
         public float arrivalDelay = 1.5f;
         public float typeSpeed = 0.05f;
 
-        private int currentDialogueIndex = 0;
-        private bool isShowingResult = false;
-        private bool lastSuccess = false;
-        private bool isTyping = false;
+        private DialogueState state = DialogueState.WaitingArrival;
+        private int currentDialogueIndex;
+        private bool isTyping;
         private string currentFullText = "";
         private Coroutine typingCoroutine;
 
         private void Start()
         {
-            if (CookingSession.CurrentStage == null && debugStage != null)
-            {
-                CookingSession.StartSession(debugStage);
-            }
+            EnsureSession();
 
-            if (CookingSession.CurrentStage != null)
+            if (CookingSession.CurrentStage == null) return;
+
+            if (CookingSession.IsReturningFromResult)
             {
-                if (CookingSession.IsReturningFromResult)
-                {
-                    ShowResultDialogue(CookingSession.LastGameSuccess);
-                }
-                else
-                {
-                    StartCoroutine(LoadCustomerWithDelay());
-                }
+                ShowResultDialogue(CookingSession.LastGameSuccess);
+            }
+            else
+            {
+                StartCoroutine(LoadCustomerWithDelay());
             }
         }
 
         private void Update()
         {
-            if (dialoguePanel != null && dialoguePanel.activeSelf)
+            if (!IsDialogueVisible() || !WasAdvancePressed()) return;
+            HandleAdvanceInput();
+        }
+
+        private void EnsureSession()
+        {
+            if (CookingSession.CurrentStage == null && debugStage != null)
             {
-                if (UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame || 
-                    UnityEngine.InputSystem.Keyboard.current.enterKey.wasPressedThisFrame ||
-                    UnityEngine.InputSystem.Keyboard.current.numpadEnterKey.wasPressedThisFrame)
-                {
-                    if (isTyping)
-                    {
-                        CompleteTypingImmediately();
-                    }
-                    else if (isShowingResult)
-                    {
-                        AdvanceAfterResult();
-                    }
-                    else
-                    {
-                        OnNextDialogue();
-                    }
-                }
+                CookingSession.StartSession(debugStage);
             }
         }
 
         private IEnumerator LoadCustomerWithDelay()
         {
-            isShowingResult = false;
-            if (customerPortrait != null) customerPortrait.gameObject.SetActive(false);
-            if (dialoguePanel != null) dialoguePanel.SetActive(false);
+            state = DialogueState.WaitingArrival;
+            SetDialogueVisible(false);
+            SetPortraitVisible(false);
+
             yield return new WaitForSeconds(arrivalDelay);
+
             LoadCustomer();
         }
 
         private void LoadCustomer()
         {
-            if (CookingSession.CurrentCustomerIndex < CookingSession.CurrentStage.customerQueue.Count)
+            if (CookingSession.CurrentCustomerIndex >= CookingSession.CurrentStage.customerQueue.Count)
             {
-                CookingSession.CurrentCustomer = CookingSession.CurrentStage.customerQueue[CookingSession.CurrentCustomerIndex];
-                if (customerPortrait != null) customerPortrait.gameObject.SetActive(true);
-                ShowOpeningDialogue();
+                CompleteStage();
+                return;
             }
-            else
-            {
-                Debug.Log("Stage Complete!");
-                CookingSession.Clear();
-                SceneTransitionManager.Instance.LoadScene("TitleScene");
-            }
+
+            CookingSession.CurrentCustomer =
+                CookingSession.CurrentStage.customerQueue[CookingSession.CurrentCustomerIndex];
+
+            ShowOpeningDialogue();
         }
 
         private void ShowOpeningDialogue()
         {
+            state = DialogueState.Opening;
             currentDialogueIndex = 0;
-            isShowingResult = false;
-            dialoguePanel.SetActive(true);
-            
-            if (customerPortrait != null) customerPortrait.sprite = CookingSession.CurrentCustomer.portrait;
-            if (customerAnimator != null)
-            {
-                if (CookingSession.CurrentCustomer.animatorOverride != null)
-                    customerAnimator.runtimeAnimatorController = CookingSession.CurrentCustomer.animatorOverride;
-                
-                customerAnimator.Play("Customer_Idle");
-            }
-            if (customerNameText != null) customerNameText.text = CookingSession.CurrentCustomer.customerName;
 
-            DisplayDialogue();
+            SetDialogueVisible(true);
+            SetPortraitVisible(true);
+            BindCustomerView(CookingSession.CurrentCustomer, "Customer_Idle");
+            ShowCurrentOpeningLine();
         }
 
-        private void DisplayDialogue()
+        private void ShowCurrentOpeningLine()
         {
             var customer = CookingSession.CurrentCustomer;
-            if (customer.openingDialogues != null && currentDialogueIndex < customer.openingDialogues.Length)
+            if (customer.openingDialogues == null || currentDialogueIndex >= customer.openingDialogues.Length)
             {
-                StartTyping(customer.openingDialogues[currentDialogueIndex]);
+                StartGameplay();
+                return;
             }
+
+            StartTyping(customer.openingDialogues[currentDialogueIndex]);
         }
 
-        private void StartTyping(string text)
+        private void ShowResultDialogue(bool success)
         {
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            currentFullText = text;
-            typingCoroutine = StartCoroutine(TypeDialogueCoroutine(text));
+            CookingSession.IsReturningFromResult = false;
+            state = DialogueState.Result;
+
+            SetDialogueVisible(true);
+            SetPortraitVisible(true);
+
+            var customer = CookingSession.CurrentCustomer;
+            BindCustomerView(customer, success ? "Customer_Success" : "Customer_Fail");
+            StartTyping(success ? customer.successDialogue : customer.failureDialogue);
         }
 
-        private IEnumerator TypeDialogueCoroutine(string text)
+        private void HandleAdvanceInput()
         {
-            isTyping = true;
-            dialogueText.text = "";
-            foreach (char c in text.ToCharArray())
+            if (isTyping)
             {
-                dialogueText.text += c;
-                yield return new WaitForSeconds(typeSpeed);
+                CompleteTypingImmediately();
+                return;
             }
-            isTyping = false;
-            typingCoroutine = null;
-        }
 
-        private void CompleteTypingImmediately()
-        {
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            dialogueText.text = currentFullText;
-            isTyping = false;
-            typingCoroutine = null;
+            if (state == DialogueState.Result)
+            {
+                AdvanceAfterResult();
+                return;
+            }
+
+            OnNextDialogue();
         }
 
         public void OnNextDialogue()
         {
             currentDialogueIndex++;
-            if (currentDialogueIndex < CookingSession.CurrentCustomer.openingDialogues.Length)
-            {
-                DisplayDialogue();
-            }
-            else
-            {
-                StartGameplay();
-            }
+            ShowCurrentOpeningLine();
+        }
+
+        private void AdvanceAfterResult()
+        {
+            CookingSession.CurrentCustomerIndex++;
+            StartCoroutine(LoadCustomerWithDelay());
         }
 
         private void StartGameplay()
@@ -175,33 +164,86 @@ namespace CookingGame
             SceneTransitionManager.Instance.LoadScene(gameplaySceneName);
         }
 
-        private void ShowResultDialogue(bool success)
+        private void CompleteStage()
         {
-            CookingSession.IsReturningFromResult = false;
-            isShowingResult = true;
-            lastSuccess = success;
-            
-            dialoguePanel.SetActive(true);
-            var customer = CookingSession.CurrentCustomer;
-            
-            if (customerPortrait != null) customerPortrait.sprite = customer.portrait;
-            if (customerAnimator != null)
-            {
-                if (customer.animatorOverride != null)
-                    customerAnimator.runtimeAnimatorController = customer.animatorOverride;
-                
-                customerAnimator.Play(success ? "Customer_Success" : "Customer_Fail");
-            }
-            if (customerNameText != null) customerNameText.text = customer.customerName;
-            
-            string resultText = success ? customer.successDialogue : customer.failureDialogue;
-            StartTyping(resultText);
+            Debug.Log("Stage Complete!");
+            CookingSession.Clear();
+            SceneTransitionManager.Instance.LoadScene("TitleScene");
         }
 
-        private void AdvanceAfterResult()
+        private void BindCustomerView(CustomerData customer, string animationName)
         {
-            CookingSession.CurrentCustomerIndex++;
-            StartCoroutine(LoadCustomerWithDelay());
+            if (customerPortrait != null) customerPortrait.sprite = customer.portrait;
+            if (customerNameText != null) customerNameText.text = customer.customerName;
+
+            if (customerAnimator == null) return;
+
+            if (customer.animatorOverride != null)
+            {
+                customerAnimator.runtimeAnimatorController = customer.animatorOverride;
+            }
+
+            customerAnimator.Play(animationName);
+        }
+
+        private void StartTyping(string text)
+        {
+            StopTypingCoroutine();
+            currentFullText = text;
+            typingCoroutine = StartCoroutine(TypeDialogueCoroutine(text));
+        }
+
+        private IEnumerator TypeDialogueCoroutine(string text)
+        {
+            isTyping = true;
+            if (dialogueText != null) dialogueText.text = "";
+
+            foreach (char c in text.ToCharArray())
+            {
+                if (dialogueText != null) dialogueText.text += c;
+                yield return new WaitForSeconds(typeSpeed);
+            }
+
+            isTyping = false;
+            typingCoroutine = null;
+        }
+
+        private void CompleteTypingImmediately()
+        {
+            StopTypingCoroutine();
+            if (dialogueText != null) dialogueText.text = currentFullText;
+            isTyping = false;
+        }
+
+        private void StopTypingCoroutine()
+        {
+            if (typingCoroutine == null) return;
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        private bool IsDialogueVisible()
+        {
+            return dialoguePanel != null && dialoguePanel.activeSelf;
+        }
+
+        private void SetDialogueVisible(bool visible)
+        {
+            if (dialoguePanel != null) dialoguePanel.SetActive(visible);
+        }
+
+        private void SetPortraitVisible(bool visible)
+        {
+            if (customerPortrait != null) customerPortrait.gameObject.SetActive(visible);
+        }
+
+        private bool WasAdvancePressed()
+        {
+            var keyboard = Keyboard.current;
+            return keyboard != null
+                   && (keyboard.spaceKey.wasPressedThisFrame
+                       || keyboard.enterKey.wasPressedThisFrame
+                       || keyboard.numpadEnterKey.wasPressedThisFrame);
         }
     }
 }
