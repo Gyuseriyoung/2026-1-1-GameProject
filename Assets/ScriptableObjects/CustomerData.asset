@@ -25,7 +25,6 @@ MonoBehaviour:
     \uAC70 \uC544\uB2C8\uB2E4."
   - "\uB124 \uAC00\uAC8C \uB9DD\uD574\uC11C \uB3D9\uB124 \uC774\uBBF8\uC9C0 \uB5A8\uC5B4\uC9C0\uB294
     \uAC8C \uC2EB\uC744 \uBFD0\uC774\uC57C."
-  - 
   orders:
   - targetMergeType: 0
     targetMergeIndex: 4
@@ -34,5 +33,5 @@ MonoBehaviour:
     targetMergeIndex: 3
     count: 1
   chartJson: {fileID: 4900000, guid: 9c55a033726ff6a44a2dfce471bfc6b5, type: 3}
-  successDialogue: Success!
-  failureDialogue: Fail...
+  successDialogue: "\uBB50\uC57C? \uCD5C\uC545\uC774\uC57C!  (\uB9DB\uC788\uB294\uAC78..?)"
+  failureDialogue: "\uCD5C\uC545\uC774\uAD70...."
