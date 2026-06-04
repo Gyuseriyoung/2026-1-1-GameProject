@@ -16,8 +16,6 @@ namespace RhythmSystem.Play
         public AudioSource audioSource;
 
         [Header("New Decoupled Components")]
-        public RhythmClock clock;
-        public RhythmInputProcessor inputProcessor;
         public RhythmJudger judger;
         public LaneManager laneManager;
         public RhythmVisualEffectManager visualManager;
@@ -30,6 +28,13 @@ namespace RhythmSystem.Play
         private List<GimmickEvent> scrollSpeedGimmicks = new List<GimmickEvent>();
         private readonly StopTimeline stopTimeline = new StopTimeline();
         private float globalTimerMs = 0;
+
+        // --- Clock & Input Integrated State ---
+        private float musicOffset;
+        private double dspStartTime;
+        private bool isMusicStarted;
+        private Dictionary<Key, int> keyToLaneMap = new Dictionary<Key, int>();
+        private int lastActiveLaneCount = -1;
 
         void Start()
         {
@@ -54,13 +59,10 @@ namespace RhythmSystem.Play
 
         private void InitializeComponents()
         {
-            if (clock == null) clock = gameObject.AddComponent<RhythmClock>();
-            if (inputProcessor == null) inputProcessor = gameObject.AddComponent<RhythmInputProcessor>();
             if (judger == null) judger = gameObject.AddComponent<RhythmJudger>();
             if (laneManager == null) laneManager = GetComponentInChildren<LaneManager>(); 
             if (visualManager == null) visualManager = gameObject.AddComponent<RhythmVisualEffectManager>();
 
-            inputProcessor.Initialize(playerInput);
             visualManager.Initialize();
             
             // Subscribe to pause event from input
@@ -133,11 +135,11 @@ namespace RhythmSystem.Play
             judger.Initialize(gameState, playNoteSpawner, new List<IRhythmModifier>());
 
             // Initial input mapping
-            inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
+            UpdateInputMapping(laneManager.GetCurrentKeyMapping());
 
             // START CLOCK (Only the clock starts the music)
             gameState.isPaused = false;
-            clock.StartMusic(startTimeMs);
+            StartMusic(startTimeMs);
 
             RhythmEvents.OnGameStart?.Invoke();
         }
@@ -163,19 +165,26 @@ namespace RhythmSystem.Play
                 if (clip != null)
                 {
                     audioSource.clip = clip;
+                    // Force audio data to load into memory NOW.
+                    // If we don't do this, PlayScheduled() will delay in the Build while it reads from disk,
+                    // causing a massive 90ms+ offset discrepancy between Editor and Build.
+                    if (clip.loadState != AudioDataLoadState.Loaded)
+                    {
+                        clip.LoadAudioData();
+                    }
                 }
             }
-            clock.Initialize(gameState, audioSource, currentChart.musicOffset);
+            musicOffset = currentChart.musicOffset;
         }
-
-        private int lastActiveLaneCount = -1;
 
         void Update()
         {
+            ProcessInput();
+
             if (!gameState.isPlaying || gameState.isPaused) return;
 
             // Get precision time from clock AND APPLY GLOBAL OFFSET HERE
-            float rawClockTime = clock.CalculateGlobalTimeMs();
+            float rawClockTime = CalculateGlobalTimeMs();
             float offset = Core.GameSettingsManager.Instance.Settings.rhythm.globalOffset;
             
             // This is the "Truth" time for the entire system
@@ -205,12 +214,69 @@ namespace RhythmSystem.Play
             var activeLanes = laneManager.GetActiveLanes();
             if (activeLanes.Count != lastActiveLaneCount)
             {
-                inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
+                UpdateInputMapping(laneManager.GetCurrentKeyMapping());
                 lastActiveLaneCount = activeLanes.Count;
             }
 
             judger.UpdateLogic();
             playNoteSpawner.UpdateNotes(gameState.scrollSpeedMultiplier);
+        }
+
+        // --- Integrated Input Processor ---
+        private void ProcessInput()
+        {
+            if (gameState.isPaused || keyToLaneMap == null) return;
+
+            var kb = Keyboard.current;
+            if (kb == null) return;
+
+            foreach (var kvp in keyToLaneMap)
+            {
+                if (kb[kvp.Key].wasPressedThisFrame) RhythmEvents.OnLaneDown?.Invoke(kvp.Value);
+                if (kb[kvp.Key].wasReleasedThisFrame) RhythmEvents.OnLaneUp?.Invoke(kvp.Value);
+            }
+
+            if (playerInput != null && playerInput.actions["Back"].WasPressedThisFrame())
+            {
+                RhythmEvents.OnGamePause?.Invoke(!gameState.isPaused);
+            }
+        }
+
+        public void UpdateInputMapping(Dictionary<Key, int> newMapping)
+        {
+            keyToLaneMap = new Dictionary<Key, int>(newMapping);
+        }
+
+        // --- Integrated Clock ---
+        private void StartMusic(float initialTimeMs)
+        {
+            if (audioSource == null || audioSource.clip == null) return;
+
+            double now = AudioSettings.dspTime;
+            dspStartTime = now - (initialTimeMs / 1000.0);
+
+            if (initialTimeMs < 0)
+            {
+                audioSource.time = musicOffset / 1000f;
+                audioSource.PlayScheduled(dspStartTime);
+            }
+            else
+            {
+                audioSource.time = (initialTimeMs + musicOffset) / 1000f;
+                audioSource.Play();
+            }
+            isMusicStarted = true;
+        }
+
+        private float CalculateGlobalTimeMs()
+        {
+            if (!isMusicStarted || gameState.isPaused) return gameState.currentTimeMs;
+
+            if (audioSource != null && audioSource.isPlaying && AudioSettings.dspTime >= dspStartTime)
+            {
+                return (audioSource.time * 1000f) - musicOffset;
+            }
+            return (float)((AudioSettings.dspTime - dspStartTime) * 1000.0);
         }
 
         public bool IsPaused => gameState.isPaused;
@@ -220,10 +286,16 @@ namespace RhythmSystem.Play
             if (gameState.isPaused == pause) return;
 
             gameState.isPaused = pause;
-            inputProcessor.SetPaused(pause);
-            
-            // Single point of audio control
-            if (clock != null) clock.SetPaused(pause);
+
+            if (isMusicStarted && audioSource != null)
+            {
+                if (pause) audioSource.Pause();
+                else
+                {
+                    audioSource.UnPause();
+                    dspStartTime = AudioSettings.dspTime - (audioSource.time * 1000.0 - musicOffset) / 1000.0;
+                }
+            }
 
             if (optionsUIManager != null) optionsUIManager.SetPanelActive(pause);
         }
@@ -266,10 +338,7 @@ namespace RhythmSystem.Play
 
         public void RefreshInputMapping()
         {
-            if (laneManager != null && inputProcessor != null)
-            {
-                inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
-            }
+            if (laneManager != null) UpdateInputMapping(laneManager.GetCurrentKeyMapping());
         }
 
         public float GetCurrentTimeMs() => gameState.currentTimeMs;

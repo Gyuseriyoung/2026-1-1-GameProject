@@ -8,7 +8,6 @@ namespace RhythmSystem.Play
     {
         private RhythmState state;
         private PlayNoteSpawner spawner;
-        private RhythmClock clock; 
         private List<IRhythmModifier> modifiers = new List<IRhythmModifier>();
         private List<NoteObject> activeHoldNotes = new List<NoteObject>();
 
@@ -23,7 +22,6 @@ namespace RhythmSystem.Play
         {
             this.state = state;
             this.spawner = spawner;
-            this.clock = GetComponent<RhythmClock>() ?? GetComponentInParent<RhythmClock>();
             this.modifiers = initialModifiers ?? new List<IRhythmModifier>();
 
             RhythmEvents.OnLaneDown += OnLaneDown;
@@ -51,15 +49,10 @@ namespace RhythmSystem.Play
 
         private float GetCurrentGameTime()
         {
-            if (clock == null) return state.currentTimeMs;
-            
-            // Fetch real-time from DSP clock instead of cached frame time
-            float globalTime = clock.CalculateGlobalTimeMs();
-            
-            // Apply global offset from settings to compensate for system latency
-            float offset = Core.GameSettingsManager.Instance.Settings.rhythm.globalOffset;
-            
-            return globalTime + offset;
+            // By using state.currentTimeMs, we ensure perfect synchronization 
+            // with the visual position of the notes, and it automatically includes 
+            // global offsets and Stop gimmick logic processed in GameManager.
+            return state.currentTimeMs;
         }
 
         private void OnLaneDown(int laneIndex)
@@ -96,6 +89,18 @@ namespace RhythmSystem.Play
                 var noteToPlay = bestNote ?? spawnedNotes.FirstOrDefault(n => !n.IsJudged && n.Data.laneIndex == laneIndex);
                 var laneManager = GetComponent<LaneManager>() ?? GetComponentInParent<LaneManager>();
                 if (laneManager != null && noteToPlay != null) laneManager.PlayNoteSound(noteToPlay.Data);
+            }
+            else 
+            {
+                // Play a fallback sound or at least trigger visual feedback even if NO note is present 
+                // so the player knows their input was registered.
+                var laneManager = GetComponent<LaneManager>() ?? GetComponentInParent<LaneManager>();
+                if (laneManager != null) 
+                {
+                    // Create a dummy NoteData with soundIndex 0 just to trigger the default hit sound
+                    NoteData dummyData = new NoteData { soundIndex = 0 }; 
+                    laneManager.PlayNoteSound(dummyData);
+                }
             }
 
             if (bestNote != null)

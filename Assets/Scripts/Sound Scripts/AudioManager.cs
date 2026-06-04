@@ -68,6 +68,12 @@ public class AudioManager : MonoBehaviour
     {
         AudioSource source = gameObject.AddComponent<AudioSource>();
         source.playOnAwake = false;
+        source.spatialBlend = 0f; // Force 2D sound (avoids 3D distance muting)
+        source.priority = 10;     // Highest priority (0-256) so rhythm sounds are NEVER culled by Unity's voice limit
+        source.bypassEffects = true;
+        source.bypassListenerEffects = true;
+        source.bypassReverbZones = true;
+        
         if (sfxGroup != null) source.outputAudioMixerGroup = sfxGroup;
         _sfxPool.Add(source);
         return source;
@@ -107,16 +113,34 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null) return;
         AudioSource source = GetAvailableSFXSource();
+        source.clip = clip;
+        source.volume = volume;
         source.pitch = pitch;
-        source.PlayOneShot(clip, volume);
+        // Do not use PlayOneShot. In rapid sequences, PlayOneShot queues up too many sounds on the same component.
+        // Instead, we force the AudioSource to Stop and Play the new clip, ensuring immediate playback.
+        source.Stop(); 
+        source.Play();
     }
+
+    private int _poolIndex = 0;
 
     private AudioSource GetAvailableSFXSource()
     {
+        // 1. Try to find a non-playing source
         foreach (var source in _sfxPool)
         {
             if (!source.isPlaying) return source;
         }
-        return CreateNewSFXSource();
+
+        // 2. If the pool is small, expand it slightly up to a reasonable limit (e.g., 32)
+        if (_sfxPool.Count < 32)
+        {
+            return CreateNewSFXSource();
+        }
+
+        // 3. If the pool is full and all are playing, reuse an existing one (Round-Robin).
+        // PlayOneShot allows overlapping, so reusing an active source is safe and prevents infinite component creation.
+        _poolIndex = (_poolIndex + 1) % _sfxPool.Count;
+        return _sfxPool[_poolIndex];
     }
 }

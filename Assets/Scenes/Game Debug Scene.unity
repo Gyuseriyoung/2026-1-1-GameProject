@@ -2502,8 +2502,6 @@ GameObject:
   - component: {fileID: 707284097}
   - component: {fileID: 707284096}
   - component: {fileID: 707284100}
-  - component: {fileID: 707284105}
-  - component: {fileID: 707284104}
   - component: {fileID: 707284103}
   - component: {fileID: 707284102}
   - component: {fileID: 707284101}
@@ -2642,8 +2640,6 @@ MonoBehaviour:
   mergeManager: {fileID: 829606762}
   playerInput: {fileID: 707284100}
   audioSource: {fileID: 707284096}
-  clock: {fileID: 707284105}
-  inputProcessor: {fileID: 707284104}
   judger: {fileID: 707284103}
   laneManager: {fileID: 707284102}
   visualManager: {fileID: 707284101}
@@ -2878,30 +2874,6 @@ MonoBehaviour:
   goodWindow: 80
   missWindow: 150
   earlyMissWindow: 200
---- !u!114 &707284104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 707284095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6d95fb8caddf874799ef1f368fe7092, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.RhythmInputProcessor
---- !u!114 &707284105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 707284095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fd0366705cfffb408b9067699e0ef18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.RhythmClock
 --- !u!1 &752855014
 GameObject:
   m_ObjectHideFlags: 0
