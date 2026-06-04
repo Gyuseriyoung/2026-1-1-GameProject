@@ -255,6 +255,8 @@ namespace RhythmSystem
 
         private void HandleSoundBankChange(int index)
         {
+            // Simply update the selected index for new notes.
+            // index 0 is "None (-1)", index 1+ are actual sounds in the bank.
             editorManager.currentSelectedSoundIndex = index - 1;
         }
 
@@ -262,19 +264,24 @@ namespace RhythmSystem
         {
             if (soundFileListDropdown.options.Count == 0) return;
             string soundName = soundFileListDropdown.options[soundFileListDropdown.value].text;
+            
             if (!editorManager.currentChart.soundBank.Contains(soundName))
             {
                 editorManager.currentChart.soundBank.Add(soundName);
+                // After adding, we might want to automatically select it
+                editorManager.currentSelectedSoundIndex = editorManager.currentChart.soundBank.Count - 1;
                 RefreshSoundBankUI();
             }
         }
 
         private void RemoveSoundFromBank()
         {
-            if (editorManager.currentSelectedSoundIndex >= 0)
+            // Only remove if a valid sound is selected in the bank (index >= 0)
+            if (editorManager.currentSelectedSoundIndex >= 0 && 
+                editorManager.currentSelectedSoundIndex < editorManager.currentChart.soundBank.Count)
             {
                 editorManager.currentChart.soundBank.RemoveAt(editorManager.currentSelectedSoundIndex);
-                editorManager.currentSelectedSoundIndex = -1;
+                editorManager.currentSelectedSoundIndex = -1; // Reset to None
                 RefreshSoundBankUI();
             }
         }

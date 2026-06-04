@@ -109,14 +109,7 @@ namespace RhythmSystem.Play
             
             stopTimeline.Rebuild(currentChart.gimmicks);
 
-            // In our system, startTimeMs is already the logical start time.
-            // We need to calculate the initial globalTimerMs.
-            // Since lead-in time (negative) usually doesn't have stops:
             globalTimerMs = startTimeMs;
-
-            // Reset pause state via public method to ensure UI sync
-            gameState.isPaused = true; 
-            PauseGame(false);
 
             if (audioSource == null) audioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
 
@@ -141,6 +134,10 @@ namespace RhythmSystem.Play
 
             // Initial input mapping
             inputProcessor.UpdateMapping(laneManager.GetCurrentKeyMapping());
+
+            // START CLOCK (Only the clock starts the music)
+            gameState.isPaused = false;
+            clock.StartMusic(startTimeMs);
 
             RhythmEvents.OnGameStart?.Invoke();
         }
@@ -177,16 +174,15 @@ namespace RhythmSystem.Play
         {
             if (!gameState.isPlaying || gameState.isPaused) return;
 
-            // Update Global Timer
-            globalTimerMs += Time.deltaTime * 1000f;
-
-            // If audio is playing and synced, we can potentially sync globalTimerMs to audioSource.time
-            // But for now, let's keep globalTimerMs as the source of truth for "Real Time"
-            // and derive gameState.currentTimeMs (Logical Time) from it.
+            // Get precision time from clock AND APPLY GLOBAL OFFSET HERE
+            float rawClockTime = clock.CalculateGlobalTimeMs();
+            float offset = Core.GameSettingsManager.Instance.Settings.rhythm.globalOffset;
             
+            // This is the "Truth" time for the entire system
+            globalTimerMs = rawClockTime + offset;
+
             gameState.currentTimeMs = GetLogicalTime(globalTimerMs);
 
-            clock.SyncUpdate(globalTimerMs);
             laneManager.UpdateLanes();
 
             // Handle Scroll Speed Gimmicks
@@ -226,11 +222,8 @@ namespace RhythmSystem.Play
             gameState.isPaused = pause;
             inputProcessor.SetPaused(pause);
             
-            if (audioSource != null && audioSource.clip != null)
-            {
-                if (gameState.isPaused) audioSource.Pause();
-                else audioSource.UnPause();
-            }
+            // Single point of audio control
+            if (clock != null) clock.SetPaused(pause);
 
             if (optionsUIManager != null) optionsUIManager.SetPanelActive(pause);
         }

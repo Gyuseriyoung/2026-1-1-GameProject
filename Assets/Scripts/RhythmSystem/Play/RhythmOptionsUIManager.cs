@@ -29,6 +29,10 @@ namespace RhythmSystem.Play
         public Slider judgmentYSlider;
         public TMP_Text judgmentYText;
 
+        [Header("Audio Calibration")]
+        public Slider globalOffsetSlider;
+        public TMP_Text globalOffsetText;
+
         [Header("Key Bindings")]
         public GameObject keyBindingContainer;
         public GameObject keyBindingItemPrefab;
@@ -63,6 +67,10 @@ namespace RhythmSystem.Play
             // Judgment Y
             if (judgmentYSlider != null)
                 judgmentYSlider.onValueChanged.AddListener(OnJudgmentYChanged);
+
+            // Global Offset
+            if (globalOffsetSlider != null)
+                globalOffsetSlider.onValueChanged.AddListener(OnGlobalOffsetChanged);
 
             if (restartButton != null)
                 restartButton.onClick.AddListener(OnRestartClicked);
@@ -140,7 +148,21 @@ namespace RhythmSystem.Play
                 if (laneSpacingText != null) laneSpacingText.text = $"Lane Spacing: {s.laneSpacing:F2}";
             }
 
+            if (globalOffsetSlider != null)
+            {
+                globalOffsetSlider.minValue = -500f;
+                globalOffsetSlider.maxValue = 500f;
+                globalOffsetSlider.value = s.globalOffset;
+                if (globalOffsetText != null) globalOffsetText.text = $"Global Offset: {s.globalOffset:F0} ms";
+            }
+
             RefreshKeyBindingUI();
+        }
+
+        private void OnGlobalOffsetChanged(float value)
+        {
+            Core.GameSettingsManager.Instance.Settings.rhythm.globalOffset = value;
+            if (globalOffsetText != null) globalOffsetText.text = $"Global Offset: {value:F0} ms";
         }
 
         private void OnScrollSpeedEndEdit(string value)

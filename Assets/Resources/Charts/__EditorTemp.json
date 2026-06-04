@@ -6,10 +6,11 @@
         "audioFileName": "Stage_1-Inst.wav"
     },
     "startOffset": 2000.0,
-    "musicOffset": 150.0,
+    "musicOffset": 250.0,
     "length": 19000.0,
     "soundBank": [
-        "Stage_1-Drum.wav"
+        "Drum.wav",
+        "HiHat.wav"
     ],
     "timingPoints": [
         {
@@ -30,42 +31,6 @@
         }
     ],
     "notes": [
-        {
-            "time": 9875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
-        {
-            "time": 11875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
-        {
-            "time": 13875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
-        {
-            "time": 15875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
         {
             "time": 0.0,
             "laneIndex": 0,
@@ -254,6 +219,42 @@
             "mergeType": 0,
             "objectIndex": 0,
             "soundIndex": 0
+        },
+        {
+            "time": 11875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 1
+        },
+        {
+            "time": 9875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 1
+        },
+        {
+            "time": 13875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 1
+        },
+        {
+            "time": 15875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 1
         }
     ],
     "gimmicks": []

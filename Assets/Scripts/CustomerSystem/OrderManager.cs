@@ -34,6 +34,9 @@ namespace CookingGame
         public float arrivalDelay = 1.5f;
         public float typeSpeed = 0.05f;
 
+        [Header("Audio")]
+        public AudioClip defaultTypingSound;
+
         private DialogueState state = DialogueState.WaitingArrival;
         private int currentDialogueIndex;
         private bool isTyping;
@@ -239,6 +242,13 @@ namespace CookingGame
             foreach (char c in text.ToCharArray())
             {
                 if (dialogueText != null) dialogueText.text += c;
+                
+                // Play sound if not whitespace and sound is assigned
+                if (!char.IsWhiteSpace(c) && defaultTypingSound != null && AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySFX(defaultTypingSound);
+                }
+                
                 yield return new WaitForSeconds(typeSpeed);
             }
 

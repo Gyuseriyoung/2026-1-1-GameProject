@@ -12,6 +12,7 @@ namespace RhythmSystem
         public float judgmentX = 0f;     // World units
         public float judgmentY = -3.0f;     // World units offset
         public float laneSpacing = 0.65f; // World units
+        public float globalOffset = 0f;   // ms, to compensate for audio/input latency
         
         public List<Key> laneKeys = new List<Key>();
 

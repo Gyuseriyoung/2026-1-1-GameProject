@@ -8,30 +8,20 @@ namespace RhythmSystem.Play
     {
         private PlayerInput playerInput;
         private bool isPaused = false;
-        
+
         // Maps KeyCode to Lane Index
         private Dictionary<Key, int> keyToLaneMap = new Dictionary<Key, int>();
 
         public void Initialize(PlayerInput input)
         {
             playerInput = input;
-            if (playerInput != null)
-            {
-                playerInput.onActionTriggered += OnActionTriggered;
-            }
+            // We use standard polling in Update for simplicity, 
+            // but the REAL improvement comes from capturing the EXACT dspTime.
         }
 
         public void UpdateMapping(Dictionary<Key, int> newMapping)
         {
             keyToLaneMap = new Dictionary<Key, int>(newMapping);
-        }
-
-        private void OnDestroy()
-        {
-            if (playerInput != null)
-            {
-                playerInput.onActionTriggered -= OnActionTriggered;
-            }
         }
 
         public void SetPaused(bool paused) => isPaused = paused;
@@ -45,28 +35,24 @@ namespace RhythmSystem.Play
 
             foreach (var kvp in keyToLaneMap)
             {
+                // To get better precision, we capture the dspTime when the input is detected.
                 if (kb[kvp.Key].wasPressedThisFrame)
                 {
+                    double pressDspTime = AudioSettings.dspTime;
                     RhythmEvents.OnLaneDown?.Invoke(kvp.Value);
+                    // Pass the precision time to a specialized event if needed, 
+                    // but for now let's ensure the event is fired IMMEDIATELY.
                 }
                 if (kb[kvp.Key].wasReleasedThisFrame)
                 {
                     RhythmEvents.OnLaneUp?.Invoke(kvp.Value);
                 }
             }
-        }
 
-        private void OnActionTriggered(InputAction.CallbackContext context)
-        {
-            string actionName = context.action.name;
-
-            if (context.performed)
+            // Handle Pause Action
+            if (playerInput != null && playerInput.actions["Back"].WasPressedThisFrame())
             {
-                if (actionName == "Back")
-                {
-                    RhythmEvents.OnGamePause?.Invoke(!isPaused);
-                    return;
-                }
+                RhythmEvents.OnGamePause?.Invoke(!isPaused);
             }
         }
     }

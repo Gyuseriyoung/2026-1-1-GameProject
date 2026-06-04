@@ -589,11 +589,12 @@ MonoBehaviour:
   debugStage: {fileID: 11400000, guid: 91513619524e8d64ab35aab01c4e257f, type: 2}
   dialoguePanel: {fileID: 221344887}
   customerPortrait: {fileID: 1377345959}
-  customerAnimator: {fileID: 0}
+  customerAnimator: {fileID: 1377345961}
   customerNameText: {fileID: 360199168}
   dialogueText: {fileID: 2109918515}
   arrivalDelay: 2
   typeSpeed: 0.05
+  defaultTypingSound: {fileID: 8300000, guid: b2abd5bacfee7764bbe849675780565d, type: 3}
 --- !u!4 &962090388
 Transform:
   m_ObjectHideFlags: 0
@@ -640,7 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BGMPlayer
   bgmClip: {fileID: 8300000, guid: 5231bea2eae2eda45a6ee83261f7acb8, type: 3}
-  volume: 1
+  volume: 0.8
   loop: 1
   playOnStart: 1
 --- !u!82 &1078746672
@@ -916,6 +917,7 @@ GameObject:
   - component: {fileID: 1377345958}
   - component: {fileID: 1377345960}
   - component: {fileID: 1377345959}
+  - component: {fileID: 1377345961}
   m_Layer: 5
   m_Name: Portail
   m_TagString: Untagged
@@ -981,6 +983,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377345957}
   m_CullTransparentMesh: 1
+--- !u!95 &1377345961
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377345957}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66f2a8b871681dc45a9f92f7172df4cc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1789573520
 GameObject:
   m_ObjectHideFlags: 0

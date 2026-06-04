@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RhythmSystem.Play
 {
@@ -7,6 +8,7 @@ namespace RhythmSystem.Play
     {
         private RhythmState state;
         private PlayNoteSpawner spawner;
+        private RhythmClock clock; 
         private List<IRhythmModifier> modifiers = new List<IRhythmModifier>();
         private List<NoteObject> activeHoldNotes = new List<NoteObject>();
 
@@ -21,6 +23,7 @@ namespace RhythmSystem.Play
         {
             this.state = state;
             this.spawner = spawner;
+            this.clock = GetComponent<RhythmClock>() ?? GetComponentInParent<RhythmClock>();
             this.modifiers = initialModifiers ?? new List<IRhythmModifier>();
 
             RhythmEvents.OnLaneDown += OnLaneDown;
@@ -46,6 +49,19 @@ namespace RhythmSystem.Play
             }
         }
 
+        private float GetCurrentGameTime()
+        {
+            if (clock == null) return state.currentTimeMs;
+            
+            // Fetch real-time from DSP clock instead of cached frame time
+            float globalTime = clock.CalculateGlobalTimeMs();
+            
+            // Apply global offset from settings to compensate for system latency
+            float offset = Core.GameSettingsManager.Instance.Settings.rhythm.globalOffset;
+            
+            return globalTime + offset;
+        }
+
         private void OnLaneDown(int laneIndex)
         {
             var activeLanes = spawner.GetActiveLanes();
@@ -53,28 +69,18 @@ namespace RhythmSystem.Play
 
             activeLanes[laneIndex].OnPress();
 
+            float currentTime = GetCurrentGameTime();
             var spawnedNotes = spawner.GetSpawnedNotes();
+            
             NoteObject bestNote = null;
             float minDiff = float.MaxValue;
             bool isEarly = false;
-
-            // 1. Find the best note for judgment AND play its sound (Next Note Preview)
-            NoteObject nextNoteToPlay = null;
-            float earliestTime = float.MaxValue;
 
             foreach (var note in spawnedNotes)
             {
                 if (note.IsJudged || note.Data.laneIndex != laneIndex) continue;
 
-                // For Sound Preview: Find the absolute earliest unjudged note
-                if (note.Data.time < earliestTime)
-                {
-                    earliestTime = note.Data.time;
-                    nextNoteToPlay = note;
-                }
-
-                // For Judgment: Find the closest note within earlyMissWindow
-                float rawDiff = note.GetNoteTime() - state.currentTimeMs;
+                float rawDiff = note.GetNoteTime() - currentTime;
                 float absDiff = Mathf.Abs(rawDiff);
 
                 if (absDiff < minDiff && absDiff <= earlyMissWindow)
@@ -84,38 +90,39 @@ namespace RhythmSystem.Play
                     isEarly = rawDiff > 0;
                 }
             }
-
-            // Play sound immediately if any upcoming note exists in this lane
-            if (nextNoteToPlay != null)
+            
+            if (bestNote != null || spawnedNotes.Any(n => !n.IsJudged && n.Data.laneIndex == laneIndex))
             {
-                var laneManager = GetComponent<LaneManager>();
-                if (laneManager != null) laneManager.PlayNoteSound(nextNoteToPlay.Data);
+                var noteToPlay = bestNote ?? spawnedNotes.FirstOrDefault(n => !n.IsJudged && n.Data.laneIndex == laneIndex);
+                var laneManager = GetComponent<LaneManager>() ?? GetComponentInParent<LaneManager>();
+                if (laneManager != null && noteToPlay != null) laneManager.PlayNoteSound(noteToPlay.Data);
             }
 
             if (bestNote != null)
             {
-                ProcessHit(bestNote, minDiff, isEarly);
+                ProcessHit(bestNote, minDiff, isEarly, currentTime);
             }
         }
 
         private void OnLaneUp(int laneIndex)
         {
+            float currentTime = GetCurrentGameTime();
             for (int i = activeHoldNotes.Count - 1; i >= 0; i--)
             {
                 var note = activeHoldNotes[i];
                 if (note.Data.laneIndex == laneIndex)
                 {
                     float endTime = note.Data.time + note.Data.length;
-                    if (state.currentTimeMs < endTime - perfectWindow)
+                    if (currentTime < endTime - perfectWindow)
                     {
-                        ProcessMiss(note, "Miss (Released Early)");
+                        ProcessMiss(note, "Miss (Released Early)", currentTime);
                         activeHoldNotes.RemoveAt(i);
                     }
                 }
             }
         }
 
-        private void ProcessHit(NoteObject note, float absDiff, bool isEarly)
+        private void ProcessHit(NoteObject note, float absDiff, bool isEarly, float currentTime)
         {
             JudgmentRating rating = JudgmentRating.Miss;
 
@@ -129,18 +136,18 @@ namespace RhythmSystem.Play
             {
                 note.StartHolding();
                 activeHoldNotes.Add(note);
-                TriggerHitEvent(note, rating);
+                TriggerHitEvent(note, rating, currentTime);
                 spawner.GetActiveLanes()[note.Data.laneIndex].OnHit(rating.ToString());
             }
             else
             {
                 if (rating == JudgmentRating.Miss || rating == JudgmentRating.EarlyMiss)
                 {
-                    ProcessMiss(note, rating.ToString());
+                    ProcessMiss(note, rating.ToString(), currentTime);
                 }
                 else
                 {
-                    TriggerHitEvent(note, rating);
+                    TriggerHitEvent(note, rating, currentTime);
                     note.OnJudged();
                     
                     var activeLanes = spawner.GetActiveLanes();
@@ -150,36 +157,37 @@ namespace RhythmSystem.Play
             }
         }
 
-        private void ProcessMiss(NoteObject note, string rating)
-        {
-            state.combo = 0;
-            note.SetMissed();
-
-            var args = new NoteMissEventArgs { note = note, laneIndex = note.Data.laneIndex, timeMs = state.currentTimeMs, combo = state.combo };
-            RhythmEvents.OnNoteMiss?.Invoke(args);
-
-            foreach (var mod in modifiers) mod.OnNoteMiss(args, state);
-        }
-
-        private void TriggerHitEvent(NoteObject note, JudgmentRating rating)
+        private void TriggerHitEvent(NoteObject note, JudgmentRating rating, float currentTime)
         {
             state.combo++;
-            var args = new NoteHitEventArgs { note = note, rating = rating, laneIndex = note.Data.laneIndex, timeMs = state.currentTimeMs, combo = state.combo };
+            var args = new NoteHitEventArgs { note = note, rating = rating, laneIndex = note.Data.laneIndex, timeMs = currentTime, combo = state.combo };
             RhythmEvents.OnNoteHit?.Invoke(args);
 
             foreach (var mod in modifiers) mod.OnNoteHit(args, state);
         }
 
+        private void ProcessMiss(NoteObject note, string rating, float currentTime)
+        {
+            state.combo = 0;
+            note.SetMissed();
+
+            var args = new NoteMissEventArgs { note = note, laneIndex = note.Data.laneIndex, timeMs = currentTime, combo = state.combo };
+            RhythmEvents.OnNoteMiss?.Invoke(args);
+
+            foreach (var mod in modifiers) mod.OnNoteMiss(args, state);
+        }
+
         private void UpdateHoldNotes()
         {
+            float currentTime = GetCurrentGameTime();
             for (int i = activeHoldNotes.Count - 1; i >= 0; i--)
             {
                 var note = activeHoldNotes[i];
                 float endTime = note.Data.time + note.Data.length;
 
-                if (state.currentTimeMs >= endTime)
+                if (currentTime >= endTime)
                 {
-                    TriggerHitEvent(note, JudgmentRating.Perfect);
+                    TriggerHitEvent(note, JudgmentRating.Perfect, currentTime);
                     note.CompleteHold();
                     activeHoldNotes.RemoveAt(i);
                 }
@@ -188,15 +196,16 @@ namespace RhythmSystem.Play
 
         private void CheckForMisses()
         {
+            float currentTime = GetCurrentGameTime();
             var spawnedNotes = spawner.GetSpawnedNotes();
             foreach (var note in spawnedNotes)
             {
                 if (note.IsJudged || note.State == NoteState.Holding) continue;
 
-                float diff = state.currentTimeMs - note.GetNoteTime();
+                float diff = currentTime - note.GetNoteTime();
                 if (diff > missWindow)
                 {
-                    ProcessMiss(note, "Miss");
+                    ProcessMiss(note, "Miss", currentTime);
                 }
             }
         }
