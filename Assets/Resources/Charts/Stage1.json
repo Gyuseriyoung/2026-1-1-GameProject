@@ -9,8 +9,8 @@
     "musicOffset": 160.0,
     "length": 19000.0,
     "soundBank": [
-        "Drum.wav",
-        "HiHat.wav"
+        "KnifeEdit_.wav",
+        "KnifeEdit_[cut_0sec].wav"
     ],
     "timingPoints": [
         {
