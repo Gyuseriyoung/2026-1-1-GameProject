@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 221344890}
   - component: {fileID: 221344889}
   - component: {fileID: 221344893}
+  - component: {fileID: 221344894}
   m_Layer: 5
   m_Name: Dialogue Background
   m_TagString: Untagged
@@ -153,10 +154,10 @@ RectTransform:
   - {fileID: 2109918514}
   m_Father: {fileID: 2017153708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 784.94, y: 150}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 392.47, y: -75}
+  m_SizeDelta: {x: 784.94, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221344889
 MonoBehaviour:
@@ -222,6 +223,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &221344894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221344887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &360199166
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,8 +296,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: df89efab6f0a27d409a354c7e50ad2ad, type: 2}
+  m_sharedMaterial: {fileID: 2620313339603161416, guid: df89efab6f0a27d409a354c7e50ad2ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -574,10 +589,11 @@ MonoBehaviour:
   debugStage: {fileID: 11400000, guid: 91513619524e8d64ab35aab01c4e257f, type: 2}
   dialoguePanel: {fileID: 221344887}
   customerPortrait: {fileID: 1377345959}
+  customerAnimator: {fileID: 0}
   customerNameText: {fileID: 360199168}
   dialogueText: {fileID: 2109918515}
-  nextButton: {fileID: 0}
   arrivalDelay: 2
+  typeSpeed: 0.05
 --- !u!4 &962090388
 Transform:
   m_ObjectHideFlags: 0
@@ -1238,7 +1254,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 30, y: 30, z: 30, w: 70}
+  m_margin: {x: 30, y: 30, z: 30, w: 30}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

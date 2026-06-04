@@ -18,6 +18,7 @@ namespace CookingGame
         [Header("Customer Info")]
         public string customerName;
         public Sprite portrait;
+        public AnimatorOverrideController animatorOverride;
 
         [Header("Opening Dialogues")]
         [TextArea] public string[] openingDialogues;
