@@ -7,6 +7,10 @@ namespace CookingGame
     public class StageData : ScriptableObject
     {
         public string stageName;
+        
+        [Header("Stage Intro")]
+        [TextArea] public string[] introDialogues;
+        
         public List<CustomerData> customerQueue;
         
         [Header("Clear Conditions")]

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: StageData
   m_EditorClassIdentifier: Assembly-CSharp::CookingGame.StageData
   stageName: T1
+  introDialogues:
+  - "1\uBC88 \uD14D\uC2A4\uD2B8"
+  - "2\uBC88 \uD14D\uC2A4\uD2B8"
   customerQueue:
   - {fileID: 11400000, guid: 2ff0c217af5bedc4eb81192ba7269898, type: 2}
   - {fileID: 11400000, guid: 91b8c4ce42a7265439258c8d51976e91, type: 2}

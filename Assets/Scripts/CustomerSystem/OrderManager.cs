@@ -11,6 +11,7 @@ namespace CookingGame
         private enum DialogueState
         {
             WaitingArrival,
+            StageIntro,
             Opening,
             Result
         }
@@ -49,6 +50,12 @@ namespace CookingGame
             {
                 ShowResultDialogue(CookingSession.LastGameSuccess);
             }
+            else if (CookingSession.CurrentCustomerIndex == 0 && 
+                     CookingSession.CurrentStage.introDialogues != null && 
+                     CookingSession.CurrentStage.introDialogues.Length > 0)
+            {
+                ShowStageIntroDialogue();
+            }
             else
             {
                 StartCoroutine(LoadCustomerWithDelay());
@@ -67,6 +74,30 @@ namespace CookingGame
             {
                 CookingSession.StartSession(debugStage);
             }
+        }
+
+        private void ShowStageIntroDialogue()
+        {
+            state = DialogueState.StageIntro;
+            currentDialogueIndex = 0;
+
+            SetDialogueVisible(true);
+            SetPortraitVisible(false); // Player is text only
+            if (customerNameText != null) customerNameText.text = ""; // Or "나" / "Player"
+
+            ShowCurrentIntroLine();
+        }
+
+        private void ShowCurrentIntroLine()
+        {
+            var stage = CookingSession.CurrentStage;
+            if (stage.introDialogues == null || currentDialogueIndex >= stage.introDialogues.Length)
+            {
+                StartCoroutine(LoadCustomerWithDelay());
+                return;
+            }
+
+            StartTyping(stage.introDialogues[currentDialogueIndex]);
         }
 
         private IEnumerator LoadCustomerWithDelay()
@@ -141,6 +172,13 @@ namespace CookingGame
             if (state == DialogueState.Result)
             {
                 AdvanceAfterResult();
+                return;
+            }
+
+            if (state == DialogueState.StageIntro)
+            {
+                currentDialogueIndex++;
+                ShowCurrentIntroLine();
                 return;
             }
 
