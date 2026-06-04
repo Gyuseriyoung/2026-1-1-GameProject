@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
-/// <summary>
-/// 화면 아무 곳이나 클릭하면 효과음을 재생합니다.
-/// 빈 오브젝트 하나에 붙여서 씬에 하나만 두면 됩니다.
-/// New Input System 기반
-/// </summary>
 public class ClickSFX : MonoBehaviour
 {
     [Header("클릭 효과음 — 여기에 드래그하세요")]
@@ -18,9 +16,6 @@ public class ClickSFX : MonoBehaviour
     [Range(0.5f, 2f)]
     public float pitch = 1f;
 
-    [Tooltip("버튼 등 UI 위를 클릭할 때도 재생할지 여부")]
-    public bool playOnUI = false;
-
     private AudioSource _source;
 
     private void Awake()
@@ -29,16 +24,37 @@ public class ClickSFX : MonoBehaviour
         _source.playOnAwake = false;
 
         if (clip == null)
-            Debug.LogError("[ClickSFX] clip이 비어 있습니다! Inspector에서 AudioClip을 드래그해 주세요.");
+            Debug.LogError("[ClickSFX] clip이 비어 있습니다!");
     }
 
     private void Update()
     {
         if (!Mouse.current.leftButton.wasPressedThisFrame) return;
+        if (EventSystem.current == null) return;
 
-        // UI 위 클릭 제외 (버튼 등)
-        if (!playOnUI && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        var results = new List<RaycastResult>();
+        var pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Mouse.current.position.ReadValue()
+        };
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        // UI 아무것도 없으면 (빈 배경 클릭) → 소리 재생
+        if (results.Count == 0)
+        {
+            PlaySFX();
             return;
+        }
+
+        // 클릭된 UI 중 하나라도 슬라이더/토글/인풋필드/텍스트면 → 소리 안 냄
+        foreach (var result in results)
+        {
+            var go = result.gameObject;
+            if (go.GetComponentInParent<Slider>() != null) return;
+            if (go.GetComponentInParent<Toggle>() != null) return;
+            if (go.GetComponentInParent<TMP_InputField>() != null) return;
+            if (go.GetComponentInParent<TMP_Text>() != null) return;
+        }
 
         PlaySFX();
     }
