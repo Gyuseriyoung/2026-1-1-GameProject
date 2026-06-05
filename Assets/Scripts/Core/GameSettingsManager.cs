@@ -12,8 +12,8 @@ namespace RhythmSystem
         public float judgmentX = 0f;     // World units
         public float judgmentY = -3.0f;     // World units offset
         public float laneSpacing = 0.65f; // World units
-        public float globalOffset = 250f;   // ms, to compensate for audio/input latency in build
-        public float editorGlobalOffset = 160f; // ms, latency compensation specific to Unity Editor
+        public float globalOffset = 0;   // ms, to compensate for audio/input latency in build
+        public float editorGlobalOffset = 0; // ms, latency compensation specific to Unity Editor
         
         public List<Key> laneKeys = new List<Key>();
 

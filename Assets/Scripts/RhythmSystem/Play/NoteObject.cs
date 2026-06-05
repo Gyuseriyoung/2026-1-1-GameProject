@@ -86,8 +86,10 @@ namespace RhythmSystem.Play
 
             float timeRemaining = (noteData.time - currentTimeMs) / 1000f;
             
-            // Use provided speed or fetch current
-            float effectiveSpeed = worldSpeed > 0 ? worldSpeed : Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+            float baseSpeed = EditorTestSession.IsTestMode ? 
+                EditorTestSession.ScrollSpeed : 
+                Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+            float effectiveSpeed = worldSpeed > 0 ? worldSpeed : baseSpeed;
 
             // If we are holding, the "head" of the note stays at the judgment line
             float xPos;
@@ -128,8 +130,10 @@ namespace RhythmSystem.Play
 
                 remainingLengthSeconds = Mathf.Max(0, remainingLengthSeconds);
                 
-                // Use provided speed or fetch current
-                float effectiveSpeed = worldSpeed > 0 ? worldSpeed : Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+                float baseSpeed = EditorTestSession.IsTestMode ? 
+                    EditorTestSession.ScrollSpeed : 
+                    Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+                float effectiveSpeed = worldSpeed > 0 ? worldSpeed : baseSpeed;
                 float visualLength = remainingLengthSeconds * effectiveSpeed;
                 
                 // Adjust size and position of the body using Tiled mode

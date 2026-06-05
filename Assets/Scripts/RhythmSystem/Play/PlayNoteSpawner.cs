@@ -41,7 +41,11 @@ namespace RhythmSystem.Play
 
         public void UpdateNotes(float speedMultiplier = 1f)
         {
-            float worldSpeed = Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed * speedMultiplier;
+            float baseSpeed = EditorTestSession.IsTestMode ? 
+                EditorTestSession.ScrollSpeed : 
+                Core.GameSettingsManager.Instance.Settings.rhythm.scrollSpeed;
+                
+            float worldSpeed = baseSpeed * speedMultiplier;
             foreach (var note in spawnedNotes)
             {
                 if (note != null) note.UpdatePosition(state.currentTimeMs, worldSpeed);

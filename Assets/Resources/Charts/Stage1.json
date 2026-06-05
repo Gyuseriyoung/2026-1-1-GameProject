@@ -15,7 +15,7 @@
     "timingPoints": [
         {
             "time": 0.0,
-            "bpm": 240.0,
+            "bpm": 120.0,
             "meter": 4,
             "denominator": 4
         }
@@ -32,13 +32,58 @@
     ],
     "notes": [
         {
+            "time": 15750.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 15625.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
             "time": 0.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
+        },
+        {
+            "time": 250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
         },
         {
             "time": 1000.0,
@@ -47,7 +92,34 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
+        },
+        {
+            "time": 1250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 1500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 1750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
         },
         {
             "time": 2000.0,
@@ -56,16 +128,16 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 3000.0,
+            "time": 2250.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
             "time": 4000.0,
@@ -74,106 +146,61 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 5000.0,
+            "time": 3750.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 6000.0,
+            "time": 3500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 7000.0,
+            "time": 3250.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 8000.0,
+            "time": 3000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 9000.0,
+            "time": 2750.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 9750.0,
+            "time": 2500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 10000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 11000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 11750.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 12000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 13000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
             "time": 13750.0,
@@ -182,7 +209,169 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
+        },
+        {
+            "time": 11750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 9750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 8000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 7750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 7500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 7250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 7000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 6750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 6250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 6500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 6000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 5750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 5500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 5250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 5000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 4750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 4500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 4250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
         },
         {
             "time": 14000.0,
@@ -191,70 +380,25 @@
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 15000.0,
+            "time": 12000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
+            "soundIndex": -1
         },
         {
-            "time": 15750.0,
+            "time": 10000.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
             "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 16000.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 0
-        },
-        {
-            "time": 11875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": 1
-        },
-        {
-            "time": 9875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": 1
-        },
-        {
-            "time": 13875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": 1
-        },
-        {
-            "time": 15875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 1,
-            "objectIndex": 0,
-            "soundIndex": 1
+            "soundIndex": -1
         }
     ],
     "gimmicks": []
