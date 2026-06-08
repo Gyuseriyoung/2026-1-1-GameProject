@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df920981e883c40458c50aa874a02353, type: 3}
   m_Name: CustomerData 1
   m_EditorClassIdentifier: Assembly-CSharp::CookingGame.CustomerData
-  customerName: Test2
-  portrait: {fileID: 0}
+  customerName: "\uBBFC\uAE30&\uB3D9\uAC74"
+  portrait: {fileID: 21300000, guid: 8e2cc53f7058ccb46b2a7a829bd3d325, type: 3}
+  animatorOverride: {fileID: 22100000, guid: b82cf5be1da09914abdf87a7ae510355, type: 2}
   openingDialogues:
-  - 4
-  - 5
-  - 6
+  - "1 \uC548\uB155\uD558\uC138\uC694!"
+  - "2 \uC548\uB155\uD558\uC138\uC694!"
+  - "1 \uC544 \uBC30\uACE0\uD504\uB2E4 \uBB50 \uBA39\uC9C0?"
+  - "2 \uCE74\uD398\uC5D0 \uC654\uC73C\uB2C8\uAE50 \uCF00\uC774\uD06C \uBA39\uC5B4\uC57C\uC9C0!"
+  - "1 \uC544 \uB9DE\uB124?"
+  - "1/2 \uC800\uD76C \uCF00\uC774\uD06C 6\uAC1C \uC8FC\uC138\uC694 !"
   orders:
   - targetMergeType: 0
     targetMergeIndex: 4
@@ -25,6 +29,6 @@ MonoBehaviour:
   - targetMergeType: 0
     targetMergeIndex: 3
     count: 1
-  chartJson: {fileID: 4900000, guid: 9c55a033726ff6a44a2dfce471bfc6b5, type: 3}
-  successDialogue: Success!
-  failureDialogue: Fail...
+  chartJson: {fileID: 4900000, guid: 7c5c448477127a84abcf786a30bc6dcf, type: 3}
+  successDialogue: "\uAC1C\uC57C\uB974!!!"
+  failureDialogue: "\uD658\uBD88 \uC548\uB418\uC8E0?"
