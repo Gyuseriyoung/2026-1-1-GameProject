@@ -2643,7 +2643,7 @@ MonoBehaviour:
   judger: {fileID: 707284103}
   laneManager: {fileID: 707284102}
   visualManager: {fileID: 707284101}
-  chartToLoad: TEST
+  chartToLoad: Stage1
 --- !u!4 &707284099
 Transform:
   m_ObjectHideFlags: 0

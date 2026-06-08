@@ -6,7 +6,7 @@
         "audioFileName": "Stage_1-Inst.wav"
     },
     "startOffset": 2000.0,
-    "musicOffset": 160.0,
+    "musicOffset": 170.0,
     "length": 19000.0,
     "soundBank": [
         "KnifeEdit_.wav",
@@ -15,7 +15,7 @@
     "timingPoints": [
         {
             "time": 0.0,
-            "bpm": 120.0,
+            "bpm": 240.0,
             "meter": 4,
             "denominator": 4
         }
@@ -31,24 +31,6 @@
         }
     ],
     "notes": [
-        {
-            "time": 15750.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
-        {
-            "time": 15625.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": -1
-        },
         {
             "time": 0.0,
             "laneIndex": 0,
@@ -397,6 +379,51 @@
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 15750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 9875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 11875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 13875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": -1
+        },
+        {
+            "time": 15875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": -1
         }

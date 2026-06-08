@@ -587,14 +587,11 @@ MonoBehaviour:
   gameplaySceneName: Game Debug Scene
   dialogueSceneName: Customer Debug Scene
   debugStage: {fileID: 11400000, guid: 91513619524e8d64ab35aab01c4e257f, type: 2}
-  dialoguePanel: {fileID: 221344887}
+  dialogueManager: {fileID: 1915091517}
   customerPortrait: {fileID: 1377345959}
   customerAnimator: {fileID: 1377345961}
   customerNameText: {fileID: 360199168}
-  dialogueText: {fileID: 2109918515}
   arrivalDelay: 2
-  typeSpeed: 0.05
-  defaultTypingSound: {fileID: 8300000, guid: b2abd5bacfee7764bbe849675780565d, type: 3}
 --- !u!4 &962090388
 Transform:
   m_ObjectHideFlags: 0
@@ -1142,6 +1139,54 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1915091516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1915091518}
+  - component: {fileID: 1915091517}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1915091517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915091516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8037a9837a4d4bb48809e785f40d50b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CookingGame.DialogueManager
+  dialoguePanel: {fileID: 2017153707}
+  dialogueText: {fileID: 2109918515}
+  typeSpeed: 0.05
+  defaultTypingSound: {fileID: 8300000, guid: 9b41745107cabef418da87acff15d536, type: 3}
+--- !u!4 &1915091518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915091516}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1006, y: 903.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2017153707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,6 +1523,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1789573523}
   - {fileID: 962090388}
+  - {fileID: 1915091518}
   - {fileID: 527302111}
   - {fileID: 2066815781}
   - {fileID: 1078746673}

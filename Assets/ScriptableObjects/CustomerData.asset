@@ -27,10 +27,13 @@ MonoBehaviour:
     \uAC8C \uC2EB\uC744 \uBFD0\uC774\uC57C."
   orders:
   - targetMergeType: 0
-    targetMergeIndex: 4
+    targetMergeIndex: 5
     count: 1
   - targetMergeType: 0
     targetMergeIndex: 3
+    count: 1
+  - targetMergeType: 1
+    targetMergeIndex: 2
     count: 1
   chartJson: {fileID: 4900000, guid: 9c55a033726ff6a44a2dfce471bfc6b5, type: 3}
   successDialogue: "\uBB50\uC57C? \uCD5C\uC545\uC774\uC57C!  (\uB9DB\uC788\uB294\uAC78..?)"

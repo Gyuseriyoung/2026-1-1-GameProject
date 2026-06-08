@@ -31,8 +31,8 @@ namespace RhythmSystem.Play
 
         // --- Clock & Input Integrated State ---
         private float musicOffset;
-        private double dspStartTime;
         private bool isMusicStarted;
+        private float internalTimerMs = 0f;
         private Dictionary<Key, int> keyToLaneMap = new Dictionary<Key, int>();
         private int lastActiveLaneCount = -1;
 
@@ -250,21 +250,8 @@ namespace RhythmSystem.Play
         // --- Integrated Clock ---
         private void StartMusic(float initialTimeMs)
         {
-            if (audioSource == null || audioSource.clip == null) return;
-
-            double now = AudioSettings.dspTime;
-            dspStartTime = now - (initialTimeMs / 1000.0);
-
-            if (initialTimeMs < 0)
-            {
-                audioSource.time = musicOffset / 1000f;
-                audioSource.PlayScheduled(dspStartTime);
-            }
-            else
-            {
-                audioSource.time = (initialTimeMs + musicOffset) / 1000f;
-                audioSource.Play();
-            }
+            internalTimerMs = initialTimeMs;
+            if (audioSource != null) audioSource.Stop();
             isMusicStarted = true;
         }
 
@@ -272,11 +259,36 @@ namespace RhythmSystem.Play
         {
             if (!isMusicStarted || gameState.isPaused) return gameState.currentTimeMs;
 
-            if (audioSource != null && audioSource.isPlaying && AudioSettings.dspTime >= dspStartTime)
+            internalTimerMs += Time.deltaTime * 1000f;
+
+            if (audioSource != null && audioSource.clip != null)
             {
-                return (audioSource.time * 1000f) - musicOffset;
+                float targetAudioTime = (internalTimerMs + musicOffset) / 1000f;
+
+                if (targetAudioTime >= 0 && targetAudioTime < audioSource.clip.length)
+                {
+                    if (!audioSource.isPlaying)
+                    {
+                        audioSource.time = targetAudioTime;
+                        audioSource.Play();
+                    }
+                    else
+                    {
+                        float actualAudioTimeMs = (audioSource.time * 1000f) - musicOffset;
+                        
+                        if (Mathf.Abs(internalTimerMs - actualAudioTimeMs) > 50f)
+                        {
+                            internalTimerMs = actualAudioTimeMs;
+                        }
+                        else
+                        {
+                            internalTimerMs = Mathf.Lerp(internalTimerMs, actualAudioTimeMs, Time.deltaTime * 10f);
+                        }
+                    }
+                }
             }
-            return (float)((AudioSettings.dspTime - dspStartTime) * 1000.0);
+
+            return internalTimerMs;
         }
 
         public bool IsPaused => gameState.isPaused;
@@ -290,11 +302,7 @@ namespace RhythmSystem.Play
             if (isMusicStarted && audioSource != null)
             {
                 if (pause) audioSource.Pause();
-                else
-                {
-                    audioSource.UnPause();
-                    dspStartTime = AudioSettings.dspTime - (audioSource.time * 1000.0 - musicOffset) / 1000.0;
-                }
+                else audioSource.UnPause();
             }
 
             if (optionsUIManager != null) optionsUIManager.SetPanelActive(pause);
