@@ -225,6 +225,11 @@ namespace RhythmSystem.Play
         // --- Integrated Input Processor ---
         private void ProcessInput()
         {
+            if (playerInput != null && playerInput.actions["Back"].WasPressedThisFrame())
+            {
+                RhythmEvents.OnGamePause?.Invoke(!gameState.isPaused);
+            }
+
             if (gameState.isPaused || keyToLaneMap == null) return;
 
             var kb = Keyboard.current;
@@ -234,11 +239,6 @@ namespace RhythmSystem.Play
             {
                 if (kb[kvp.Key].wasPressedThisFrame) RhythmEvents.OnLaneDown?.Invoke(kvp.Value);
                 if (kb[kvp.Key].wasReleasedThisFrame) RhythmEvents.OnLaneUp?.Invoke(kvp.Value);
-            }
-
-            if (playerInput != null && playerInput.actions["Back"].WasPressedThisFrame())
-            {
-                RhythmEvents.OnGamePause?.Invoke(!gameState.isPaused);
             }
         }
 
