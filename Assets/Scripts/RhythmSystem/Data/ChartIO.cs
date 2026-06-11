@@ -34,6 +34,7 @@ namespace RhythmSystem
 
         public static ChartData LoadFromFile(string fileName)
         {
+#if UNITY_EDITOR
             string jsonPath = Path.Combine(DefaultChartDirectory, fileName + ".json");
 
             if (File.Exists(jsonPath))
@@ -41,8 +42,15 @@ namespace RhythmSystem
                 string json = File.ReadAllText(jsonPath);
                 return LoadChartFromJson(json);
             }
+#endif
 
-            Debug.LogError($"Chart file not found: {fileName} in {DefaultChartDirectory}");
+            TextAsset chartAsset = Resources.Load<TextAsset>("Charts/" + fileName);
+            if (chartAsset != null)
+            {
+                return LoadChartFromJson(chartAsset.text);
+            }
+
+            Debug.LogError($"Chart file not found: {fileName} in Resources/Charts/ or {DefaultChartDirectory}");
             return null;
         }
     }
