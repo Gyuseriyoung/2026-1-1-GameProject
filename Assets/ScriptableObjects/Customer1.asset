@@ -33,14 +33,17 @@ MonoBehaviour:
   - "\uC774\uC81C \uB9CC\uB4E4 \uC218 \uC788\uACA0\uC9C0? "
   - "\uADF8\uB7FC \uBE68\uB9AC \uB0B4 \uC74C\uC2DD\uC774 \uAC00\uC838\uC640! "
   orders:
-  - targetMergeType: 0
-    targetMergeIndex: 5
-    count: 1
-  - targetMergeType: 0
-    targetMergeIndex: 3
+  - targetMergeType: 1
+    targetMergeIndex: 4
     count: 1
   - targetMergeType: 1
     targetMergeIndex: 2
+    count: 1
+  - targetMergeType: 1
+    targetMergeIndex: 1
+    count: 1
+  - targetMergeType: 0
+    targetMergeIndex: 5
     count: 1
   chartJson: {fileID: 4900000, guid: 9c55a033726ff6a44a2dfce471bfc6b5, type: 3}
   successDialogue: "\uBB50\uC57C? \uCD5C\uC545\uC774\uC57C!  (\uB9DB\uC788\uB294\uAC78..?)"
@@ -66,8 +69,9 @@ MonoBehaviour:
       \uD569\uC131 \uB2E8\uACC4\uB97C \uBCFC \uC218 \uC788\uC9C0 "
     - "\uC911\uAC04\uC5D0 \uC788\uB294 \uB514\uC800\uD2B8 \uC774\uBBF8\uC9C0\uB4E4\uC740
       \uBA38\uC9C0 \uB2E8\uACC4\uB97C \uB098\uD0C0\uB0B8\uAC70\uC57C "
-    - "\uC774\uC81C \uD0C0\uC774\uBC0D\uC5D0 \uB9DE\uCDB0 D,F \uD0A4\uB97C \uB20C\uB7EC
-      \uD569\uC131\uD560 \uC7AC\uB8CC\uB97C \uC120\uD0DD\uD574 \uBD10! "
+    - "\uC774\uC81C \uD0C0\uC774\uBC0D\uC5D0 \uB9DE\uCDB0 D(\uC704),F(\uC544\uB798)
+      \uD0A4\uB97C \uB20C\uB7EC \uD569\uC131\uD560 \uC7AC\uB8CC\uB97C \uC120\uD0DD\uD574
+      \uBD10! "
   - triggerTimeMs: 1500
-    dialogueLines:
-    - test
+    dialogueLines: []
+  lightingPreset: {fileID: 0}

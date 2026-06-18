@@ -22,7 +22,7 @@ MonoBehaviour:
       intensity: 0
       color: {r: 1, g: 1, b: 1, a: 0}
     transitionDuration: 1
-  - triggerTimeMs: 2000
+  - triggerTimeMs: 25750
     globalLightColor: {r: 1, g: 1, b: 1, a: 0}
     globalLightIntensity: 0.2
     spotlightStates:
@@ -31,7 +31,7 @@ MonoBehaviour:
       intensity: 1.4
       color: {r: 1, g: 0.85882354, b: 0.5647059, a: 0}
     transitionDuration: 0.1
-  - triggerTimeMs: 4000
+  - triggerTimeMs: 26900
     globalLightColor: {r: 1, g: 1, b: 1, a: 0}
     globalLightIntensity: 0.2
     spotlightStates:
@@ -40,7 +40,7 @@ MonoBehaviour:
       intensity: 1.4
       color: {r: 1, g: 0.85882354, b: 0.5647059, a: 0}
     transitionDuration: 0.1
-  - triggerTimeMs: 6000
+  - triggerTimeMs: 27900
     globalLightColor: {r: 1, g: 1, b: 1, a: 0}
     globalLightIntensity: 0.2
     spotlightStates:
