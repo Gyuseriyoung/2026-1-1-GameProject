@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Sweet Wipe 씬 전환 매니저 (싱글톤)
-/// 달콤한 핑크 물결이 화면을 쓸고 지나가며 씬을 전환합니다.
+/// 달콤한 물결이 화면을 쓸고 지나가며 씬을 전환합니다.
 /// SceneTransitionBootstrapper에 의해 자동 생성됩니다.
 /// </summary>
 public class SceneTransitionManager : MonoBehaviour
@@ -16,6 +16,9 @@ public class SceneTransitionManager : MonoBehaviour
     [Header("전환 설정")]
     [Tooltip("전환 전체 시간 (초) — 스윕 인 + 스윕 아웃")]
     public float transitionDuration = 1f;
+
+    [Tooltip("화면을 완전히 덮은 채 머무는 시간 (초)")]
+    public float holdDuration = 2f;
 
     [Tooltip("스윕 색상 (기본: 내추럴 베이지)")]
     public Color sweepColor = new Color(0.90f, 0.84f, 0.76f, 1f); // #E6D5C3
@@ -27,9 +30,9 @@ public class SceneTransitionManager : MonoBehaviour
     public enum SweepDirection { Left, Right, Up, Down }
 
     // ── 내부 ──────────────────────────────────────────
-    private Canvas         _canvas;
-    private RectTransform  _sweepRect;
-    private bool           _busy;
+    private Canvas _canvas;
+    private RectTransform _sweepRect;
+    private bool _busy;
 
     private void Awake()
     {
@@ -42,26 +45,26 @@ public class SceneTransitionManager : MonoBehaviour
     private void BuildUI()
     {
         _canvas = gameObject.AddComponent<Canvas>();
-        _canvas.renderMode  = RenderMode.ScreenSpaceOverlay;
+        _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         _canvas.sortingOrder = 9999;
         gameObject.AddComponent<CanvasScaler>();
         gameObject.AddComponent<GraphicRaycaster>();
 
-        var go   = new GameObject("SweetWipe");
+        var go = new GameObject("SweetWipe");
         go.transform.SetParent(transform, false);
 
-        var img  = go.AddComponent<Image>();
+        var img = go.AddComponent<Image>();
         img.color = sweepColor;
         img.raycastTarget = false;
 
         _sweepRect = go.GetComponent<RectTransform>();
-        _sweepRect.anchorMin       = Vector2.zero;
-        _sweepRect.anchorMax       = Vector2.one;
-        _sweepRect.sizeDelta       = Vector2.zero;
+        _sweepRect.anchorMin = Vector2.zero;
+        _sweepRect.anchorMax = Vector2.one;
+        _sweepRect.sizeDelta = Vector2.zero;
         _sweepRect.anchoredPosition = Vector2.zero;
 
         // 시작은 화면 밖에 숨겨둠
-        MoveSweep(0f, visible: false);
+        SetOffScreen();
     }
 
     // ────────────────────────────────────────────────
@@ -84,7 +87,7 @@ public class SceneTransitionManager : MonoBehaviour
     public void LoadPreviousScene()
     {
         int total = SceneManager.sceneCountInBuildSettings;
-        int prev  = (SceneManager.GetActiveScene().buildIndex - 1 + total) % total;
+        int prev = (SceneManager.GetActiveScene().buildIndex - 1 + total) % total;
         LoadScene(prev);
     }
 
@@ -104,14 +107,14 @@ public class SceneTransitionManager : MonoBehaviour
 
         float half = transitionDuration * 0.5f;
 
-        // ① 스윕 인 — 핑크 물결이 화면을 덮음
-        yield return StartCoroutine(Sweep(entering: true, duration: half));
+        // ① 스윕 인 — 화면을 덮음 (EaseOut: 빠르게 튀어나와 부드럽게 안착)
+        yield return StartCoroutine(SweepIn(half));
 
         // ② 씬 로드
-        AsyncOperation operation = load.Invoke();
-        if (operation != null)
+        AsyncOperation op = load.Invoke();
+        if (op != null)
         {
-            while (!operation.isDone)
+            while (!op.isDone)
                 yield return null;
         }
         else
@@ -119,116 +122,117 @@ public class SceneTransitionManager : MonoBehaviour
             yield return null;
         }
 
-        MoveSweep(1f, visible: true);
-        yield return null;
+        // 로드 직후 화면을 완전히 덮은 상태로 고정
+        PlaceCover();
 
-        // ③ 스윕 아웃 — 물결이 반대쪽으로 빠져나감
-        yield return StartCoroutine(Sweep(entering: false, duration: half));
+        // ③ 잔류 — 베이지 화면이 잠깐 머물다 나감
+        if (holdDuration > 0f)
+            yield return new WaitForSecondsRealtime(holdDuration);
+        else
+            yield return null;
+
+        // ④ 스윕 아웃 — 반대쪽으로 퇴장 (EaseIn: 천천히 시작해서 빠르게 빠짐)
+        yield return StartCoroutine(SweepOut(half));
 
         _busy = false;
     }
 
-    private IEnumerator Sweep(bool entering, float duration)
+    // 화면 밖에서 → 화면을 완전히 덮는 위치로 이동
+    private IEnumerator SweepIn(float duration)
     {
-        if (duration <= 0f)
-        {
-            MoveSweep(entering ? 1f : 0f, visible: entering);
-            yield break;
-        }
+        if (duration <= 0f) { PlaceCover(); yield break; }
+
+        SetOffScreen();
+        Vector2 startPos = _sweepRect.anchoredPosition;
+        Vector2 endPos = Vector2.zero; // 화면 중앙 = 완전히 덮음
 
         float elapsed = 0f;
-        MoveSweep(entering ? 0f : 1f, visible: true);
-        yield return null;
-
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float e = EaseInOut(t);
-
-            // entering: 0→1 (화면을 덮는다)
-            // exiting : 1→2 (화면을 벗어난다)  offset 범위를 [0,1]로 쓰면
-            float progress = entering ? e : 1f + e;
-            MoveSweep(progress, visible: true);
-
+            _sweepRect.anchoredPosition = Vector2.LerpUnclamped(startPos, endPos, EaseOut(t));
             yield return null;
         }
-
-        // 완전히 덮음 or 완전히 빠짐 — 화면 밖으로 정리
-        if (entering)
-            MoveSweep(1f, visible: true);
-        else
-            MoveSweep(0f, visible: false);
+        PlaceCover();
     }
 
-    /// <summary>
-    /// progress 0 = 화면 완전 밖(왼쪽 기준: 오른쪽에 숨김)
-    /// progress 1 = 화면 완전 덮음
-    /// progress 2 = 화면 완전 밖(반대쪽으로 나감)
-    /// </summary>
-    private void MoveSweep(float progress, bool visible)
+    // 화면을 완전히 덮은 위치에서 → 반대쪽 화면 밖으로 이동
+    private IEnumerator SweepOut(float duration)
     {
-        if (!visible)
+        if (duration <= 0f) { SetOffScreen(); yield break; }
+
+        PlaceCover();
+        Vector2 startPos = Vector2.zero;
+        Vector2 endPos = GetOppositeOffScreenPos();
+
+        float elapsed = 0f;
+        while (elapsed < duration)
         {
-            // 화면 밖 — 기본적으로 앵커 위치를 완전히 밖으로
-            SetOffScreen();
-            return;
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            _sweepRect.anchoredPosition = Vector2.LerpUnclamped(startPos, endPos, EaseIn(t));
+            yield return null;
         }
-
-        // 현재 화면 크기
-        float w = _canvas.pixelRect.width;
-        float h = _canvas.pixelRect.height;
-
-        // progress 1.0 기준: 화면을 완전히 덮는 위치 = (0, 0)
-        // progress 0.0: 시작 위치 (화면 밖)
-        // progress 2.0: 끝 위치 (반대쪽 밖)
-
-        // t ∈ [0,1] → 시작 밖 → 화면 완전 덮음(progress=1)
-        // t ∈ [1,2] → 화면 완전 덮음 → 반대쪽 밖
-
-        Vector2 pos = Vector2.zero;
-
-        switch (direction)
-        {
-            case SweepDirection.Left:
-                // 오른쪽에서 왼쪽으로
-                // progress=0: x=+w, progress=1: x=0, progress=2: x=-w
-                pos.x = Mathf.Lerp(w, -w, progress * 0.5f);
-                break;
-
-            case SweepDirection.Right:
-                pos.x = Mathf.Lerp(-w, w, progress * 0.5f);
-                break;
-
-            case SweepDirection.Up:
-                pos.y = Mathf.Lerp(-h, h, progress * 0.5f);
-                break;
-
-            case SweepDirection.Down:
-                pos.y = Mathf.Lerp(h, -h, progress * 0.5f);
-                break;
-        }
-
-        _sweepRect.anchoredPosition = pos;
+        SetOffScreen();
     }
 
+    // ────────────────────────────────────────────────
+    //  위치 헬퍼
+    // ────────────────────────────────────────────────
+
+    /// <summary>화면을 완전히 덮는 중앙 위치로 고정합니다.</summary>
+    private void PlaceCover()
+    {
+        _sweepRect.anchoredPosition = Vector2.zero;
+    }
+
+    /// <summary>현재 방향 기준 시작 쪽 화면 밖으로 이동합니다 (진입 전 초기 위치).</summary>
     private void SetOffScreen()
     {
-        float w = Screen.width;
-        float h = Screen.height;
+        float w = _canvas.pixelRect.width;
+        float h = _canvas.pixelRect.height;
         _sweepRect.anchoredPosition = direction switch
         {
-            SweepDirection.Left  => new Vector2( w, 0),
+            SweepDirection.Left => new Vector2(w, 0),
             SweepDirection.Right => new Vector2(-w, 0),
-            SweepDirection.Up    => new Vector2(0, -h),
-            SweepDirection.Down  => new Vector2(0,  h),
-            _                    => new Vector2( w, 0),
+            SweepDirection.Up => new Vector2(0, -h),
+            SweepDirection.Down => new Vector2(0, h),
+            _ => new Vector2(w, 0),
+        };
+    }
+
+    /// <summary>현재 방향 기준 반대쪽 화면 밖 위치를 반환합니다 (퇴장 목표 위치).</summary>
+    private Vector2 GetOppositeOffScreenPos()
+    {
+        float w = _canvas.pixelRect.width;
+        float h = _canvas.pixelRect.height;
+        return direction switch
+        {
+            SweepDirection.Left => new Vector2(-w, 0),
+            SweepDirection.Right => new Vector2(w, 0),
+            SweepDirection.Up => new Vector2(0, h),
+            SweepDirection.Down => new Vector2(0, -h),
+            _ => new Vector2(-w, 0),
         };
     }
 
     // ────────────────────────────────────────────────
     //  이징
+    //  EaseOut: 빠르게 시작 → 부드럽게 안착 (진입에 사용)
+    //  EaseIn:  천천히 시작 → 빠르게 가속  (퇴장에 사용)
     // ────────────────────────────────────────────────
-    private static float EaseInOut(float t)
-        => t < 0.5f ? 2f * t * t : -1f + (4f - 2f * t) * t;
+
+    /// <summary>Cubic EaseOut — 빠르게 튀어나와 자연스럽게 멈춤</summary>
+    private static float EaseOut(float t)
+    {
+        float f = 1f - t;
+        return 1f - f * f * f;
+    }
+
+    /// <summary>Cubic EaseIn — 천천히 시작해서 빠르게 빠짐</summary>
+    private static float EaseIn(float t)
+    {
+        return t * t * t;
+    }
 }
