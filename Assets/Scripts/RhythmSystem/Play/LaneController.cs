@@ -59,7 +59,7 @@ namespace RhythmSystem.Play
             // Debug.Log($"Lane {laneIndex} Hit: {rating}");
             if (hitVFX != null)
             {
-                Instantiate(hitVFX, transform);
+                Instantiate(hitVFX, visualJudgmentLine.position, Quaternion.identity);
             }
         }
 

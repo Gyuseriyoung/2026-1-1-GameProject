@@ -214,8 +214,9 @@ namespace RhythmSystem.Play
         {
             float currentTime = GetCurrentGameTime();
             var spawnedNotes = spawner.GetSpawnedNotes();
-            foreach (var note in spawnedNotes)
+            for (int i = spawnedNotes.Count - 1; i >= 0; i--)
             {
+                var note = spawnedNotes[i];
                 if (note.IsJudged || note.State == NoteState.Holding) continue;
 
                 float diff = currentTime - note.GetNoteTime();

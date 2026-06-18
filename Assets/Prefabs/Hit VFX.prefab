@@ -4905,8 +4905,9 @@ GameObject:
   - component: {fileID: 8650333084365808484}
   - component: {fileID: 3805352938875452437}
   - component: {fileID: 1152149834848138611}
+  - component: {fileID: -7627381457607336314}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Hit VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9733,6 +9734,19 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &-7627381457607336314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5969383989018391457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8648cf166a66dd43bf0049e7d4e1e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelfDestroy
+  destroyTime: 1
 --- !u!1 &7284553824086398741
 GameObject:
   m_ObjectHideFlags: 0

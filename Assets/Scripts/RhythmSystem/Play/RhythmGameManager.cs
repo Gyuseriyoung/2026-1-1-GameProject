@@ -20,6 +20,10 @@ namespace RhythmSystem.Play
         public LaneManager laneManager;
         public RhythmVisualEffectManager visualManager;
 
+        [Header("Dialogue Support")]
+        public CookingGame.DialogueManager dialogueManager;
+        private List<CookingGame.MidPlayDialogue> pendingMidPlayDialogues = new List<CookingGame.MidPlayDialogue>();
+
         [Header("Settings")]
         public string chartToLoad = "TEST";
 
@@ -74,6 +78,7 @@ namespace RhythmSystem.Play
             if (judger == null) judger = gameObject.AddComponent<RhythmJudger>();
             if (laneManager == null) laneManager = GetComponentInChildren<LaneManager>(); 
             if (visualManager == null) visualManager = gameObject.AddComponent<RhythmVisualEffectManager>();
+            if (dialogueManager == null) dialogueManager = FindFirstObjectByType<CookingGame.DialogueManager>();
 
             visualManager.Initialize();
             
@@ -116,6 +121,20 @@ namespace RhythmSystem.Play
 
         private void InitializeGame(float startTimeMs)
         {
+            pendingMidPlayDialogues.Clear();
+            if (CookingGame.CookingSession.CurrentCustomer != null && 
+                CookingGame.CookingSession.CurrentCustomer.midPlayDialogues != null)
+            {
+                foreach (var dialogue in CookingGame.CookingSession.CurrentCustomer.midPlayDialogues)
+                {
+                    if (dialogue.triggerTimeMs > startTimeMs)
+                    {
+                        pendingMidPlayDialogues.Add(dialogue);
+                    }
+                }
+                pendingMidPlayDialogues.Sort((a, b) => a.triggerTimeMs.CompareTo(b.triggerTimeMs));
+            }
+
             gameState.currentTimeMs = startTimeMs;
             gameState.isPlaying = true;
             gameState.combo = 0;
@@ -203,6 +222,15 @@ namespace RhythmSystem.Play
             globalTimerMs = rawClockTime + offset;
 
             gameState.currentTimeMs = GetLogicalTime(globalTimerMs);
+
+            // Check for Mid-Play Dialogues
+            if (pendingMidPlayDialogues.Count > 0 && gameState.currentTimeMs >= pendingMidPlayDialogues[0].triggerTimeMs)
+            {
+                var dialogue = pendingMidPlayDialogues[0];
+                pendingMidPlayDialogues.RemoveAt(0);
+                TriggerMidPlayDialogue(dialogue.dialogueLines);
+                return;
+            }
 
             laneManager.UpdateLanes();
 
@@ -362,5 +390,38 @@ namespace RhythmSystem.Play
         }
 
         public float GetCurrentTimeMs() => gameState.currentTimeMs;
+
+        private void TriggerMidPlayDialogue(string[] lines)
+        {
+            if (dialogueManager == null)
+            {
+                Debug.LogWarning("DialogueManager is not assigned in RhythmGameManager. Skipping mid-play dialogue.");
+                return;
+            }
+
+            // Pause the gameplay
+            gameState.isPaused = true;
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Pause();
+            }
+
+            // Play the dialogue, and on complete, resume
+            dialogueManager.PlayDialogue(lines, () => {
+                ResumeFromMidPlayDialogue();
+            });
+        }
+
+        private void ResumeFromMidPlayDialogue()
+        {
+            // Unpause the gameplay
+            gameState.isPaused = false;
+            
+            // Resume the music
+            if (audioSource != null)
+            {
+                audioSource.UnPause();
+            }
+        }
     }
 }

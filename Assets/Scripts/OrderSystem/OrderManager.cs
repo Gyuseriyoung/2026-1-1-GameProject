@@ -23,6 +23,8 @@ namespace CookingGame
         public Animator customerAnimator;
         public TextMeshProUGUI customerNameText;
 
+        private Vector2 originalPortraitPosition;
+
         [Header("Timing")]
         public float arrivalDelay = 1.5f;
 
@@ -33,6 +35,11 @@ namespace CookingGame
             if (CookingSession.CurrentStage == null) return;
 
             if (dialogueManager == null) dialogueManager = GetComponent<DialogueManager>();
+
+            if (customerPortrait != null)
+            {
+                originalPortraitPosition = customerPortrait.rectTransform.anchoredPosition;
+            }
 
             StartSequence();
         }
@@ -101,9 +108,11 @@ namespace CookingGame
             SetPortraitVisible(true);
             BindCustomerView(CookingSession.CurrentCustomer, "Customer_Idle");
 
-            dialogueManager.PlayDialogue(CookingSession.CurrentCustomer.openingDialogues, () => {
-                StartGameplay();
-            });
+            StartCoroutine(SlideInPortrait(() => {
+                dialogueManager.PlayDialogue(CookingSession.CurrentCustomer.openingDialogues, () => {
+                    StartGameplay();
+                });
+            }));
         }
 
         private void ShowResultDialogue(bool success)
@@ -116,23 +125,53 @@ namespace CookingGame
             
             string line = success ? customer.successDialogue : customer.failureDialogue;
             
-            dialogueManager.PlayDialogue(line, () => {
-                CookingSession.CurrentCustomerIndex++;
-                
-                if (customer != null && !IsDialogueEmpty(customer.soliloquies))
-                {
-                    SetPortraitVisible(false);
-                    if (customerNameText != null) customerNameText.text = "나";
+            StartCoroutine(SlideInPortrait(() => {
+                dialogueManager.PlayDialogue(line, () => {
+                    CookingSession.CurrentCustomerIndex++;
                     
-                    dialogueManager.PlayDialogue(customer.soliloquies, () => {
+                    if (customer != null && !IsDialogueEmpty(customer.soliloquies))
+                    {
+                        SetPortraitVisible(false);
+                        if (customerNameText != null) customerNameText.text = "나";
+                        
+                        dialogueManager.PlayDialogue(customer.soliloquies, () => {
+                            StartCoroutine(LoadCustomerWithDelay());
+                        });
+                    }
+                    else
+                    {
                         StartCoroutine(LoadCustomerWithDelay());
-                    });
-                }
-                else
-                {
-                    StartCoroutine(LoadCustomerWithDelay());
-                }
-            });
+                    }
+                });
+            }));
+        }
+
+        private IEnumerator SlideInPortrait(System.Action onComplete)
+        {
+            if (customerPortrait == null)
+            {
+                onComplete?.Invoke();
+                yield break;
+            }
+
+            float duration = 0.5f;
+            float elapsed = 0f;
+            Vector2 startPos = new Vector2(originalPortraitPosition.x, originalPortraitPosition.y - 800f);
+            Vector2 endPos = originalPortraitPosition;
+
+            customerPortrait.rectTransform.anchoredPosition = startPos;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float easeT = 1f - Mathf.Pow(1f - t, 3f); // Cubic Ease Out
+                customerPortrait.rectTransform.anchoredPosition = Vector2.Lerp(startPos, endPos, easeT);
+                yield return null;
+            }
+
+            customerPortrait.rectTransform.anchoredPosition = endPos;
+            onComplete?.Invoke();
         }
 
         private bool IsDialogueEmpty(string[] lines)

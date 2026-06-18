@@ -12,6 +12,13 @@ namespace CookingGame
         public int count = 1;        // Required quantity
     }
 
+    [Serializable]
+    public class MidPlayDialogue
+    {
+        public float triggerTimeMs;  // Trigger timestamp in milliseconds
+        [TextArea] public string[] dialogueLines;
+    }
+
     [CreateAssetMenu(fileName = "CustomerData", menuName = "CookingGame/CustomerData")]
     public class CustomerData : ScriptableObject
     {
@@ -36,5 +43,8 @@ namespace CookingGame
 
         [Header("혼잣말")]
         [TextArea] public string[] soliloquies;
+
+        [Header("Mid-Play Dialogues (Gameplay pauses to show these)")]
+        public List<MidPlayDialogue> midPlayDialogues;
     }
 }

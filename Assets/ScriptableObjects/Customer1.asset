@@ -42,3 +42,7 @@ MonoBehaviour:
   soliloquies:
   - "1\uBC88 \uC190\uB2D8 \uC774\uD6C4 \uD63C\uC7A3\uB9D0 \uD14C\uC2A4\uD2B8 1"
   - "1\uBC88 \uC190\uB2D8 \uC774\uD6C4 \uD63C\uC7A3\uB9D0 \uD14C\uC2A4\uD2B8 2"
+  midPlayDialogues:
+  - triggerTimeMs: 1500
+    dialogueLines:
+    - test

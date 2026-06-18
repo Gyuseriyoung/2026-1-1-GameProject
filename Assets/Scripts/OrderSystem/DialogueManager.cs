@@ -132,10 +132,16 @@ namespace CookingGame
         private bool WasAdvancePressed()
         {
             var keyboard = Keyboard.current;
-            return keyboard != null
+            var pointer = Pointer.current;
+
+            bool keyboardPressed = keyboard != null
                    && (keyboard.spaceKey.wasPressedThisFrame
                        || keyboard.enterKey.wasPressedThisFrame
                        || keyboard.numpadEnterKey.wasPressedThisFrame);
+
+            bool pointerPressed = pointer != null && pointer.press.wasPressedThisFrame;
+
+            return keyboardPressed || pointerPressed;
         }
     }
 }
