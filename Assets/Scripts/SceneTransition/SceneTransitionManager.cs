@@ -72,6 +72,42 @@ public class SceneTransitionManager : MonoBehaviour
     public void LoadNextScene() => LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
     public void LoadPreviousScene() => LoadScene((SceneManager.GetActiveScene().buildIndex - 1 + SceneManager.sceneCountInBuildSettings) % SceneManager.sceneCountInBuildSettings);
 
+    /// <summary>
+    /// 이미 완전히 암전된 상태에서 스윕 모션 없이 씬을 로드하고, 암전 커버를 씌운 채 유지하는 씬 로더
+    /// </summary>
+    public void LoadSceneBlackout(string sceneName)
+    {
+        if (_busy) return;
+        StartCoroutine(RunBlackoutTransition(() => SceneManager.LoadSceneAsync(sceneName)));
+    }
+
+    private IEnumerator RunBlackoutTransition(Func<AsyncOperation> load)
+    {
+        _busy = true;
+
+        // 스윕 인 생략하고 즉각 커버 배치
+        PlaceCover();
+        if (transitionText != null) transitionText.text = "";
+
+        AsyncOperation op = load.Invoke();
+        if (op != null) 
+        { 
+            while (!op.isDone) yield return null; 
+        }
+
+        PlaceCover();
+        _busy = false;
+    }
+
+    /// <summary>
+    /// 강제로 암전 상태의 스윕 커버를 스무스하게 걷어내는 페이드아웃 기능
+    /// </summary>
+    public void FadeInClear(float duration)
+    {
+        StartCoroutine(SweepOut(duration));
+    }
+
+
     private void TryTransition(Func<AsyncOperation> load)
     {
         if (_busy) return;

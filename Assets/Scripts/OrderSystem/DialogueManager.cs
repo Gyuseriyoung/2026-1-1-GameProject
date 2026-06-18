@@ -28,6 +28,8 @@ namespace CookingGame
         private Coroutine typingCoroutine;
         
         private Action onDialogueComplete;
+        private Action<int, int> onLineShowCallback;
+
 
         private void Update()
         {
@@ -36,6 +38,11 @@ namespace CookingGame
         }
 
         public void PlayDialogue(string[] lines, Action onComplete)
+        {
+            PlayDialogue(lines, onComplete, null);
+        }
+
+        public void PlayDialogue(string[] lines, Action onComplete, Action<int, int> onLineShow)
         {
             if (lines == null || lines.Length == 0)
             {
@@ -46,13 +53,14 @@ namespace CookingGame
             currentLines = lines;
             currentLineIndex = 0;
             onDialogueComplete = onComplete;
+            onLineShowCallback = onLineShow;
             SetVisible(true);
             ShowCurrentLine();
         }
 
         public void PlayDialogue(string line, Action onComplete)
         {
-            PlayDialogue(new string[] { line }, onComplete);
+            PlayDialogue(new string[] { line }, onComplete, null);
         }
 
         private void ShowCurrentLine()
@@ -61,11 +69,14 @@ namespace CookingGame
             {
                 SetVisible(false);
                 onDialogueComplete?.Invoke();
+                onLineShowCallback = null;
                 return;
             }
 
+            onLineShowCallback?.Invoke(currentLineIndex, currentLines.Length);
             StartTyping(currentLines[currentLineIndex]);
         }
+
 
         private void HandleAdvanceInput()
         {

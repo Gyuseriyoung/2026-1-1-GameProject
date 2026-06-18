@@ -108,6 +108,8 @@ namespace RhythmSystem.Play
             ReturnToDialogue(success);
         }
 
+
+
         public void LoadAndStartGame()
         {
             currentChart = ChartIO.LoadFromFile(chartToLoad);
@@ -505,4 +507,4 @@ namespace RhythmSystem.Play
             Destroy(canvasGo);
         }
     }
-}
+}

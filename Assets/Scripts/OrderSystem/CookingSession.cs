@@ -15,6 +15,12 @@ namespace CookingGame
         public static bool LastGameSuccess;
         public static bool IsReturningFromResult;
 
+        public static bool IsLastCustomer => 
+            CurrentStage != null && 
+            CurrentStage.customerQueue != null && 
+            CurrentCustomerIndex == CurrentStage.customerQueue.Count - 1;
+
+
         public static void StartSession(StageData stage)
         {
             CurrentStage = stage;

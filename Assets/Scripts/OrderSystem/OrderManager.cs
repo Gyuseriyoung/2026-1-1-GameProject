@@ -153,22 +153,84 @@ namespace CookingGame
                 dialogueManager.PlayDialogue(line, () => {
                     CookingSession.CurrentCustomerIndex++;
                     
+                    // 마지막 손님인지 판정 (인덱스가 전체 큐 개수 이상이 되었을 때)
+                    bool isLast = CookingSession.CurrentStage != null && 
+                                  CookingSession.CurrentCustomerIndex >= CookingSession.CurrentStage.customerQueue.Count;
+
                     if (customer != null && !IsDialogueEmpty(customer.soliloquies))
                     {
                         SetPortraitVisible(false);
                         if (customerNameText != null) customerNameText.text = "나";
                         
                         dialogueManager.PlayDialogue(customer.soliloquies, () => {
-                            StartCoroutine(LoadCustomerWithDelay());
+                            if (isLast)
+                            {
+                                StartCoroutine(EndingTransitionSequenceCo());
+                            }
+                            else
+                            {
+                                StartCoroutine(LoadCustomerWithDelay());
+                            }
                         });
                     }
                     else
                     {
-                        StartCoroutine(LoadCustomerWithDelay());
+                        if (isLast)
+                        {
+                            StartCoroutine(EndingTransitionSequenceCo());
+                        }
+                        else
+                        {
+                            StartCoroutine(LoadCustomerWithDelay());
+                        }
                     }
                 });
             }));
         }
+
+        private IEnumerator EndingTransitionSequenceCo()
+        {
+            // 씬 내에 기획자가 직접 배치해둔 EndingFadeManager가 없는 경우의 오작동 방지
+            if (RhythmSystem.Play.EndingFadeManager.Instance == null)
+            {
+                Debug.LogWarning("[OrderManager] 씬 내에 EndingFadeManager 인스턴스를 찾을 수 없습니다. 엔딩 연출을 스킵하고 타이틀 씬으로 즉시 이동합니다.");
+                if (SceneTransitionManager.Instance != null)
+                    SceneTransitionManager.Instance.LoadScene("TitleScene");
+                else
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
+                yield break;
+            }
+
+            // 1. 2초 동안 검은 화면으로 화면 전체 페이드아웃 진행
+            bool isFadeDone = false;
+            RhythmSystem.Play.EndingFadeManager.Instance.FadeOut(2.0f, () => isFadeDone = true);
+            while (!isFadeDone)
+            {
+                yield return null;
+            }
+
+            // 2. 검은 화면 위에서 엔딩 전용 누적 타이핑 다이얼로그 재생 (EndingFadeManager 인스펙터 설정 사용)
+            bool isEndingTextFinished = false;
+            RhythmSystem.Play.EndingFadeManager.Instance.PlayEndingCredits(
+                () => isEndingTextFinished = true
+            );
+
+            while (!isEndingTextFinished)
+            {
+                yield return null;
+            }
+
+
+            // 3. 연출 완료 시 리셋 및 타이틀 씬으로 전환
+            RhythmSystem.Play.EndingFadeManager.Instance.ResetManager();
+
+            // 연출 없이 즉시 타이틀 씬으로 전환합니다.
+            UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
+        }
+
+
+
+
 
         private IEnumerator SlideInPortrait(System.Action onComplete)
         {
