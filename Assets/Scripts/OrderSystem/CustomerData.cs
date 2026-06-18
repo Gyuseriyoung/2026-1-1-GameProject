@@ -46,5 +46,9 @@ namespace CookingGame
 
         [Header("Mid-Play Dialogues (Gameplay pauses to show these)")]
         public List<MidPlayDialogue> midPlayDialogues;
+
+        [Header("조명 연출 설정")]
+        [Tooltip("손님별 고유 조명 연출 프리셋 (음악 시간 기반 조명 전환)")]
+        public RhythmSystem.Play.CustomerLightingPreset lightingPreset;
     }
 }

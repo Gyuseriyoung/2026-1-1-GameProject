@@ -8,7 +8,8 @@ public class MergeManager : MonoBehaviour
 {
     public List<MergeObject> mergeObjects;
     [SerializeField] private GameObject ObjectPrefab;
-    [SerializeField] private Transform ObjectContainer;
+    [SerializeField] private Transform ObjectContainer1;
+    [SerializeField] private Transform ObjectContainer2;
 
     [SerializeField] private int currentType = 0;
     [SerializeField] private int currentIndex = 0;
@@ -32,7 +33,9 @@ public class MergeManager : MonoBehaviour
 
     public void CreateMergeObject(int type, int index)
     {
-        GameObject GO = Instantiate(ObjectPrefab, ObjectContainer);
+        GameObject GO = null;;
+        if (type == 0){ GO = Instantiate(ObjectPrefab, ObjectContainer1); }
+        else if (type == 1){ GO = Instantiate(ObjectPrefab, ObjectContainer2); }
         MergeObject mo = GO.GetComponent<MergeObject>();
         mo.Init(type, index);
         mergeObjects.Add(mo);
@@ -96,7 +99,9 @@ public class MergeManager : MonoBehaviour
             GameObject obj1 = currentObject.gameObject;
             GameObject obj2 = target.gameObject;
 
-            GameObject GO = Instantiate(ObjectPrefab, ObjectContainer);
+            GameObject GO = null;
+            if (type == 0){ GO = Instantiate(ObjectPrefab, ObjectContainer1); }
+            else if (type == 1){ GO = Instantiate(ObjectPrefab, ObjectContainer2); }
             currentObject = GO.GetComponent<MergeObject>();
             currentObject.Init(type, nextIndex);
             mergeObjects.Add(currentObject);

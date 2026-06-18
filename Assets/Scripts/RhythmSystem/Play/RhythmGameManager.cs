@@ -123,7 +123,18 @@ namespace RhythmSystem.Play
 
         private void InitializeGame(float startTimeMs)
         {
+            if (LightingManager.Instance != null)
+            {
+                CustomerLightingPreset preset = null;
+                if (CookingGame.CookingSession.CurrentCustomer != null)
+                {
+                    preset = CookingGame.CookingSession.CurrentCustomer.lightingPreset;
+                }
+                LightingManager.Instance.Initialize(preset);
+            }
+
             pendingMidPlayDialogues.Clear();
+
             if (CookingGame.CookingSession.CurrentCustomer != null && 
                 CookingGame.CookingSession.CurrentCustomer.midPlayDialogues != null)
             {
@@ -231,6 +242,11 @@ namespace RhythmSystem.Play
             globalTimerMs = rawClockTime + offset;
 
             gameState.currentTimeMs = GetLogicalTime(globalTimerMs);
+
+            if (LightingManager.Instance != null)
+            {
+                LightingManager.Instance.UpdateLighting(gameState.currentTimeMs);
+            }
 
             // Check for Mid-Play Dialogues
             if (pendingMidPlayDialogues.Count > 0 && gameState.currentTimeMs >= pendingMidPlayDialogues[0].triggerTimeMs)

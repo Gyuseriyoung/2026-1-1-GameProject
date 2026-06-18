@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd1fe6ac51cae64c8f2ce9f27a89cc8, type: 3}
+  m_Name: Customer3LightingPreset
+  m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.CustomerLightingPreset
+  lightingEvents:
+  - triggerTimeMs: -10000
+    globalLightColor: {r: 1, g: 1, b: 1, a: 0}
+    globalLightIntensity: 0.2
+    spotlightStates:
+    - spotlightIndex: 0
+      isOn: 0
+      intensity: 0
+      color: {r: 1, g: 1, b: 1, a: 0}
+    transitionDuration: 1
+  - triggerTimeMs: 2000
+    globalLightColor: {r: 1, g: 1, b: 1, a: 0}
+    globalLightIntensity: 0.2
+    spotlightStates:
+    - spotlightIndex: 1
+      isOn: 1
+      intensity: 1.4
+      color: {r: 1, g: 0.85882354, b: 0.5647059, a: 0}
+    transitionDuration: 0.1
+  - triggerTimeMs: 4000
+    globalLightColor: {r: 1, g: 1, b: 1, a: 0}
+    globalLightIntensity: 0.2
+    spotlightStates:
+    - spotlightIndex: 2
+      isOn: 1
+      intensity: 1.4
+      color: {r: 1, g: 0.85882354, b: 0.5647059, a: 0}
+    transitionDuration: 0.1
+  - triggerTimeMs: 6000
+    globalLightColor: {r: 1, g: 1, b: 1, a: 0}
+    globalLightIntensity: 0.2
+    spotlightStates:
+    - spotlightIndex: 3
+      isOn: 1
+      intensity: 1.4
+      color: {r: 1, g: 0.85882354, b: 0.5647059, a: 0}
+    transitionDuration: 0.1

@@ -29,3 +29,4 @@ MonoBehaviour:
   failureDialogue: "\uC5ED\uC2DC \uD615\uD3B8\uC5C6\uAD70"
   soliloquies: []
   midPlayDialogues: []
+  lightingPreset: {fileID: 11400000, guid: d2714e7838eef2543822db2f23e80e47, type: 2}
