@@ -2960,11 +2960,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d207838a909224d94536ae122262ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.RhythmJudger
-  perfectWindow: 16
-  greatWindow: 42
-  goodWindow: 80
-  missWindow: 150
-  earlyMissWindow: 200
+  perfectWindow: 32
+  greatWindow: 84
+  goodWindow: 160
+  missWindow: 300
+  earlyMissWindow: 400
 --- !u!1 &752855014
 GameObject:
   m_ObjectHideFlags: 0
