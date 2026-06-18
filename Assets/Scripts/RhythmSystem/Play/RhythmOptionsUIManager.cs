@@ -107,6 +107,7 @@ namespace RhythmSystem.Play
         {
             if (gameManager != null)
             {
+                SetPanelActive(false);
                 gameManager.RestartGame();
                 gameManager.PauseGame(false);
             }

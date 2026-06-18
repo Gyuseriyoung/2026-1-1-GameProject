@@ -32,5 +32,8 @@ namespace CookingGame
         [Header("Result Dialogues")]
         [TextArea] public string successDialogue;
         [TextArea] public string failureDialogue;
+
+        [Header("혼잣말")]
+        [TextArea] public string[] soliloquies;
     }
 }

@@ -32,3 +32,5 @@ MonoBehaviour:
   chartJson: {fileID: 4900000, guid: 7c5c448477127a84abcf786a30bc6dcf, type: 3}
   successDialogue: "\uAC1C\uC57C\uB974!!!"
   failureDialogue: "\uD658\uBD88 \uC548\uB418\uC8E0?"
+  soliloquies:
+  - "2\uBC88 \uC190\uB2D8 \uC774\uD6C4 \uD63C\uC7A3\uB9D0 \uD14C\uC2A4\uD2B8 1"

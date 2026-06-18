@@ -60,8 +60,7 @@ namespace CookingGame
         private void ShowStageIntroDialogue()
         {
             SetPortraitVisible(false); // Player is text only
-            if (customerNameText != null) customerNameText.text = ""; // Or "나" / "Player"
-
+            if (customerNameText != null) customerNameText.text = "나";
             dialogueManager.PlayDialogue(CookingSession.CurrentStage.introDialogues, () => {
                 StartCoroutine(LoadCustomerWithDelay());
             });
@@ -113,8 +112,31 @@ namespace CookingGame
             
             dialogueManager.PlayDialogue(line, () => {
                 CookingSession.CurrentCustomerIndex++;
-                StartCoroutine(LoadCustomerWithDelay());
+                
+                if (customer != null && !IsDialogueEmpty(customer.soliloquies))
+                {
+                    SetPortraitVisible(false);
+                    if (customerNameText != null) customerNameText.text = "나";
+                    
+                    dialogueManager.PlayDialogue(customer.soliloquies, () => {
+                        StartCoroutine(LoadCustomerWithDelay());
+                    });
+                }
+                else
+                {
+                    StartCoroutine(LoadCustomerWithDelay());
+                }
             });
+        }
+
+        private bool IsDialogueEmpty(string[] lines)
+        {
+            if (lines == null || lines.Length == 0) return true;
+            foreach (var line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line)) return false;
+            }
+            return true;
         }
 
         private void StartGameplay()
