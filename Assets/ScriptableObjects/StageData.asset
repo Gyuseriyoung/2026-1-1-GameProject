@@ -22,6 +22,6 @@ MonoBehaviour:
   - "\uC557 \uC190\uB2D8\uC774 \uB4E4\uC5B4\uC624\uB124 "
   - "\uD06C\uD750\uD760 "
   customerQueue:
-  - {fileID: 11400000, guid: 8a6c7d0eba10e2741b669fdaf5f086db, type: 2}
   - {fileID: 11400000, guid: 2ff0c217af5bedc4eb81192ba7269898, type: 2}
   - {fileID: 11400000, guid: 91b8c4ce42a7265439258c8d51976e91, type: 2}
+  - {fileID: 11400000, guid: 8a6c7d0eba10e2741b669fdaf5f086db, type: 2}

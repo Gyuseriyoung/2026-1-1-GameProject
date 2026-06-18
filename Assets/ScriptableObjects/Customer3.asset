@@ -27,6 +27,10 @@ MonoBehaviour:
   successDialogue: "\uC544\uB2C8 \uC774\uB7F0 \uB9DB\uC774 \uB098\uB2E4\uB2C8 \uB300\uB2E8\uD574\uC694..\uC81C\uAC00
     \uC8C4\uC1A1\uD569\uB2C8\uB2E4..!"
   failureDialogue: "\uC5ED\uC2DC \uD615\uD3B8\uC5C6\uAD70"
-  soliloquies: []
+  soliloquies:
+  - "\uBB50\uC57C \uC800 \uB514\uC800\uD2B8 \uB9E4\uB2C8\uC544\uAC19\uC774 \uC0DD\uAE34\uB188\uC740 "
+  - "\uC774 \uB3D9\uB124 \uD2B9\uC774\uD55C \uC0AC\uB78C\uC774 \uB108\uBB34 \uB9CE\uC740
+    \uAC83 \uAC19\uC544.. "
+  - "\uB0B4\uC77C\uC740 \uC5B4\uB5A4 \uC190\uB2D8\uC774 \uC62C\uAE4C? "
   midPlayDialogues: []
   lightingPreset: {fileID: 11400000, guid: d2714e7838eef2543822db2f23e80e47, type: 2}
