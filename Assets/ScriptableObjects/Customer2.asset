@@ -17,12 +17,14 @@ MonoBehaviour:
   backgroundImage: {fileID: 5385648129830978985, guid: 2cebc5dbddcf64a689324cd4d13cc178, type: 3}
   animatorOverride: {fileID: 22100000, guid: b82cf5be1da09914abdf87a7ae510355, type: 2}
   openingDialogues:
-  - "1 \uC548\uB155\uD558\uC138\uC694!"
-  - "2 \uC548\uB155\uD558\uC138\uC694!"
-  - "1 \uC544 \uBC30\uACE0\uD504\uB2E4 \uBB50 \uBA39\uC9C0?"
-  - "2 \uCE74\uD398\uC5D0 \uC654\uC73C\uB2C8\uAE50 \uCF00\uC774\uD06C \uBA39\uC5B4\uC57C\uC9C0!"
-  - "1 \uC544 \uB9DE\uB124?"
-  - "1/2 \uC800\uD76C \uCF00\uC774\uD06C 6\uAC1C \uC8FC\uC138\uC694 !"
+  - "\uBBFC\uAE30: \uC548\uB155\uD558\uC138\uC694!"
+  - "\uB3D9\uAC74: \uC548\uB155\uD558\uC138\uC694!"
+  - "\uBBFC\uAE30: \uC544 \uBC30\uACE0\uD504\uB2E4 \uBB50 \uBA39\uC9C0?"
+  - "\uB3D9\uAC74: \uCE74\uD398\uC5D0 \uC654\uC73C\uB2C8\uAE50 \uCF00\uC774\uD06C
+    \uBA39\uC5B4\uC57C\uC9C0!"
+  - "\uBBFC\uAE30: \uC544 \uB9DE\uB124?"
+  - "\uBBFC\uAE30&\uB3D9\uAC74: \uC800\uD76C \uCF00\uC774\uD06C 6\uAC1C \uC8FC\uC138\uC694
+    !"
   orders:
   - targetMergeType: 0
     targetMergeIndex: 4
@@ -34,4 +36,5 @@ MonoBehaviour:
   successDialogue: "\uAC1C\uC57C\uB974!!!"
   failureDialogue: "\uD658\uBD88 \uC548\uB418\uC8E0?"
   soliloquies:
-  - "2\uBC88 \uC190\uB2D8 \uC774\uD6C4 \uD63C\uC7A3\uB9D0 \uD14C\uC2A4\uD2B8 1"
+  - "\uC6B4\uB3D9\uBD80\uB77C \uADF8\uB7F0\uAC00 \uB9CE\uC774 \uBA39\uB124"
+  midPlayDialogues: []

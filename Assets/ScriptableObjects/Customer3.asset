@@ -17,12 +17,15 @@ MonoBehaviour:
   backgroundImage: {fileID: 2448349042999170258, guid: b15c94a03390c419098d10d86bec29fc, type: 3}
   animatorOverride: {fileID: 22100000, guid: ea5fff4f5f7febb4dae2b42c9d322114, type: 2}
   openingDialogues:
-  - "\uD638\uD638\uD638 \uC5EC\uAE30\uAC00 \uADF8 \uC720\uBA85\uD55C 2\uCE35 \uCE74\uD398\uC778\uAC00\uC694?"
-  - "\uD760 \uC815\uB9D0 \uD615\uD3B8\uC5C6\uB294 \uB9DB\uC774 \uB0A0\uAC70\uAC19\uC740\uB370..."
-  - "\uC5B4\uB514\uD55C\uBC88 \uC81C\uC77C \uC790\uC2E0\uC788\uB294 \uBA54\uB274\uB85C
-    \uAC00\uC838\uC640\uBCF4\uC138\uC694 "
+  - "\uD638\uD638\uD638 \uC774\uB7F0\uACF3\uC5D0 \uB514\uC800\uD2B8 \uAC00\uAC8C\uAC00
+    \uC0DD\uACBC\uAD70\uC694"
+  - "\uB0C4\uC0C8\uB294 \uBCC4\uB860\uB370.."
+  - "\uC5EC\uAE30 \uBA54\uB274 \uC804\uBD80 \uC8FC\uC138\uC694. "
+  - "\uB9DB\uC774 \uC5C6\uC73C\uBA74 \uAC01\uC624\uD558\uB294\uAC8C \uC88B\uC744\uAC81\uB2C8\uB2E4. "
   orders: []
   chartJson: {fileID: 4900000, guid: 7c5c448477127a84abcf786a30bc6dcf, type: 3}
-  successDialogue: "\uC544\uB2C8 \uC774\uB7F0 \uB9DB\uC774 \uB098\uB2E4\uB2C8 \uB300\uB2E8\uD574\uC694..!"
+  successDialogue: "\uC544\uB2C8 \uC774\uB7F0 \uB9DB\uC774 \uB098\uB2E4\uB2C8 \uB300\uB2E8\uD574\uC694..\uC81C\uAC00
+    \uC8C4\uC1A1\uD569\uB2C8\uB2E4..!"
   failureDialogue: "\uC5ED\uC2DC \uD615\uD3B8\uC5C6\uAD70"
   soliloquies: []
+  midPlayDialogues: []
