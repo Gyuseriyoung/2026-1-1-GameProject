@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RhythmSystem.Play.LaneController
   laneIndex: 0
+  hitVFX: {fileID: 5969383989018391457, guid: 6774a3c01b8501e4f8fa522aed1b25bf, type: 3}
   visualJudgmentLine: {fileID: 6148938506680790869}
 --- !u!82 &2856069038225746762
 AudioSource:
