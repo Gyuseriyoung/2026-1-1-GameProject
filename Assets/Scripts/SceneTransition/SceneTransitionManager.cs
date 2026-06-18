@@ -17,8 +17,8 @@ public class SceneTransitionManager : MonoBehaviour
     [Tooltip("전환 전체 시간 (초) — 스윕 인 + 스윕 아웃")]
     public float transitionDuration = 1f;
 
-    [Tooltip("스윕 색상 (기본: 달콤한 핑크)")]
-    public Color sweepColor = new Color(0.98f, 0.64f, 0.82f, 1f); // #F9A8D4
+    [Tooltip("스윕 색상 (기본: 내추럴 베이지)")]
+    public Color sweepColor = new Color(0.90f, 0.84f, 0.76f, 1f); // #E6D5C3
 
     [Header("방향 설정")]
     [Tooltip("물결이 쓸고 가는 방향")]
