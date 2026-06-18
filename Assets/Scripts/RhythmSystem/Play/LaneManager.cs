@@ -180,14 +180,23 @@ namespace RhythmSystem.Play
         /// </summary>
         public void PlayNoteSound(NoteData note)
         {
+            AudioClip clip = null;
+
             if (note.soundIndex >= 0 && note.soundIndex < soundBankClips.Count)
             {
-                AudioClip clip = soundBankClips[note.soundIndex];
-                if (clip != null && AudioManager.Instance != null)
-                {
-                    // 통합 오디오 매니저를 통해 효과음 재생
-                    AudioManager.Instance.PlaySFX(clip);
-                }
+                clip = soundBankClips[note.soundIndex];
+            }
+
+            // 폴백: 설정된 사운드 클립이 없거나 비어있는 경우 기본 타격음(Drum)을 로드하여 재생합니다.
+            if (clip == null)
+            {
+                clip = Resources.Load<AudioClip>("Sound/Drum");
+            }
+
+            if (clip != null && AudioManager.Instance != null)
+            {
+                // 통합 오디오 매니저를 통해 효과음 재생
+                AudioManager.Instance.PlaySFX(clip);
             }
         }
 

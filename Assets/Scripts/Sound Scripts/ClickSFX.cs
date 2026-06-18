@@ -6,19 +6,12 @@ using TMPro;
 using System.Collections.Generic;
 
 /// <summary>
-/// 화면 클릭 시 효과음을 재생합니다. 
-/// 통합 오디오 매니저를 통해 재생됩니다.
+/// 화면 클릭 시 효과음을 재생합니다.
 /// </summary>
 public class ClickSFX : MonoBehaviour
 {
     [Header("클릭 효과음")]
     public AudioClip clip;
-
-    [Range(0f, 1f)]
-    public float volume = 1f;
-
-    [Range(0.5f, 2f)]
-    public float pitch = 1f;
 
     private void Update()
     {
@@ -54,16 +47,10 @@ public class ClickSFX : MonoBehaviour
 
     public void PlaySFX()
     {
-        if (clip == null) return;
-
-        // 우선적으로 씬의 SFXManager를 사용하고, 없으면 전역 AudioManager를 직접 사용
-        if (SFXManager.Instance != null)
+        if (clip != null && AudioManager.Instance != null)
         {
-            SFXManager.Instance.PlayDirect(clip, volume, pitch);
-        }
-        else if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX(clip, volume, pitch);
+            // 볼륨, 피치는 AudioManager 및 AudioMixer에 일임합니다.
+            AudioManager.Instance.PlaySFX(clip);
         }
     }
 }

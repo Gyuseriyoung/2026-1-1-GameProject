@@ -148,10 +148,14 @@ namespace RhythmSystem.Play
 
             if (audioSource == null) audioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
 
-            // AudioManager의 BGM 그룹에 연결하여 전역 설정을 따르도록 함
-            if (AudioManager.Instance != null && AudioManager.Instance.bgmGroup != null)
+            // 리듬게임 시작 전 기존 전역 BGM을 멈춰 음악이 겹치는 현상을 해결합니다.
+            if (AudioManager.Instance != null)
             {
-                audioSource.outputAudioMixerGroup = AudioManager.Instance.bgmGroup;
+                AudioManager.Instance.StopBGM(0.3f);
+                if (AudioManager.Instance.bgmGroup != null)
+                {
+                    audioSource.outputAudioMixerGroup = AudioManager.Instance.bgmGroup;
+                }
             }
 
             SetupAudio();
