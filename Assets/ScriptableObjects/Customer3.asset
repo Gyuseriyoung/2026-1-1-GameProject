@@ -23,7 +23,7 @@ MonoBehaviour:
   - "\uC5EC\uAE30 \uBA54\uB274 \uC804\uBD80 \uC8FC\uC138\uC694. "
   - "\uB9DB\uC774 \uC5C6\uC73C\uBA74 \uAC01\uC624\uD558\uB294\uAC8C \uC88B\uC744\uAC81\uB2C8\uB2E4. "
   orders: []
-  chartJson: {fileID: 4900000, guid: 7c5c448477127a84abcf786a30bc6dcf, type: 3}
+  chartJson: {fileID: 4900000, guid: ada632425c891134f9358ac5c5b8154e, type: 3}
   successDialogue: "\uC544\uB2C8 \uC774\uB7F0 \uB9DB\uC774 \uB098\uB2E4\uB2C8 \uB300\uB2E8\uD574\uC694..\uC81C\uAC00
     \uC8C4\uC1A1\uD569\uB2C8\uB2E4..!"
   failureDialogue: "\uC5ED\uC2DC \uD615\uD3B8\uC5C6\uAD70"
