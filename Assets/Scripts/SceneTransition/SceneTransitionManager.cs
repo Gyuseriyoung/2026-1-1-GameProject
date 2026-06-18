@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class SceneTransitionManager : MonoBehaviour
 {
     public static SceneTransitionManager Instance { get; private set; }
+    public bool IsBusy => _busy;
 
     [Header("전환 설정")]
     [Tooltip("전환 전체 시간 (초) — 스윕 인 + 스윕 아웃")]

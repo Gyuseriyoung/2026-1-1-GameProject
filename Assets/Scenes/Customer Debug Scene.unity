@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 366894490}
   - component: {fileID: 366894489}
   m_Layer: 5
-  m_Name: DayTime
+  m_Name: Outside Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1200,6 +1200,7 @@ MonoBehaviour:
   debugStage: {fileID: 11400000, guid: 91513619524e8d64ab35aab01c4e257f, type: 2}
   dialogueManager: {fileID: 1915091517}
   customerPortrait: {fileID: 1377345959}
+  backgroundImage: {fileID: 366894489}
   customerAnimator: {fileID: 1377345961}
   customerNameText: {fileID: 360199168}
   arrivalDelay: 2

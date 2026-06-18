@@ -39,6 +39,18 @@ namespace RhythmSystem.Play
         void Start()
         {
             InitializeComponents();
+            StartCoroutine(StartGameSequence());
+        }
+
+        private System.Collections.IEnumerator StartGameSequence()
+        {
+            if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.IsBusy)
+            {
+                while (SceneTransitionManager.Instance.IsBusy)
+                {
+                    yield return null;
+                }
+            }
 
             // Priority: 1. Editor Test, 2. Cooking Session, 3. Default
             if (EditorTestSession.IsTestMode && EditorTestSession.CurrentChart != null)

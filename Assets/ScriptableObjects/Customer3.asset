@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CookingGame.CustomerData
   customerName: "\uBBF8\uC2A4\uD130\uC7A5"
   portrait: {fileID: 192975512844289894, guid: 1bd37ff226ab7a746aa86cb679e59913, type: 3}
+  backgroundImage: {fileID: 2448349042999170258, guid: b15c94a03390c419098d10d86bec29fc, type: 3}
   animatorOverride: {fileID: 22100000, guid: ea5fff4f5f7febb4dae2b42c9d322114, type: 2}
   openingDialogues:
   - "\uD638\uD638\uD638 \uC5EC\uAE30\uAC00 \uADF8 \uC720\uBA85\uD55C 2\uCE35 \uCE74\uD398\uC778\uAC00\uC694?"
@@ -24,3 +25,4 @@ MonoBehaviour:
   chartJson: {fileID: 4900000, guid: 7c5c448477127a84abcf786a30bc6dcf, type: 3}
   successDialogue: "\uC544\uB2C8 \uC774\uB7F0 \uB9DB\uC774 \uB098\uB2E4\uB2C8 \uB300\uB2E8\uD574\uC694..!"
   failureDialogue: "\uC5ED\uC2DC \uD615\uD3B8\uC5C6\uAD70"
+  soliloquies: []

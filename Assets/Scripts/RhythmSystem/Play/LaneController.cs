@@ -9,6 +9,7 @@ namespace RhythmSystem.Play
     public class LaneController : MonoBehaviour
     {
         public int laneIndex;
+        public GameObject hitVFX;
         public Transform visualJudgmentLine;
         
         private Vector2 currentJudgmentPos;
@@ -56,6 +57,10 @@ namespace RhythmSystem.Play
         public void OnHit(string rating)
         {
             // Debug.Log($"Lane {laneIndex} Hit: {rating}");
+            if (hitVFX != null)
+            {
+                Instantiate(hitVFX, transform);
+            }
         }
 
         /// <summary>

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CookingGame.CustomerData
   customerName: "\uBBFC\uAE30&\uB3D9\uAC74"
   portrait: {fileID: 21300000, guid: 8e2cc53f7058ccb46b2a7a829bd3d325, type: 3}
+  backgroundImage: {fileID: 5385648129830978985, guid: 2cebc5dbddcf64a689324cd4d13cc178, type: 3}
   animatorOverride: {fileID: 22100000, guid: b82cf5be1da09914abdf87a7ae510355, type: 2}
   openingDialogues:
   - "1 \uC548\uB155\uD558\uC138\uC694!"

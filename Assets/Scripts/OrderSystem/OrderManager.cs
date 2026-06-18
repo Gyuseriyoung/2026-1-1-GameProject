@@ -19,6 +19,7 @@ namespace CookingGame
 
         [Header("UI References")]
         public Image customerPortrait;
+        public Image backgroundImage;
         public Animator customerAnimator;
         public TextMeshProUGUI customerNameText;
 
@@ -33,6 +34,11 @@ namespace CookingGame
 
             if (dialogueManager == null) dialogueManager = GetComponent<DialogueManager>();
 
+            StartSequence();
+        }
+
+        private void StartSequence()
+        {
             if (CookingSession.IsReturningFromResult)
             {
                 ShowResultDialogue(CookingSession.LastGameSuccess);
@@ -154,6 +160,7 @@ namespace CookingGame
         private void BindCustomerView(CustomerData customer, string animationName)
         {
             if (customerPortrait != null) customerPortrait.sprite = customer.portrait;
+            if (backgroundImage != null) backgroundImage.sprite = customer.backgroundImage;
             if (customerNameText != null) customerNameText.text = customer.customerName;
 
             if (customerAnimator == null) return;
