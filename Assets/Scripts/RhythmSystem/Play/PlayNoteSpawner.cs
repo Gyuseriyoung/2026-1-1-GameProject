@@ -24,7 +24,11 @@ namespace RhythmSystem.Play
         {
             if (chartData == null || notePrefab == null) return;
 
-            foreach (var noteData in chartData.notes)
+            // Ensure notes are spawned in chronological order for efficient lookup and early exit.
+            var sortedNotes = new List<NoteData>(chartData.notes);
+            sortedNotes.Sort((a, b) => a.time.CompareTo(b.time));
+
+            foreach (var noteData in sortedNotes)
             {
                 var lane = laneManager.GetLane(noteData.laneIndex);
                 
@@ -36,6 +40,14 @@ namespace RhythmSystem.Play
                     noteObj.Initialize(noteData, lane, state.currentTimeMs, mergeObjectData);
                     spawnedNotes.Add(noteObj);
                 }
+            }
+        }
+
+        public void RemoveNote(NoteObject note)
+        {
+            if (note != null && spawnedNotes.Contains(note))
+            {
+                spawnedNotes.Remove(note);
             }
         }
 

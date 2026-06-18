@@ -71,9 +71,17 @@ namespace RhythmSystem.Play
 
             foreach (var note in spawnedNotes)
             {
+                float rawDiff = note.GetNoteTime() - currentTime;
+                
+                // Since notes are sorted chronologically, we can stop searching 
+                // if the current note is too far in the future.
+                if (rawDiff > earlyMissWindow)
+                {
+                    break;
+                }
+
                 if (note.IsJudged || note.Data.laneIndex != laneIndex) continue;
 
-                float rawDiff = note.GetNoteTime() - currentTime;
                 float absDiff = Mathf.Abs(rawDiff);
 
                 if (absDiff < minDiff && absDiff <= earlyMissWindow)
@@ -154,6 +162,7 @@ namespace RhythmSystem.Play
                 {
                     TriggerHitEvent(note, rating, currentTime);
                     note.OnJudged();
+                    spawner.RemoveNote(note);
                     
                     var activeLanes = spawner.GetActiveLanes();
                     if (activeLanes.ContainsKey(note.Data.laneIndex))
@@ -175,6 +184,7 @@ namespace RhythmSystem.Play
         {
             state.combo = 0;
             note.SetMissed();
+            spawner.RemoveNote(note);
 
             var args = new NoteMissEventArgs { note = note, laneIndex = note.Data.laneIndex, timeMs = currentTime, combo = state.combo };
             RhythmEvents.OnNoteMiss?.Invoke(args);
@@ -194,6 +204,7 @@ namespace RhythmSystem.Play
                 {
                     TriggerHitEvent(note, JudgmentRating.Perfect, currentTime);
                     note.CompleteHold();
+                    spawner.RemoveNote(note);
                     activeHoldNotes.RemoveAt(i);
                 }
             }
