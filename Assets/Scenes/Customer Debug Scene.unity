@@ -1970,10 +1970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2769,10 +2769,10 @@ RectTransform:
   - {fileID: 1854201685}
   m_Father: {fileID: 527302111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 804.54944, y: 124.720764}
-  m_SizeDelta: {x: -1646.1033, y: -280.2784}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -155.45056, y: 124.720764}
+  m_SizeDelta: {x: 273.89673, y: 799.72156}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &696228122
 MonoBehaviour:
@@ -3296,8 +3296,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: -31}
-  m_SizeDelta: {x: 1439.2332, y: 723.2361}
+  m_AnchoredPosition: {x: 1114.8164, y: -120.02783}
+  m_SizeDelta: {x: 9273.671, y: 3546.6863}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &884714197
 MonoBehaviour:
