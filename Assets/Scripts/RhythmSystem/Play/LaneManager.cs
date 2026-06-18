@@ -154,7 +154,13 @@ namespace RhythmSystem.Play
                     float initialY;
                     if (defaultLaneY.TryGetValue(idx, out var dy))
                     {
-                        initialY = dy / 100f;
+                        float defaultSpacing = 0.65f;
+                        float scale = spacing / defaultSpacing;
+                        
+                        float firstLaneY = defaultLaneY.TryGetValue(0, out var fdy) ? fdy / 100f : 0f;
+                        float defaultOffset = (dy / 100f) - firstLaneY;
+                        
+                        initialY = firstLaneY + (defaultOffset * scale);
                     }
                     else
                     {

@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace CookingGame
 {
@@ -132,16 +135,16 @@ namespace CookingGame
         private bool WasAdvancePressed()
         {
             var keyboard = Keyboard.current;
-            var pointer = Pointer.current;
-
-            bool keyboardPressed = keyboard != null
+            return keyboard != null
                    && (keyboard.spaceKey.wasPressedThisFrame
                        || keyboard.enterKey.wasPressedThisFrame
                        || keyboard.numpadEnterKey.wasPressedThisFrame);
+        }
 
-            bool pointerPressed = pointer != null && pointer.press.wasPressedThisFrame;
-
-            return keyboardPressed || pointerPressed;
+        public void OnDialoguePanelClick()
+        {
+            if (!IsVisible()) return;
+            HandleAdvanceInput();
         }
     }
 }

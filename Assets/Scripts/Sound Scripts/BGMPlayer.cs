@@ -35,7 +35,19 @@ public class BGMPlayer : MonoBehaviour
 
     private void Start()
     {
-        if (playOnStart) Play();
+        if (playOnStart) StartCoroutine(PlaySequence());
+    }
+
+    private System.Collections.IEnumerator PlaySequence()
+    {
+        if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.IsBusy)
+        {
+            while (SceneTransitionManager.Instance.IsBusy)
+            {
+                yield return null;
+            }
+        }
+        Play();
     }
 
     public void Play()

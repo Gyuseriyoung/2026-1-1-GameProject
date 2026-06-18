@@ -41,11 +41,35 @@ namespace CookingGame
                 originalPortraitPosition = customerPortrait.rectTransform.anchoredPosition;
             }
 
-            StartSequence();
+            // Clear placeholders immediately so they aren't visible during scene transition
+            SetPortraitVisible(false);
+            if (customerNameText != null) customerNameText.text = "";
+            if (dialogueManager != null) dialogueManager.SetVisible(false);
+
+            // Bind the correct background immediately so it is visible behind the transition
+            if (CookingSession.IsReturningFromResult && CookingSession.CurrentCustomer != null)
+            {
+                if (backgroundImage != null) backgroundImage.sprite = CookingSession.CurrentCustomer.backgroundImage;
+            }
+            else if (CookingSession.CurrentStage != null && CookingSession.CurrentStage.customerQueue.Count > 0)
+            {
+                var nextCustomer = CookingSession.CurrentStage.customerQueue[Mathf.Min(CookingSession.CurrentCustomerIndex, CookingSession.CurrentStage.customerQueue.Count - 1)];
+                if (backgroundImage != null && nextCustomer != null) backgroundImage.sprite = nextCustomer.backgroundImage;
+            }
+
+            StartCoroutine(StartSequence());
         }
 
-        private void StartSequence()
+        private System.Collections.IEnumerator StartSequence()
         {
+            if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.IsBusy)
+            {
+                while (SceneTransitionManager.Instance.IsBusy)
+                {
+                    yield return null;
+                }
+            }
+
             if (CookingSession.IsReturningFromResult)
             {
                 ShowResultDialogue(CookingSession.LastGameSuccess);
@@ -199,7 +223,7 @@ namespace CookingGame
         private void BindCustomerView(CustomerData customer, string animationName)
         {
             if (customerPortrait != null) customerPortrait.sprite = customer.portrait;
-            if (backgroundImage != null) backgroundImage.sprite = customer.backgroundImage;
+            if (backgroundImage != null && customer != null) StartCoroutine(TransitionBackground(customer.backgroundImage));
             if (customerNameText != null) customerNameText.text = customer.customerName;
 
             if (customerAnimator == null) return;
@@ -210,6 +234,52 @@ namespace CookingGame
             }
 
             customerAnimator.Play(animationName);
+        }
+
+        private System.Collections.IEnumerator TransitionBackground(Sprite newSprite)
+        {
+            if (backgroundImage == null) yield break;
+            if (backgroundImage.sprite == newSprite) yield break;
+
+            Sprite oldSprite = backgroundImage.sprite;
+            backgroundImage.sprite = newSprite;
+
+            if (oldSprite == null) yield break;
+
+            GameObject cloneGo = Instantiate(backgroundImage.gameObject, backgroundImage.transform.parent);
+            cloneGo.name = "TempOldBackground";
+            cloneGo.transform.SetSiblingIndex(backgroundImage.transform.GetSiblingIndex());
+
+            Image cloneImage = cloneGo.GetComponent<Image>();
+            cloneImage.sprite = oldSprite;
+
+            float width = backgroundImage.rectTransform.rect.width;
+            if (width <= 0) width = Screen.width;
+
+            float duration = 0.5f;
+            float elapsed = 0f;
+
+            Vector2 mainStart = new Vector2(width, 0);
+            Vector2 mainEnd = Vector2.zero;
+            Vector2 cloneStart = Vector2.zero;
+            Vector2 cloneEnd = new Vector2(-width, 0);
+
+            backgroundImage.rectTransform.anchoredPosition = mainStart;
+            cloneImage.rectTransform.anchoredPosition = cloneStart;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float easeT = 1f - Mathf.Pow(1f - t, 3f);
+
+                backgroundImage.rectTransform.anchoredPosition = Vector2.Lerp(mainStart, mainEnd, easeT);
+                cloneImage.rectTransform.anchoredPosition = Vector2.Lerp(cloneStart, cloneEnd, easeT);
+                yield return null;
+            }
+
+            backgroundImage.rectTransform.anchoredPosition = mainEnd;
+            Destroy(cloneGo);
         }
 
         private void SetPortraitVisible(bool visible)

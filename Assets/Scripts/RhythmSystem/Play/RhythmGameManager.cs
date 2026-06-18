@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 using RhythmSystem;
+using TMPro;
+using UnityEngine.UI;
 
 namespace RhythmSystem.Play
 {
@@ -195,7 +197,10 @@ namespace RhythmSystem.Play
                 AudioClip clip = Resources.Load<AudioClip>("Musics/" + pathWithoutExtension);
                 if (clip != null)
                 {
-                    audioSource.clip = clip;
+                    if (audioSource.clip != clip)
+                    {
+                        audioSource.clip = clip;
+                    }
                     // Force audio data to load into memory NOW.
                     // If we don't do this, PlayScheduled() will delay in the Build while it reads from disk,
                     // causing a massive 90ms+ offset discrepancy between Editor and Build.
@@ -291,7 +296,12 @@ namespace RhythmSystem.Play
         private void StartMusic(float initialTimeMs)
         {
             internalTimerMs = initialTimeMs;
-            if (audioSource != null) audioSource.Stop();
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+                float targetTime = (initialTimeMs + musicOffset) / 1000f;
+                audioSource.time = Mathf.Max(0f, targetTime);
+            }
             isMusicStarted = true;
         }
 
@@ -414,14 +424,65 @@ namespace RhythmSystem.Play
 
         private void ResumeFromMidPlayDialogue()
         {
-            // Unpause the gameplay
-            gameState.isPaused = false;
+            StartCoroutine(ResumeSequence());
+        }
+
+        private System.Collections.IEnumerator ResumeSequence()
+        {
+            GameObject canvasGo = new GameObject("CountdownCanvas");
+            Canvas canvas = canvasGo.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 10000;
+            canvasGo.AddComponent<CanvasScaler>();
+
+            GameObject textGo = new GameObject("CountdownText");
+            textGo.transform.SetParent(canvasGo.transform, false);
             
-            // Resume the music
+            TextMeshProUGUI text = textGo.AddComponent<TextMeshProUGUI>();
+            text.fontSize = 80;
+            text.alignment = TextAlignmentOptions.Center;
+            text.color = Color.white;
+            text.outlineColor = Color.black;
+            text.outlineWidth = 0.2f;
+
+            for (int i = 3; i > 0; i--)
+            {
+                text.text = i.ToString();
+                
+                float elapsed = 0f;
+                float duration = 0.7f;
+                while (elapsed < duration)
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                    float scale = Mathf.Lerp(1.5f, 1.0f, elapsed / duration);
+                    text.transform.localScale = new Vector3(scale, scale, 1f);
+                    yield return null;
+                }
+            }
+
+            text.text = "GO!";
+            float goElapsed = 0f;
+            float goDuration = 0.4f;
+            
+            gameState.isPaused = false;
             if (audioSource != null)
             {
                 audioSource.UnPause();
             }
+
+            while (goElapsed < goDuration)
+            {
+                goElapsed += Time.unscaledDeltaTime;
+                float scale = Mathf.Lerp(1.0f, 2.0f, goElapsed / goDuration);
+                text.transform.localScale = new Vector3(scale, scale, 1f);
+                
+                Color col = text.color;
+                col.a = Mathf.Lerp(1f, 0f, goElapsed / goDuration);
+                text.color = col;
+                yield return null;
+            }
+
+            Destroy(canvasGo);
         }
     }
 }
