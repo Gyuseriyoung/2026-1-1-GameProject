@@ -24,6 +24,9 @@ namespace RhythmSystem.Play
             this.spawner = spawner;
             this.modifiers = initialModifiers ?? new List<IRhythmModifier>();
 
+            RhythmEvents.OnLaneDown -= OnLaneDown;
+            RhythmEvents.OnLaneUp -= OnLaneUp;
+
             RhythmEvents.OnLaneDown += OnLaneDown;
             RhythmEvents.OnLaneUp += OnLaneUp;
         }

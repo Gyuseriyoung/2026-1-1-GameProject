@@ -1,22 +1,22 @@
 {
     "metadata": {
-        "title": "Stage2",
+        "title": "Stage3",
         "artist": "S",
         "creator": "T",
-        "audioFileName": "Stage_2-Inst.wav"
+        "audioFileName": "BossStageRemake.wav"
     },
-    "startOffset": 1000.0,
+    "startOffset": 3000.0,
     "musicOffset": 200.0,
-    "length": 29000.0,
+    "length": 60000.0,
     "soundBank": [
-        "KnifeEdit_.wav",
         "KnifeEdit_[cut_0sec].wav",
-        "BassDrum.wav"
+        "BassDrum.wav",
+        "BassDrum_1.wav"
     ],
     "timingPoints": [
         {
             "time": 0.0,
-            "bpm": 320.0,
+            "bpm": 240.0,
             "meter": 4,
             "denominator": 4
         }
@@ -33,7 +33,7 @@
     ],
     "notes": [
         {
-            "time": -140.625,
+            "time": 3812.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -42,268 +42,268 @@
             "soundIndex": 2
         },
         {
-            "time": -140.625,
+            "time": 9812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 10812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 11812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 13812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 14812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 16812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 18812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 23812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 24312.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 25312.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 26812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 27812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 28812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 39812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 40812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 31562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 32562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 35562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 36562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 42687.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 43750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 44125.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 4812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 8812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 5812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 609.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 421.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 234.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 46.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 796.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 984.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 1171.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 1359.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 1265.625,
+            "time": 6812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 1546.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 1734.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 1921.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2109.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2296.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2484.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2671.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2859.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 3046.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 2765.625,
+            "time": 7812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 3234.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 3421.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 3609.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 3796.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 3984.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 4171.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 4359.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 4546.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 4265.625,
+            "time": 10812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 4734.375,
+            "time": 11812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 687.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 12812.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -312,106 +312,52 @@
             "soundIndex": 2
         },
         {
-            "time": 4921.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
+            "time": 12812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 687.5,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 5109.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
+            "time": 13812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 687.5,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 5296.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 5484.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 5671.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 5859.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 5765.625,
+            "time": 15812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 6609.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 6796.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 6046.875,
+            "time": 17812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 6234.375,
+            "time": 19312.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 6421.875,
+            "time": 19562.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -420,25 +366,34 @@
             "soundIndex": 2
         },
         {
-            "time": 7171.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
+            "time": 19812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 2625.0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 6984.375,
+            "time": 24812.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 7359.375,
+            "time": 25812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 26062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -447,187 +402,115 @@
             "soundIndex": 2
         },
         {
-            "time": 7546.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 8109.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 8296.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 7453.125,
+            "time": 26562.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 7734.375,
+            "time": 27062.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 7921.875,
+            "time": 27562.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 8484.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 8671.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 8859.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 9046.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 9234.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 9421.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 8953.125,
+            "time": 28062.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 9609.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 9796.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 9984.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 10171.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 10359.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 10546.875,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 10453.125,
+            "time": 28562.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 29062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 29562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 29812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
             "mergeType": 0,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 10734.375,
+            "time": 30062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 30562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 31062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 30812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 32062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -636,7 +519,16 @@
             "soundIndex": 2
         },
         {
-            "time": 10921.875,
+            "time": 31812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 33062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -645,7 +537,16 @@
             "soundIndex": 2
         },
         {
-            "time": 11109.375,
+            "time": 32812.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 33562.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -654,7 +555,7 @@
             "soundIndex": 2
         },
         {
-            "time": 11296.875,
+            "time": 34062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -663,7 +564,16 @@
             "soundIndex": 2
         },
         {
-            "time": 11484.375,
+            "time": 33812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 34562.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -672,7 +582,7 @@
             "soundIndex": 2
         },
         {
-            "time": 11671.875,
+            "time": 35062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -681,7 +591,25 @@
             "soundIndex": 2
         },
         {
-            "time": 12046.875,
+            "time": 34812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 35812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 36062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -690,88 +618,7 @@
             "soundIndex": 2
         },
         {
-            "time": 11859.375,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 13171.875,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 16265.625,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 16546.875,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 16828.125,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 17062.5,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 19640.625,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 19921.875,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 20718.75,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 21140.625,
+            "time": 37062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -780,7 +627,115 @@
             "soundIndex": 2
         },
         {
-            "time": 21375.0,
+            "time": 36812.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 37812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 37562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 38062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 38562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 39062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 38812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 437.5,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 39562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 40062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 40562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 41062.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 41812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 687.5,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 41562.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -789,16 +744,7 @@
             "soundIndex": 2
         },
         {
-            "time": 21562.5,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 21750.0,
+            "time": 43062.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -807,16 +753,7 @@
             "soundIndex": 2
         },
         {
-            "time": 21937.5,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 22171.875,
+            "time": 43437.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -825,16 +762,7 @@
             "soundIndex": 2
         },
         {
-            "time": 22406.25,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 22640.625,
+            "time": 44500.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -843,43 +771,7 @@
             "soundIndex": 2
         },
         {
-            "time": 13546.875,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 13875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 14203.125,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 22875.0,
-            "laneIndex": 1,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 23156.25,
+            "time": 44875.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -888,124 +780,70 @@
             "soundIndex": 2
         },
         {
-            "time": 23578.125,
+            "time": 42875.0,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 23953.125,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 24375.0,
+            "time": 43250.0,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 24750.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 25218.75,
+            "time": 43562.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 25593.75,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 26015.625,
+            "time": 43937.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 26484.375,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 26953.125,
+            "time": 44312.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 27328.125,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 27750.0,
+            "time": 44687.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 28125.0,
-            "laneIndex": 0,
-            "type": 0,
-            "length": 0.0,
-            "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 28500.0,
+            "time": 45062.5,
             "laneIndex": 1,
             "type": 0,
             "length": 0.0,
-            "mergeType": 0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
         {
-            "time": 28828.125,
+            "time": 45312.5,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
@@ -1014,11 +852,425 @@
             "soundIndex": 2
         },
         {
-            "time": 28968.75,
+            "time": 45625.0,
             "laneIndex": 0,
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 46062.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 46562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 46875.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 47250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 47562.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 48812.5,
+            "laneIndex": 0,
+            "type": 1,
+            "length": 625.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 49875.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 50250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 50750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 52125.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 52750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 53250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 53500.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 54000.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 54250.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 54750.0,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 55187.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 55812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 56187.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 56812.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 57187.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 57687.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 58187.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 58687.5,
+            "laneIndex": 0,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 0,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 45812.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 46312.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 46750.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 47125.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 47375.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 47812.5,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 750.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 49562.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 50125.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 50500.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 50875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51125.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51375.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51625.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 51875.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 52500.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 53000.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 53750.0,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 54125.0,
+            "laneIndex": 1,
+            "type": 1,
+            "length": 4875.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 23812.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
+            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         }

@@ -824,7 +824,7 @@ MonoBehaviour:
   m_Intensity: 0.7
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3abfb4c
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1957,7 +1957,7 @@ MonoBehaviour:
   m_Intensity: 1.4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3abfb4c
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2730,6 +2730,7 @@ RectTransform:
   - {fileID: 441229033}
   - {fileID: 460129923}
   - {fileID: 1784656485}
+  - {fileID: 1500594427}
   m_Father: {fileID: 690450361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3755,7 +3756,6 @@ RectTransform:
   - {fileID: 1342962122}
   - {fileID: 923424392}
   - {fileID: 12981456}
-  - {fileID: 1500594427}
   - {fileID: 464461586}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4279,7 +4279,7 @@ MonoBehaviour:
   m_Intensity: 0.25
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3abfb4c
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -4435,14 +4435,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2733403969646113814, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2733403969646113814, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2733403969646113814, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.01
       objectReference: {fileID: 0}
@@ -4485,14 +4477,6 @@ PrefabInstance:
     - target: {fileID: 5739210220241738455, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
       propertyPath: m_Name
       value: lifter
-      objectReference: {fileID: 0}
-    - target: {fileID: 9153607056594326090, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
-      propertyPath: m_FlipX
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9153607056594326090, guid: 0da54abccd4f09847a61a70cdfafe4c3, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6709,22 +6693,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: shef
       objectReference: {fileID: 0}
-    - target: {fileID: 3903617757396452787, guid: 13fcd73db7072084fb70e1bb617a0b9a, type: 3}
-      propertyPath: m_FlipX
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3903617757396452787, guid: 13fcd73db7072084fb70e1bb617a0b9a, type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628378153417182182, guid: 13fcd73db7072084fb70e1bb617a0b9a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628378153417182182, guid: 13fcd73db7072084fb70e1bb617a0b9a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.8
-      objectReference: {fileID: 0}
     - target: {fileID: 7628378153417182182, guid: 13fcd73db7072084fb70e1bb617a0b9a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.64
@@ -7259,7 +7227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1500594424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7361,17 +7329,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500594423}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 947353115}
-  m_Father: {fileID: 690450361}
+  m_Father: {fileID: 464461586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 685, y: -461}
+  m_AnchoredPosition: {x: 548, y: -1}
   m_SizeDelta: {x: 120, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1501128033
@@ -8120,7 +8088,7 @@ MonoBehaviour:
   m_Intensity: 1.4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3abfb4c
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -8175,29 +8143,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7377146988064836018, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 5826820013092581734, guid: 32c828377c2636447b51ccfbd2135c54, type: 3}
-    - target: {fileID: 7377146988064836018, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377146988064836018, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8238692339043295853, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
       propertyPath: m_Name
       value: supporter
-      objectReference: {fileID: 0}
-    - target: {fileID: 8820151321132988876, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8820151321132988876, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8820151321132988876, guid: 36300772605d0ac44a3dcaff58c71049, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8687,7 +8635,7 @@ MonoBehaviour:
   m_Intensity: 1.4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3abfb4c
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

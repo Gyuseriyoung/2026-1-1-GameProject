@@ -10,18 +10,20 @@ namespace RhythmSystem.Play
         public static LightingManager Instance { get; private set; }
 
         [Header("Scene References (2D Light)")]
-        [SerializeField] private Light2D globalLight2D; // 2D 환경의 글로벌 라이트
-        [SerializeField] private List<Light2D> stageSpotlights = new List<Light2D>(); // 2D 개별 라이트들
+        [SerializeField] private Light2D globalLight2D;
+        [SerializeField] private List<Light2D> stageSpotlights = new List<Light2D>();
 
-        // 씬 시작 시 조명들의 원래 원본 설정값들을 캐싱해두는 리스트
         private List<float> originalSpotIntensities = new List<float>();
         private List<Color> originalSpotColors = new List<Color>();
+        private Color originalGlobalColor = Color.white;
+        private float originalGlobalIntensity = 1f;
+        private List<bool> originalSpotActiveStates = new List<bool>();
 
         private CustomerLightingPreset activePreset;
         private List<LightingEvent> sortedEvents = new List<LightingEvent>();
         private int currentEventIndex = 0;
         private Coroutine activeTransitionCo;
-        private LightingEvent lastAppliedEvent; // 직전 이벤트 상태 보관용
+        private LightingEvent lastAppliedEvent;
 
         private void Awake()
         {
@@ -34,7 +36,6 @@ namespace RhythmSystem.Play
                 Destroy(gameObject);
             }
 
-            // 씬에 배치된 조명들의 원래 디자인 설정값을 미리 저장합니다.
             CacheOriginalSpotlightSettings();
         }
 
@@ -42,6 +43,13 @@ namespace RhythmSystem.Play
         {
             originalSpotIntensities.Clear();
             originalSpotColors.Clear();
+            originalSpotActiveStates.Clear();
+
+            if (globalLight2D != null)
+            {
+                originalGlobalColor = globalLight2D.color;
+                originalGlobalIntensity = globalLight2D.intensity;
+            }
 
             foreach (var spot in stageSpotlights)
             {
@@ -49,19 +57,37 @@ namespace RhythmSystem.Play
                 {
                     originalSpotIntensities.Add(spot.intensity);
                     originalSpotColors.Add(spot.color);
+                    originalSpotActiveStates.Add(spot.gameObject.activeSelf);
                 }
                 else
                 {
                     originalSpotIntensities.Add(1f);
                     originalSpotColors.Add(Color.white);
+                    originalSpotActiveStates.Add(false);
                 }
             }
         }
 
-        /// <summary>
-        /// 곡 시작 시 호출하여 프리셋 데이터를 로드하고 상태를 초기화합니다.
-        /// </summary>
         public void Initialize(CustomerLightingPreset preset)
+        {
+            ResetToOriginalSettings();
+
+            activePreset = preset;
+
+            if (activePreset != null && activePreset.lightingEvents != null)
+            {
+                sortedEvents.AddRange(activePreset.lightingEvents);
+                sortedEvents.Sort((a, b) => a.triggerTimeMs.CompareTo(b.triggerTimeMs));
+
+                if (sortedEvents.Count > 0 && sortedEvents[0].triggerTimeMs <= 0f)
+                {
+                    ApplyLightingEvent(sortedEvents[0]);
+                    currentEventIndex = 1;
+                }
+            }
+        }
+
+        public void ResetToOriginalSettings()
         {
             if (activeTransitionCo != null)
             {
@@ -69,29 +95,30 @@ namespace RhythmSystem.Play
                 activeTransitionCo = null;
             }
 
-            activePreset = preset;
+            if (globalLight2D != null)
+            {
+                globalLight2D.color = originalGlobalColor;
+                globalLight2D.intensity = originalGlobalIntensity;
+            }
+
+            for (int i = 0; i < stageSpotlights.Count; i++)
+            {
+                if (stageSpotlights[i] != null)
+                {
+                    stageSpotlights[i].color = GetOriginalColor(i);
+                    stageSpotlights[i].intensity = GetOriginalIntensity(i);
+                    if (i < originalSpotActiveStates.Count)
+                    {
+                        stageSpotlights[i].gameObject.SetActive(originalSpotActiveStates[i]);
+                    }
+                }
+            }
+
             sortedEvents.Clear();
             currentEventIndex = 0;
             lastAppliedEvent = null;
-
-            if (activePreset != null && activePreset.lightingEvents != null)
-            {
-                sortedEvents.AddRange(activePreset.lightingEvents);
-                // 시간 순 정렬 (오름차순)
-                sortedEvents.Sort((a, b) => a.triggerTimeMs.CompareTo(b.triggerTimeMs));
-
-                // 시작 시점(0ms 이하)에 해당하는 조명 연출이 있다면 게임이 시작할 때 즉시(보간 없이) 적용합니다.
-                if (sortedEvents.Count > 0 && sortedEvents[0].triggerTimeMs <= 0f)
-                {
-                    ApplyLightingEventImmediate(sortedEvents[0]);
-                    currentEventIndex = 1; // 0번은 적용되었으므로 다음부터 업데이트 대기
-                }
-            }
         }
 
-        /// <summary>
-        /// RhythmGameManager의 Update 루프에서 호출되어 시간 진행에 따라 조명을 업데이트합니다.
-        /// </summary>
         public void UpdateLighting(float currentTimeMs)
         {
             if (sortedEvents == null || currentEventIndex >= sortedEvents.Count) return;
@@ -109,15 +136,35 @@ namespace RhythmSystem.Play
             if (activeTransitionCo != null)
             {
                 StopCoroutine(activeTransitionCo);
-                // 중요: 새 이벤트 보간이 실행되기 전, 직전 이벤트의 조명 최종 목적지 상태를 강제로 완전히 굳힙니다.
                 if (lastAppliedEvent != null)
                 {
-                    ApplyLightingEventImmediate(lastAppliedEvent);
+                    ApplySpotlightsImmediate(lastAppliedEvent);
                 }
             }
             
             lastAppliedEvent = ev;
             activeTransitionCo = StartCoroutine(TransitionLightingCo(ev));
+        }
+
+        private void ApplySpotlightsImmediate(LightingEvent ev)
+        {
+            if (ev.spotlightStates != null)
+            {
+                foreach (var state in ev.spotlightStates)
+                {
+                    int idx = state.spotlightIndex;
+                    if (idx >= 0 && idx < stageSpotlights.Count && stageSpotlights[idx] != null)
+                    {
+                        var spot = stageSpotlights[idx];
+                        float targetIntensity = (state.isOn && state.intensity <= 0.01f) ? GetOriginalIntensity(idx) : state.intensity;
+                        Color targetColor = GetValidColor(state.color, GetOriginalColor(idx));
+
+                        spot.color = targetColor;
+                        spot.intensity = targetIntensity;
+                        spot.gameObject.SetActive(state.isOn);
+                    }
+                }
+            }
         }
 
         private void ApplyLightingEventImmediate(LightingEvent ev)

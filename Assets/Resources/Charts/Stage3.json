@@ -5,7 +5,7 @@
         "creator": "T",
         "audioFileName": "BossStageRemake.wav"
     },
-    "startOffset": 0.0,
+    "startOffset": 3000.0,
     "musicOffset": 200.0,
     "length": 60000.0,
     "soundBank": [
@@ -155,15 +155,6 @@
             "type": 0,
             "length": 0.0,
             "mergeType": 0,
-            "objectIndex": 0,
-            "soundIndex": 2
-        },
-        {
-            "time": 29812.5,
-            "laneIndex": 3,
-            "type": 1,
-            "length": 437.5,
-            "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2
         },
@@ -1270,6 +1261,15 @@
             "laneIndex": 1,
             "type": 1,
             "length": 4875.0,
+            "mergeType": 1,
+            "objectIndex": 0,
+            "soundIndex": 2
+        },
+        {
+            "time": 23812.5,
+            "laneIndex": 1,
+            "type": 0,
+            "length": 0.0,
             "mergeType": 1,
             "objectIndex": 0,
             "soundIndex": 2

@@ -54,7 +54,7 @@ MonoBehaviour:
     \uAC14\uC5B4.."
   - "\uB2E4\uC74C \uC190\uB2D8\uC740 \uBA40\uCA61\uD588\uC73C\uBA74 \uC88B\uACA0\uB124.."
   midPlayDialogues:
-  - triggerTimeMs: 0
+  - triggerTimeMs: -1000
     dialogueLines:
     - "\uBC18\uAC00\uC6CC \uB09C \uC774 \uCE74\uD398\uC5D0 \uCD1D\uAD04 \uC170\uD504
       \uD30C\uD30C\uC874\uC2A4\uC57C "

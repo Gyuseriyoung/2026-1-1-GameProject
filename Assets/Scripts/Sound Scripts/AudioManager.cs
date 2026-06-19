@@ -275,9 +275,25 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null) return;
 
+        float sfxVol = 1f;
+        bool mixerHasSfxParam = false;
+        if (audioMixer != null)
+        {
+            mixerHasSfxParam = audioMixer.GetFloat(sfxParam, out _);
+        }
+
+        if (sfxGroup == null || !mixerHasSfxParam)
+        {
+            if (GameSettingsManager.Instance != null && GameSettingsManager.Instance.Settings != null)
+            {
+                var sound = GameSettingsManager.Instance.Settings.sound;
+                sfxVol = sound.muteSfx ? 0f : sound.sfxVolume;
+            }
+        }
+
         AudioSource source = _sfxSources[_sfxIndex];
         source.clip = clip;
-        source.volume = volume;
+        source.volume = volume * sfxVol;
         source.pitch = pitch;
         source.Play();
 

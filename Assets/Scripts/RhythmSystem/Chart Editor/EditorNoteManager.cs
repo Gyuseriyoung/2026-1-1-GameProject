@@ -265,6 +265,10 @@ namespace RhythmSystem
             {
                 editorManager.currentChart.notes.Add(creatingHoldNote);
                 activeNotes.Add(creatingHoldVisual);
+                if (editorManager.editorUIController != null)
+                {
+                    editorManager.editorUIController.RefreshMergePreviewUI();
+                }
             }
             else
             {
@@ -302,6 +306,10 @@ namespace RhythmSystem
             };
             editorManager.currentChart.notes.Add(newNote);
             SpawnNoteVisual(newNote);
+            if (editorManager.editorUIController != null)
+            {
+                editorManager.editorUIController.RefreshMergePreviewUI();
+            }
         }
 
         public void RemoveNoteAtMouse(Vector2 mousePos)
@@ -312,6 +320,10 @@ namespace RhythmSystem
                 editorManager.currentChart.notes.Remove(note);
                 selectedNotes.Remove(note);
                 UpdateNoteVisuals();
+                if (editorManager.editorUIController != null)
+                {
+                    editorManager.editorUIController.RefreshMergePreviewUI();
+                }
             }
         }
 
@@ -370,6 +382,10 @@ namespace RhythmSystem
                 selectedNotes.Add(newNote);
             }
             UpdateNoteVisuals();
+            if (editorManager.editorUIController != null)
+            {
+                editorManager.editorUIController.RefreshMergePreviewUI();
+            }
         }
 
         public void DeleteSelection()
@@ -377,6 +393,10 @@ namespace RhythmSystem
             editorManager.currentChart.notes.RemoveAll(n => selectedNotes.Contains(n));
             selectedNotes.Clear();
             UpdateNoteVisuals();
+            if (editorManager.editorUIController != null)
+            {
+                editorManager.editorUIController.RefreshMergePreviewUI();
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ namespace RhythmSystem
         [Header("Sub-Managers")]
         public EditorTimelineManager timelineManager;
         public EditorNoteManager noteManager;
+        public string currentChartName;
         public EditorInputHandler inputHandler;
 
         [Header("Editor Mode")]
@@ -109,7 +110,11 @@ namespace RhythmSystem
                 if (!string.IsNullOrEmpty(chartName))
                 {
                     var loadedChart = ChartIO.LoadFromFile(chartName);
-                    if (loadedChart != null) currentChart = loadedChart;
+                    if (loadedChart != null)
+                    {
+                        currentChart = loadedChart;
+                        currentChartName = chartName;
+                    }
                 }
 
                 // Load natively in pixels from editor settings

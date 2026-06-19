@@ -56,6 +56,11 @@ namespace RhythmSystem
         public GameObject objectIconPrefab;
         public MergeObjectUIItem currentSelectionDisplay;
 
+        [Header("Merge Result Preview")]
+        public RectTransform mergePreviewContainer;
+        public TextMeshProUGUI mergePreviewSummaryText;
+        [SerializeField] private CookingGame.CustomerData testCustomerData;
+
         [Header("Sound Bank Settings")]
         public TMP_Dropdown soundBankDropdown;
         public TMP_Dropdown soundFileListDropdown; // Files in Resources/Sound
@@ -317,6 +322,7 @@ namespace RhythmSystem
                 gimmickTypeDropdown.SetValueWithoutNotify((int)editorManager.currentSelectedGimmickType);
 
             InitializeMiniMap();
+            RefreshMergePreviewUI();
         }
 
         private void InitializeMiniMap()
@@ -571,6 +577,108 @@ namespace RhythmSystem
             if (judgeLineXInput != null)
             {
                 judgeLineXInput.text = editorManager.JudgeLineX.ToString("F0");
+            }
+        }
+
+        public void RefreshMergePreviewUI()
+        {
+            if (editorManager == null || editorManager.mergeObjectData == null || mergePreviewContainer == null) return;
+
+            foreach (Transform child in mergePreviewContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            MergeSimulator simulator = new MergeSimulator(editorManager.mergeObjectData);
+            var finalItems = simulator.RunSimulation(editorManager.currentChart.notes);
+
+            var groupedItems = finalItems
+                .GroupBy(item => new { item.type, item.index })
+                .Select(g => new { g.Key.type, g.Key.index, Count = g.Count() })
+                .ToList();
+
+            foreach (var item in groupedItems)
+            {
+                if (item.type >= 0 && item.type < editorManager.mergeObjectData.MergeData.Length)
+                {
+                    var category = editorManager.mergeObjectData.MergeData[item.type];
+                    if (item.index >= 0 && item.index < category.MergeDataList.Length)
+                    {
+                        var objData = category.MergeDataList[item.index];
+                        GameObject iconObj = Instantiate(objectIconPrefab, mergePreviewContainer);
+                        MergeObjectUIItem uiItem = iconObj.GetComponent<MergeObjectUIItem>();
+                        if (uiItem != null)
+                        {
+                            uiItem.Setup(item.type, item.index, objData.sprite, objData.Name, item.Count);
+                        }
+                    }
+                }
+            }
+
+            if (mergePreviewSummaryText != null)
+            {
+                CookingGame.CustomerData activeCustomer = testCustomerData;
+
+                if (activeCustomer == null)
+                {
+                    activeCustomer = CookingGame.CookingSession.CurrentCustomer;
+                }
+
+                if (activeCustomer == null && !string.IsNullOrEmpty(editorManager.currentChartName))
+                {
+                    var allCustomers = Resources.LoadAll<CookingGame.CustomerData>("");
+                    foreach (var cust in allCustomers)
+                    {
+                        if (cust != null && cust.chartJson != null && cust.chartJson.name == editorManager.currentChartName)
+                        {
+                            activeCustomer = cust;
+                            break;
+                        }
+                    }
+                }
+
+                if (activeCustomer != null && activeCustomer.orders != null)
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    sb.AppendLine($"<b>[주문 목표 달성도 - {activeCustomer.customerName}]</b>");
+                    bool allMatched = true;
+
+                    foreach (var order in activeCustomer.orders)
+                    {
+                        int currentCount = finalItems.Count(item => item.type == order.targetMergeType && item.index == order.targetMergeIndex);
+                        bool isDone = currentCount == order.count;
+                        if (!isDone) allMatched = false;
+
+                        string statusColor = isDone ? "#00FF00" : "#FF5555";
+                        string orderItemName = "";
+                        if (order.targetMergeType >= 0 && order.targetMergeType < editorManager.mergeObjectData.MergeData.Length)
+                        {
+                            var category = editorManager.mergeObjectData.MergeData[order.targetMergeType];
+                            if (order.targetMergeIndex >= 0 && order.targetMergeIndex < category.MergeDataList.Length)
+                            {
+                                orderItemName = category.MergeDataList[order.targetMergeIndex].Name;
+                            }
+                        }
+
+                        sb.AppendLine($"<color={statusColor}>{orderItemName}: {currentCount} / {order.count} {(isDone ? "O" : "X")}</color>");
+                    }
+
+                    int totalOrderCount = activeCustomer.orders.Sum(o => o.count);
+                    if (finalItems.Count != totalOrderCount)
+                    {
+                        allMatched = false;
+                        sb.AppendLine("<color=#FFBB00>* 주문 외 불필요한 머지 찌꺼기가 남아있음</color>");
+                    }
+
+                    string matchColor = allMatched ? "#00FF00" : "#FF5555";
+                    sb.AppendLine($"\n<b>최종 판정: <color={matchColor}>{(allMatched ? "합격 (주문 일치)" : "불합격 (수량 미달 또는 초과)")}</color></b>");
+
+                    mergePreviewSummaryText.text = sb.ToString();
+                }
+                else
+                {
+                    mergePreviewSummaryText.text = "<b>[머지 획득 요약]</b>\n현재 차트와 연동된 고객 주문 정보가 없습니다.\n(에디터 인스펙터에서 Test Customer Data를 지정해 주세요.)";
+                }
             }
         }
     }
